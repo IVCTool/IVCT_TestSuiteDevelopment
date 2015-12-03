@@ -1,0 +1,6 @@
+
+dependencies {
+	compile     group: 'msg134-ivct-framework', name: 'IEEE1516e', version: ivctVersion
+	compile     libraries.slf4j_api
+}
+
