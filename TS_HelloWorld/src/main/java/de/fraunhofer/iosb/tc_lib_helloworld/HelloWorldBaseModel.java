@@ -1,3 +1,18 @@
+/*
+IVCT (Integration, Verification and Certification Tool)
+Copyright 2015 [Johannes Mulder]
+
+This product includes software developed by ...
+The Apache Software Foundation (http://www.apache.org/).
+
+
+=========================================================================
+==                           [Software Name]                           ==
+=========================================================================
+
+This product includes software developed by ...
+ */
+
 package de.fraunhofer.iosb.tc_lib_helloworld;
 
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
