@@ -75,6 +75,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
     private InteractionClassHandle                         messageId;
     private IVCT_RTIambassador                             ivct_rti;
     private Logger                                         logger;
+    private ParameterHandle                                parameterIdSender;
     private ParameterHandle                                parameterIdText;
     private String                                         message;
     private final Map<ObjectInstanceHandle, CountryValues> knownObjects        = new HashMap<ObjectInstanceHandle, CountryValues>();
@@ -205,6 +206,13 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
         return this.parameterIdText;
     }
 
+    /**
+     * @return the parameter id text received
+     */
+    public ParameterHandle getParameterIdSender() {
+        return this.parameterIdSender;
+    }
+
 
     /**
      * @return the message id
@@ -253,6 +261,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
         try {
             this.messageId = this.ivct_rti.getInteractionClassHandle("Communication");
             this.parameterIdText = this.ivct_rti.getParameterHandle(this.messageId, "Message");
+            this.parameterIdSender = this.ivct_rti.getParameterHandle(this.messageId, "Sender");
         }
         catch (NameNotFound | FederateNotExecutionMember | NotConnected | RTIinternalError | InvalidInteractionClassHandle ex1) {
             this.logger.error("Cannot get interaction class handle or parameter handle");

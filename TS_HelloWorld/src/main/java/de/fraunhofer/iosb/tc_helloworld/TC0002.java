@@ -109,7 +109,7 @@ public class TC0002 extends AbstractTestCase {
             // Create fields to hold values to send
             ParameterHandleValueMap parameters;
             try {
-                parameters = ivct_rti.getParameterHandleValueMapFactory().create(1);
+                parameters = ivct_rti.getParameterHandleValueMapFactory().create(2);
             }
             catch (FederateNotExecutionMember | NotConnected ex1) {
                 throw new TcInconclusive(ex1.getMessage());
@@ -117,8 +117,11 @@ public class TC0002 extends AbstractTestCase {
 
             // Encode the values
             final HLAunicodeString messageEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
+            final HLAunicodeString senderEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
             messageEncoderString.setValue(message);
+            senderEncoderString.setValue(federateName);
             parameters.put(helloWorldBaseModel.getParameterIdText(), messageEncoderString.toByteArray());
+            parameters.put(helloWorldBaseModel.getParameterIdSender(), senderEncoderString.toByteArray());
 
             // Send the interaction
             try {
