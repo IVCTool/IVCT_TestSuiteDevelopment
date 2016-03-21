@@ -73,15 +73,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
 			e1.printStackTrace();
 		}
 
-        this.fddFiles[0] = new File(this.basePath + "HelloWorld.xml");
-        for (int i = 0; i < this.fileNum; i++) {
-            try {
-                this.urls[i] = this.fddFiles[i].toURI().toURL();
-            }
-            catch (final MalformedURLException e) {
-                throw new TcInconclusive("HelloWorldTcParam constructor: MalformedURLException");
-            }
-        }
+		this.urls[0] = this.getClass().getClassLoader().getResource("HelloWorld.xml");
     }
 
 
