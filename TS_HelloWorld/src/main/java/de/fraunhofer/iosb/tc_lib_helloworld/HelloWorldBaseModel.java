@@ -1,5 +1,5 @@
 /*
-Copyright 2015, [name of copyright owner, Johannes Mulder (Fraunhofer IOSB)"]
+Copyright 2015, Johannes Mulder (Fraunhofer IOSB)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package de.fraunhofer.iosb.tc_lib_helloworld;
 
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_RTIambassador;
+import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
 import hla.rti1516e.AttributeHandleValueMap;
@@ -130,8 +131,8 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
      * @param logger reference to a logger
      * @param ivct_rti reference to the RTI ambassador
      */
-    public HelloWorldBaseModel(final Logger logger, final IVCT_RTIambassador ivct_rti) {
-        super(ivct_rti, logger);
+    public HelloWorldBaseModel(final Logger logger, final IVCT_RTIambassador ivct_rti, final IVCT_TcParam ivct_TcParam) {
+        super(ivct_rti, logger, ivct_TcParam);
         this.logger = logger;
         this.ivct_rti = ivct_rti;
         this._encoderFactory = ivct_rti.getEncoderFactory();

@@ -1,5 +1,5 @@
 /*
-Copyright 2015, [name of copyright owner, Johannes Mulder (Fraunhofer IOSB)"]
+Copyright 2015, Johannes Mulder (Fraunhofer IOSB)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@ limitations under the License.
 package de.fraunhofer.iosb.tc_helloworld;
 
 import de.fraunhofer.iosb.tc_lib.AbstractTestCase;
+import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_LoggingFederateAmbassador;
 import de.fraunhofer.iosb.tc_lib.IVCT_RTI_Factory;
 import de.fraunhofer.iosb.tc_lib.IVCT_RTIambassador;
+import de.fraunhofer.iosb.tc_lib.TcBaseModel;
 import de.fraunhofer.iosb.tc_lib.TcFailed;
 import de.fraunhofer.iosb.tc_lib.TcInconclusive;
 import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldBaseModel;
@@ -44,24 +46,37 @@ import org.slf4j.LoggerFactory;
  */
 public class TC0002 extends AbstractTestCase {
     FederateHandle                              federateHandle;
-    private static Logger                       logger                         = LoggerFactory.getLogger(TC0002.class);
     private String                              federateName                   = "IVCT";
 
     // Build test case parameters to use
-    final static HelloWorldTcParam              helloWorldTcParam              = new HelloWorldTcParam();
+    static HelloWorldTcParam              helloWorldTcParam;
 
     // Get logging-IVCT-RTI using tc_param federation name, host
-    private static IVCT_RTIambassador           ivct_rti                       = IVCT_RTI_Factory.getIVCT_RTI(logger);
-    final static HelloWorldBaseModel            helloWorldBaseModel            = new HelloWorldBaseModel(logger, ivct_rti);
+    private static IVCT_RTIambassador           ivct_rti;
+    static HelloWorldBaseModel            helloWorldBaseModel;
 
-    final static IVCT_LoggingFederateAmbassador ivct_LoggingFederateAmbassador = new IVCT_LoggingFederateAmbassador(helloWorldBaseModel, logger);
-
+    static IVCT_LoggingFederateAmbassador ivct_LoggingFederateAmbassador;
 
     /**
      * @param args the parameter line arguments
      */
     public static void main(final String[] args) {
+        Logger                       logger                         = LoggerFactory.getLogger(TC0002.class);
+    	String paramJson = "{\"federationName\" : \"HelloWorld\"}";
+        new TC0002().execute(paramJson, logger);
+    }
 
+    @Override
+    public IVCT_BaseModel getIVCT_BaseModel(final String tcParamJson, final Logger logger) throws TcInconclusive {
+    	helloWorldTcParam              = new HelloWorldTcParam(tcParamJson);
+    	ivct_rti             = IVCT_RTI_Factory.getIVCT_RTI(logger);
+    	helloWorldBaseModel          = new HelloWorldBaseModel(logger, ivct_rti, helloWorldTcParam);
+    	ivct_LoggingFederateAmbassador = new IVCT_LoggingFederateAmbassador(helloWorldBaseModel, logger);
+    	return helloWorldBaseModel;
+    }
+
+    @Override
+    protected void logTestPurpose(final Logger logger) {
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\n");
         stringBuilder.append("---------------------------------------------------------------------\n");
@@ -74,16 +89,14 @@ public class TC0002 extends AbstractTestCase {
         final String testPurpose = stringBuilder.toString();
 
         logger.info(testPurpose);
-
-        new TC0002().execute(helloWorldTcParam, helloWorldBaseModel, logger);
     }
 
-
+    
     @Override
-    protected void preambleAction() throws TcInconclusive {
+    protected void preambleAction(final Logger logger) throws TcInconclusive {
 
         // Initiate rti
-        this.federateHandle = helloWorldBaseModel.initiateRti(this.federateName, ivct_LoggingFederateAmbassador, helloWorldTcParam);
+        this.federateHandle = helloWorldBaseModel.initiateRti(this.federateName, ivct_LoggingFederateAmbassador);
 
         // Do the necessary calls to get handles and do publish and subscribe
         if (helloWorldBaseModel.init()) {
@@ -93,7 +106,7 @@ public class TC0002 extends AbstractTestCase {
 
 
     @Override
-    protected void performTest() throws TcInconclusive, TcFailed {
+    protected void performTest(final Logger logger) throws TcInconclusive, TcFailed {
 
         // Allow time to work and get some reflect values.
         if (helloWorldBaseModel.sleepFor(helloWorldTcParam.getSleepTimeWait())) {
@@ -133,7 +146,7 @@ public class TC0002 extends AbstractTestCase {
 
             // Check if a hello world message has arrived
             if (helloWorldBaseModel.getInteractionMessageStatus()) {
-                throw new TcInconclusive("Did not receive any \"HelloWorld\" message");
+                throw new TcInconclusive("Did not receive any HelloWorld message");
             }
 
             // Get the message
@@ -142,7 +155,7 @@ public class TC0002 extends AbstractTestCase {
 
             // Test the value of the message
             if (messageReceived.equals(testMessage) == false) {
-                throw new TcFailed("Incorrect message received: got \"" + messageReceived + "\" expected \"" + testMessage + "\"");
+                throw new TcFailed("Incorrect message received: got  " + messageReceived + "  expected  " + testMessage);
             }
 
             // Allow for some time to pass
@@ -154,8 +167,8 @@ public class TC0002 extends AbstractTestCase {
 
 
     @Override
-    protected void postambleAction() throws TcInconclusive {
+    protected void postambleAction(final Logger logger) throws TcInconclusive {
         // Terminate rti
-        helloWorldBaseModel.terminateRti(helloWorldTcParam);
+        helloWorldBaseModel.terminateRti();
     }
 }
