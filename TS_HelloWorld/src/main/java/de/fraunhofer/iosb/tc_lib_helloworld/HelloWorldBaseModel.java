@@ -97,18 +97,26 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
             return this.countryName;
         }
 
-
+        /**
+         * @return the current population value
+         */
         public float getPopulation() {
             return this.currPopulation;
         }
 
-
+        /**
+         * @param population the new population value
+         */
         public void setPopulation(final float population) {
             this.prevPopulation = this.currPopulation;
             this.currPopulation = population;
         }
 
-
+        /**
+         * @param delta the factor the population increases
+         * @param logger reference to the logger
+         * @return true when NOT within the test range
+         */
         public boolean testPopulation(final float delta, final Logger logger) {
             final float min = this.prevPopulation * delta * (float) 0.99;
             final float mid = this.prevPopulation * delta;
@@ -334,7 +342,10 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
         return true;
     }
 
-
+    /**
+     * @param interactionClass specify the interaction class
+     * @param theParameters specify the parameter handles and values
+     */
     private void doReceiveInteraction(final InteractionClassHandle interactionClass, final ParameterHandleValueMap theParameters) {
         if (interactionClass.equals(this.messageId)) {
             if (!theParameters.containsKey(this.parameterIdText)) {
