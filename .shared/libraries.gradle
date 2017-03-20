@@ -10,10 +10,10 @@ ext {
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ IVCT settings
 		ivctVersion = '0.3.0'
-		
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ HelloWorld settings
-		helloWorldVersion = '0.0.1'
 
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ HelloWorld settings
+		helloWorldVersion = '0.3.0'
+		
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
         junitVersion = '4.+'
 
