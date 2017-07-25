@@ -138,6 +138,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
     /**
      * @param logger reference to a logger
      * @param ivct_rti reference to the RTI ambassador
+     * @param ivct_TcParam ivct_TcParam
      */
     public HelloWorldBaseModel(final Logger logger, final IVCT_RTIambassador ivct_rti, final IVCT_TcParam ivct_TcParam) {
         super(ivct_rti, logger, ivct_TcParam);

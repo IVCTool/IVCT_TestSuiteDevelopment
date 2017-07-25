@@ -67,7 +67,6 @@ public class HelloWorld extends NullFederateAmbassador {
     private volatile boolean                         _reservationSucceeded;
     private final Object                             _reservationSemaphore = new Object();
 
-    private static final int                         CRC_PORT              = 8989;
     private static final String                      FEDERATION_NAME       = "HelloWorld";
     private EncoderFactory                           _encoderFactory;
 
