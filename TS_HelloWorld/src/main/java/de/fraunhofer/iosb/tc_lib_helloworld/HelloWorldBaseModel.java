@@ -1,7 +1,22 @@
+/*
+Copyright 2015, Johannes Mulder (Fraunhofer IOSB)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package de.fraunhofer.iosb.tc_lib_helloworld;
 
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
-import de.fraunhofer.iosb.tc_lib.IVCT_NullFederateAmbassador;
 import de.fraunhofer.iosb.tc_lib.IVCT_RTIambassador;
 import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
 import hla.rti1516e.AttributeHandle;
@@ -51,15 +66,17 @@ import org.slf4j.Logger;
 /**
  * @author mul (Fraunhofer IOSB)
  */
-public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements IVCT_BaseModel {
+public class HelloWorldBaseModel extends IVCT_BaseModel {
+
     private AttributeHandle                                _attributeIdName;
     private AttributeHandle                                _attributeIdPopulation;
     private boolean                                        receivedInteraction = false;
+    private boolean                                        receivedReflect = false;
     private EncoderFactory                                 _encoderFactory;
-    private FederateHandle                                 federateHandle;
     private InteractionClassHandle                         messageId;
     private IVCT_RTIambassador                             ivct_rti;
     private Logger                                         logger;
+    private ParameterHandle                                parameterIdSender;
     private ParameterHandle                                parameterIdText;
     private String                                         message;
     private final Map<ObjectInstanceHandle, CountryValues> knownObjects        = new HashMap<ObjectInstanceHandle, CountryValues>();
@@ -80,18 +97,26 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
             return this.countryName;
         }
 
-
+        /**
+         * @return the current population value
+         */
         public float getPopulation() {
             return this.currPopulation;
         }
 
-
+        /**
+         * @param population the new population value
+         */
         public void setPopulation(final float population) {
             this.prevPopulation = this.currPopulation;
             this.currPopulation = population;
         }
 
-
+        /**
+         * @param delta the factor the population increases
+         * @param logger reference to the logger
+         * @return true when NOT within the test range
+         */
         public boolean testPopulation(final float delta, final Logger logger) {
             final float min = this.prevPopulation * delta * (float) 0.99;
             final float mid = this.prevPopulation * delta;
@@ -113,9 +138,10 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
     /**
      * @param logger reference to a logger
      * @param ivct_rti reference to the RTI ambassador
+     * @param ivct_TcParam ivct_TcParam
      */
-    public HelloWorldBaseModel(final Logger logger, final IVCT_RTIambassador ivct_rti) {
-        super(logger);
+    public HelloWorldBaseModel(final Logger logger, final IVCT_RTIambassador ivct_rti, final IVCT_TcParam ivct_TcParam) {
+        super(ivct_rti, logger, ivct_TcParam);
         this.logger = logger;
         this.ivct_rti = ivct_rti;
         this._encoderFactory = ivct_rti.getEncoderFactory();
@@ -123,24 +149,8 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
 
 
     /**
-     * @param federateName federate name
-     * @param tcParam test case parameters
-     * @return federate handle
-     */
-    @Override
-    public FederateHandle initiateRti(final String federateName, final FederateAmbassador federateReference, final IVCT_TcParam tcParam) {
-        this.federateHandle = this.ivct_rti.initiateRti(tcParam, federateReference, federateName);
-        return this.federateHandle;
-    }
-
-
-    public FederateHandle getFederateHandle() {
-        return this.federateHandle;
-    }
-
-
-    /**
-     * @return
+     * @param federateHandle the federate handle
+     * @return the federate name or null
      */
     public String getFederateName(final FederateHandle federateHandle) {
         try {
@@ -157,7 +167,7 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
     /**
      * @return false if a message received, true otherwise
      */
-    public boolean getMessageStatus() {
+    public boolean getInteractionMessageStatus() {
         for (int j = 0; j < 100; j++) {
             if (this.receivedInteraction) {
                 return false;
@@ -172,9 +182,26 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
         return true;
     }
 
+    /**
+     * @return false if a message received, true otherwise
+     */
+    public boolean getReflectMessageStatus() {
+        for (int j = 0; j < 100; j++) {
+            if (this.receivedReflect) {
+                return false;
+            }
+            try {
+                Thread.sleep(20);
+            }
+            catch (final InterruptedException ex) {
+                continue;
+            }
+        }
+        return true;
+    }
 
     /**
-     * @return
+     * @return the message received
      */
     public String getMessage() {
         this.receivedInteraction = false;
@@ -183,15 +210,22 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
 
 
     /**
-     * @return
+     * @return the parameter id text received
      */
     public ParameterHandle getParameterIdText() {
         return this.parameterIdText;
     }
 
+    /**
+     * @return the parameter id text received
+     */
+    public ParameterHandle getParameterIdSender() {
+        return this.parameterIdSender;
+    }
+
 
     /**
-     * @return
+     * @return the message id
      */
     public InteractionClassHandle getMessageId() {
         return this.messageId;
@@ -199,11 +233,8 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
 
 
     /**
-     * @param federateReference
-     * @param callbackModel
-     * @param localSettingsDesignator
+     * {@inheritDoc}
      */
-    @Override
     public void connect(final FederateAmbassador federateReference, final CallbackModel callbackModel, final String localSettingsDesignator) {
         try {
             this.ivct_rti.connect(federateReference, callbackModel, localSettingsDesignator);
@@ -215,14 +246,8 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
     }
 
 
-    @Override
-    public void terminateRti(final IVCT_TcParam tcParam) {
-        this.ivct_rti.terminateRti(tcParam);
-    }
-
-
     /**
-     * @param sleepTime
+     * @param sleepTime time to sleep
      * @return true means problem, false is ok
      */
     public boolean sleepFor(final long sleepTime) {
@@ -246,6 +271,7 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
         try {
             this.messageId = this.ivct_rti.getInteractionClassHandle("Communication");
             this.parameterIdText = this.ivct_rti.getParameterHandle(this.messageId, "Message");
+            this.parameterIdSender = this.ivct_rti.getParameterHandle(this.messageId, "Sender");
         }
         catch (NameNotFound | FederateNotExecutionMember | NotConnected | RTIinternalError | InvalidInteractionClassHandle ex1) {
             this.logger.error("Cannot get interaction class handle or parameter handle");
@@ -317,7 +343,10 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
         return true;
     }
 
-
+    /**
+     * @param interactionClass specify the interaction class
+     * @param theParameters specify the parameter handles and values
+     */
     private void doReceiveInteraction(final InteractionClassHandle interactionClass, final ParameterHandleValueMap theParameters) {
         if (interactionClass.equals(this.messageId)) {
             if (!theParameters.containsKey(this.parameterIdText)) {
@@ -339,13 +368,7 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
 
 
     /**
-     * @param interactionClass
-     * @param theParameters
-     * @param userSuppliedTag
-     * @param sentOrdering
-     * @param theTransport
-     * @param receiveInfo
-     * @throws FederateInternalError
+     * {@inheritDoc}
      */
     @Override
     public void receiveInteraction(final InteractionClassHandle interactionClass, final ParameterHandleValueMap theParameters, final byte[] userSuppliedTag, final OrderType sentOrdering, final TransportationTypeHandle theTransport, final SupplementalReceiveInfo receiveInfo) throws FederateInternalError {
@@ -354,13 +377,7 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
 
 
     /**
-     * @param interactionClass
-     * @param theParameters
-     * @param userSuppliedTag
-     * @param sentOrdering
-     * @param theTransport
-     * @param receiveInfo
-     * @throws FederateInternalError
+     * {@inheritDoc}
      */
     @Override
     public void receiveInteraction(final InteractionClassHandle interactionClass, final ParameterHandleValueMap theParameters, final byte[] userSuppliedTag, final OrderType sentOrdering, final TransportationTypeHandle theTransport, final LogicalTime theTime, final OrderType receivedOrdering, final SupplementalReceiveInfo receiveInfo) throws FederateInternalError {
@@ -369,13 +386,7 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
 
 
     /**
-     * @param interactionClass
-     * @param theParameters
-     * @param userSuppliedTag
-     * @param sentOrdering
-     * @param theTransport
-     * @param receiveInfo
-     * @throws FederateInternalError
+     * {@inheritDoc}
      */
     @Override
     public void receiveInteraction(final InteractionClassHandle interactionClass, final ParameterHandleValueMap theParameters, final byte[] userSuppliedTag, final OrderType sentOrdering, final TransportationTypeHandle theTransport, final LogicalTime theTime, final OrderType receivedOrdering, final MessageRetractionHandle retractionHandle, final SupplementalReceiveInfo receiveInfo) throws FederateInternalError {
@@ -433,7 +444,9 @@ public class HelloWorldBaseModel extends IVCT_NullFederateAmbassador implements 
             }
             catch (final DecoderException e) {
                 this.logger.error("Failed to decode incoming attribute");
+                return;
             }
+            receivedReflect = true;
         }
     }
 

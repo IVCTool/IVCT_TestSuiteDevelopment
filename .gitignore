@@ -16,6 +16,9 @@ hs_err_pid*
 *.classpath
 *.project
 .settings
+.metadata
+.recommenders
 bin
+logs
 build
 /.gradle

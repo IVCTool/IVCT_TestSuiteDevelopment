@@ -1,3 +1,19 @@
+/*
+Copyright 2015, [name of copyright owner, Johannes Mulder (Fraunhofer IOSB)"]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package de.fraunhofer.iosb.helloworld;
 
 import hla.rti1516e.AttributeHandle;
@@ -45,12 +61,12 @@ public class HelloWorld extends NullFederateAmbassador {
     private AttributeHandle                          _attributeIdPopulation;
     private String                                   myCountry;
     private float                                    myPopulation          = (float) 100.0;
+    private int numberOfCycles = 1000;
 
     private volatile boolean                         _reservationComplete;
     private volatile boolean                         _reservationSucceeded;
     private final Object                             _reservationSemaphore = new Object();
 
-    private static final int                         CRC_PORT              = 8989;
     private static final String                      FEDERATION_NAME       = "HelloWorld";
     private EncoderFactory                           _encoderFactory;
 
@@ -144,6 +160,18 @@ public class HelloWorld extends NullFederateAmbassador {
             System.out.print("Enter your country: ");
             this.myCountry = in.readLine();
 
+            System.out.print("Enter starting population [100]: ");
+            String aString = in.readLine();
+            if (aString.isEmpty() == false) {
+            myPopulation = Float.parseFloat(aString);
+            }
+            
+            System.out.print("Enter number of cycles [1000]: ");
+            String bString = in.readLine();
+            if (bString.isEmpty() == false) {
+            numberOfCycles = Integer.parseInt(bString);
+            }
+
             this._rtiAmbassador.joinFederationExecution(this.myCountry, FEDERATION_NAME, new URL[] {
                     fddFileUrl
             });
@@ -151,7 +179,7 @@ public class HelloWorld extends NullFederateAmbassador {
             // Subscribe and publish interactions
             this._messageId = this._rtiAmbassador.getInteractionClassHandle("Communication");
             this._parameterIdText = this._rtiAmbassador.getParameterHandle(this._messageId, "Message");
-            this._parameterIdSender = this._rtiAmbassador.getParameterHandle(this._messageId, "Message");
+            this._parameterIdSender = this._rtiAmbassador.getParameterHandle(this._messageId, "Sender");
 
             this._rtiAmbassador.subscribeInteractionClass(this._messageId);
             this._rtiAmbassador.publishInteractionClass(this._messageId);
@@ -199,7 +227,7 @@ public class HelloWorld extends NullFederateAmbassador {
 
             final HLAunicodeString nameEncoder = this._encoderFactory.createHLAunicodeString(this.myCountry);
 
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < numberOfCycles; i++) {
                 final AttributeHandleValueMap attributes = this._rtiAmbassador.getAttributeHandleValueMapFactory().create(2);
                 final HLAfloat32LE messageEncoder = this._encoderFactory.createHLAfloat32LE();
                 messageEncoder.setValue(this.myPopulation);
@@ -287,6 +315,10 @@ public class HelloWorld extends NullFederateAmbassador {
 
                 System.out.println(sender + ": " + message);
                 System.out.print("> ");
+                String Str2 = "Hello World from";
+                if (message.regionMatches(0, Str2, 0, 16)) {
+                	return;
+                }
             }
             catch (final DecoderException e) {
                 System.out.println("Failed to decode incoming interaction");

@@ -1,9 +1,29 @@
+/*
+Copyright 2015, Johannes Mulder (Fraunhofer IOSB)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package de.fraunhofer.iosb.tc_lib_helloworld;
 
-import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
+import de.fraunhofer.iosb.tc_lib.TcInconclusive;
 
 
 /**
@@ -14,29 +34,49 @@ import java.net.URL;
 public class HelloWorldTcParam implements IVCT_TcParam {
     // Get test case parameters
     //      use some constants for this example till we get params from a file
-    private final String federation_name    = "HelloWorld";
-    private final String rtiHost            = "localhost";
-    private final String settingsDesignator = "crcAddress=" + this.rtiHost;
+    private String federation_name;
+    private String rtiHost;
+    private String rtiPort;
+    private String settingsDesignator;
     private final int    fileNum            = 1;
-    private File[]       fddFiles           = new File[this.fileNum];
     private URL[]        urls               = new URL[this.fileNum];
-    private final String basePath           = "build/resources/main/";
     private long         sleepTimeCycle     = 1000;
     private long         sleepTimeWait      = 3000;
-    private final String sutFederate        = "A";
+    private String sutFederate;
 
 
-    public HelloWorldTcParam() {
-        this.fddFiles[0] = new File(this.basePath + "HelloWorld.xml");
-        for (int i = 0; i < this.fileNum; i++) {
-            try {
-                this.urls[i] = this.fddFiles[i].toURI().toURL();
-            }
-            catch (final MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+    public HelloWorldTcParam(final String paramJson) throws TcInconclusive {
+		JSONParser jsonParser = new JSONParser();
+		JSONObject jsonObject;
+		try {
+			jsonObject = (JSONObject) jsonParser.parse(paramJson);
+			// get a String from the JSON object
+			federation_name =  (String) jsonObject.get("federationName");
+			if (federation_name == null) {
+                throw new TcInconclusive("The key  federationName  was not found");
+			}
+			// get a String from the JSON object
+			rtiHost =  (String) jsonObject.get("rtiHostName");
+			if (rtiHost == null) {
+                throw new TcInconclusive("The key  rtiHostName  was not found");
+			}
+			rtiPort = (String) jsonObject.get("rtiPort");
+			if (rtiPort == null) {
+				throw new TcInconclusive("The rti port id was not found");
+			}
+			settingsDesignator = "crcAddress=" + this.rtiHost + ":" + this.rtiPort;
+			
+			// get a String from the JSON object
+			sutFederate =  (String) jsonObject.get("sutFederateName");
+			if (sutFederate == null) {
+                throw new TcInconclusive("The key  sutFederateName  was not found");
+			}
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		this.urls[0] = this.getClass().getClassLoader().getResource("HelloWorld.xml");
     }
 
 
