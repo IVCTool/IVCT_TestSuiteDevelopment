@@ -1,3 +1,7 @@
+apply plugin: 'application'
+
+mainClassName = 'de.fraunhofer.iosb.tc_helloworld.TC0001'
+
 dependencies {
     switch (rti) {
 		case "prti1516e":
