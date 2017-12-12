@@ -163,7 +163,7 @@ public class TC0002 extends AbstractTestCase {
                 throw new TcInconclusive("sleepFor problem");
             }
             
-            sendTcStatus ("running", i*10);
+            sendTcStatus ("running", i*10+5);
         }
     }
 
