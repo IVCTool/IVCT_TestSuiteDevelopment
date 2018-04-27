@@ -120,6 +120,8 @@ public class TC0001 extends AbstractTestCase {
             if (helloWorldBaseModel.sleepFor(helloWorldTcParam.getSleepTimeCycle())) {
                 throw new TcInconclusive("sleepFor problem");
             }
+            
+            sendTcStatus ("running", i*10);
         }
     }
 

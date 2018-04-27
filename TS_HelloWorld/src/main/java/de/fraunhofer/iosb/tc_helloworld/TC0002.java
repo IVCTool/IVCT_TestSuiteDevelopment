@@ -16,12 +16,14 @@ limitations under the License.
 
 package de.fraunhofer.iosb.tc_helloworld;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.fraunhofer.iosb.tc_lib.AbstractTestCase;
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_LoggingFederateAmbassador;
 import de.fraunhofer.iosb.tc_lib.IVCT_RTI_Factory;
 import de.fraunhofer.iosb.tc_lib.IVCT_RTIambassador;
-import de.fraunhofer.iosb.tc_lib.TcBaseModel;
 import de.fraunhofer.iosb.tc_lib.TcFailed;
 import de.fraunhofer.iosb.tc_lib.TcInconclusive;
 import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldBaseModel;
@@ -37,8 +39,6 @@ import hla.rti1516e.exceptions.NotConnected;
 import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -162,6 +162,8 @@ public class TC0002 extends AbstractTestCase {
             if (helloWorldBaseModel.sleepFor(helloWorldTcParam.getSleepTimeCycle())) {
                 throw new TcInconclusive("sleepFor problem");
             }
+            
+            sendTcStatus ("running", i*10+5);
         }
     }
 

@@ -236,7 +236,7 @@ public class HelloWorld extends NullFederateAmbassador {
                 attributes.put(this._attributeIdName, nameEncoder.toByteArray());
 
                 this._rtiAmbassador.updateAttributeValues(this._countryId, attributes, null);
-                if (this.receivedInteraction) {
+//                if (this.receivedInteraction) {
                     final ParameterHandleValueMap parameters = this._rtiAmbassador.getParameterHandleValueMapFactory().create(1);
                     final HLAunicodeString messageEncoderString = this._encoderFactory.createHLAunicodeString();
                     final String message = "Hello World from " + this.myCountry;
@@ -247,7 +247,7 @@ public class HelloWorld extends NullFederateAmbassador {
                     this._rtiAmbassador.sendInteraction(this._messageId, parameters, null);
 
                     this.receivedInteraction = false;
-                }
+//                }
                 Thread.sleep(1000);
                 this.printCountryPopulations();
             }

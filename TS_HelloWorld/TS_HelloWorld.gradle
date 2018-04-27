@@ -1,6 +1,6 @@
 apply plugin: 'application'
 
-mainClassName = 'de.fraunhofer.iosb.testrunner.JMSTestRunner'
+mainClassName = 'de.fraunhofer.iosb.tc_helloworld.TC0001'
 
 dependencies {
     switch (rti) {
@@ -17,7 +17,7 @@ dependencies {
 			compile     group: 'msg134-ivct-framework', name: 'IEEE1516e', version: ivctVersion
 	}
 
-	compile     group: 'msg134-ivct-framework', name: 'TC', version: ivctVersion
+	compile     group: 'msg134-ivct-framework', name: 'TC.lib', version: ivctVersion
 	compile     group: 'msg134-ivct-framework', name: 'MessagingHelpers', version: ivctVersion
 
 	compile     libraries.slf4j_api
