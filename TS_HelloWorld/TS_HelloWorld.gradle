@@ -6,8 +6,8 @@ dependencies {
     switch (rti) {
 		case "prti1516e":
 			logger.warn (':TS_HelloWorld:pRTI is used. Make sure pRTI is installed on target machine to run TS_HelloWorld')
-			compile files (rti_lib + "/" + rti_jar)
-			runtime fileTree (dir: rti_lib, include: '*.jar')
+			compileOnly files (rti_lib + "/" + rti_jar)
+			compileOnly fileTree (dir: rti_lib, include: '*.jar')
 			break
 		case "mak":
 			logger.warn (':TS_HelloWorld:MAK RTI is not configure. HelloWorld will not be runnable')
