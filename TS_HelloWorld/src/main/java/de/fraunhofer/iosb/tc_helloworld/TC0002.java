@@ -57,15 +57,6 @@ public class TC0002 extends AbstractTestCase {
 
     static IVCT_LoggingFederateAmbassador ivct_LoggingFederateAmbassador;
 
-    /**
-     * @param args the parameter line arguments
-     */
-    public static void main(final String[] args) {
-        Logger                       logger                         = LoggerFactory.getLogger(TC0002.class);
-    	String paramJson = "{\"federationName\" : \"HelloWorld\"}";
-        new TC0002().execute(paramJson, logger);
-    }
-
     @Override
     public IVCT_BaseModel getIVCT_BaseModel(final String tcParamJson, final Logger logger) throws TcInconclusive {
     	helloWorldTcParam              = new HelloWorldTcParam(tcParamJson);
@@ -91,9 +82,25 @@ public class TC0002 extends AbstractTestCase {
         logger.info(testPurpose);
     }
 
-    
+    public void displayOperatorInstructions(final Logger logger) {
+        String s = new String();
+        s = "\n"
+        +   "---------------------------------------------------------------------\n"
+        +   "OPERATOR INSTRUCTIONS: Start the test federate before starting the test case with the same\n"
+        +   "OPERATOR INSTRUCTIONS: federate name as in the TcParam.json file\n"
+        +   "OPERATOR INSTRUCTIONS: The federate should run for the full duration of all the HelloWorld\n"
+        +   "OPERATOR INSTRUCTIONS: tests\n"
+        +   "---------------------------------------------------------------------\n";
+
+        logger.info(s);
+    }
+
+
     @Override
     protected void preambleAction(final Logger logger) throws TcInconclusive {
+
+        // Notify the operator
+        displayOperatorInstructions(logger);
 
         // Initiate rti
         this.federateHandle = helloWorldBaseModel.initiateRti(this.federateName, ivct_LoggingFederateAmbassador);
