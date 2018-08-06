@@ -20,12 +20,12 @@ dependencies {
 	compileOnly     group: 'msg134-ivct-framework', name: 'TC.lib', version: ivctVersion
 	compileOnly     group: 'msg134-ivct-framework', name: 'MessagingHelpers', version: ivctVersion
 
-	compile     libraries.slf4j_api
+	compileOnly     libraries.slf4j_api
 
-	runtime		libraries.logback_classic
-	runtime		libraries.logback_core
+	compileOnly		libraries.logback_classic
+	compileOnly		libraries.logback_core
 
-	runtime     libraries.slf4j_jcl_over_slf4j
-	runtime     libraries.slf4j_jul_to_slf4j
-	runtime     libraries.slf4j_log4j_over_slf4j
+	compileOnly     libraries.slf4j_jcl_over_slf4j
+	compileOnly     libraries.slf4j_jul_to_slf4j
+	compileOnly     libraries.slf4j_log4j_over_slf4j
 }
