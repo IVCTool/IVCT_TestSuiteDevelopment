@@ -41,7 +41,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     private final int    fileNum            = 1;
     private URL[]        urls               = new URL[this.fileNum];
     private long         sleepTimeCycle     = 1000;
-    private long         sleepTimeWait      = 3000;
+    private long         sleepTimeWait      = 4000;
     private String sutFederate;
 
 
