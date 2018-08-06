@@ -17,12 +17,11 @@ dependencies {
 			compile     group: 'msg134-ivct-framework', name: 'IEEE1516e', version: ivctVersion
 	}
 
-	compile     group: 'msg134-ivct-framework', name: 'TC.lib', version: ivctVersion
-	compile     group: 'msg134-ivct-framework', name: 'MessagingHelpers', version: ivctVersion
+	compileOnly     group: 'msg134-ivct-framework', name: 'TC.lib', version: ivctVersion
+	compileOnly     group: 'msg134-ivct-framework', name: 'MessagingHelpers', version: ivctVersion
 
 	compile     libraries.slf4j_api
 
-	runtime		libraries.actimemqClient
 	runtime		libraries.logback_classic
 	runtime		libraries.logback_core
 
