@@ -22,8 +22,8 @@ ext {
 		slf4jVersion = '1.7.10'
 		
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HLA Run Time
-		rti = "prti1516e"
-		//rti = "IEEE1516e"
+		//rti = "prti1516e"
+		rti = "IEEE1516e"
 		//rti = "mak"
 		
 		switch (rti) {
