@@ -106,9 +106,19 @@ public class HelloWorld extends NullFederateAmbassador {
             final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
             String rtiHost = "";
+            this.myCountry = new String("A");
 
             if (this._args.length > 0) {
                 rtiHost = this._args[0];
+                if (this._args.length > 1) {
+                    this.myCountry = this._args[1];
+                }
+                if (this._args.length > 2) {
+                    myPopulation = Float.parseFloat(this._args[2]);
+                }
+                if (this._args.length > 3) {
+                    numberOfCycles = Integer.parseInt(this._args[3]);
+                }
             }
             else {
                 System.out.println("Enter the CRC address, such as");
@@ -121,6 +131,23 @@ public class HelloWorld extends NullFederateAmbassador {
                 rtiHost = in.readLine();
                 if (rtiHost.length() == 0) {
                     rtiHost = "localhost";
+                }
+                System.out.print("Enter your country [A]: ");
+                this.myCountry = in.readLine();
+                if (this.myCountry.isEmpty()) {
+                    this.myCountry = "A";
+                }
+
+                System.out.print("Enter starting population [100]: ");
+                String aString = in.readLine();
+                if (aString.isEmpty() == false) {
+                myPopulation = Float.parseFloat(aString);
+                }
+
+                System.out.print("Enter number of cycles [1000]: ");
+                String bString = in.readLine();
+                if (bString.isEmpty() == false) {
+                numberOfCycles = Integer.parseInt(bString);
                 }
             }
 
@@ -156,21 +183,6 @@ public class HelloWorld extends NullFederateAmbassador {
                 }, "HLAfloat64Time");
             }
             catch (final FederationExecutionAlreadyExists ignored) {}
-
-            System.out.print("Enter your country: ");
-            this.myCountry = in.readLine();
-
-            System.out.print("Enter starting population [100]: ");
-            String aString = in.readLine();
-            if (aString.isEmpty() == false) {
-            myPopulation = Float.parseFloat(aString);
-            }
-            
-            System.out.print("Enter number of cycles [1000]: ");
-            String bString = in.readLine();
-            if (bString.isEmpty() == false) {
-            numberOfCycles = Integer.parseInt(bString);
-            }
 
             this._rtiAmbassador.joinFederationExecution(this.myCountry, FEDERATION_NAME, new URL[] {
                     fddFileUrl
