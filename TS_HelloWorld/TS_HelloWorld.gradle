@@ -3,19 +3,7 @@ apply plugin: 'application'
 mainClassName = 'de.fraunhofer.iosb.tc_helloworld.TC0001'
 
 dependencies {
-    switch (rti) {
-		case "prti1516e":
-			logger.warn (':TS_HelloWorld:pRTI is used. Make sure pRTI is installed on target machine to run TS_HelloWorld')
-			compileOnly files (rti_lib + "/" + rti_jar)
-			compileOnly fileTree (dir: rti_lib, include: '*.jar')
-			break
-		case "mak":
-			logger.warn (':TS_HelloWorld:MAK RTI is not configure. HelloWorld will not be runnable')
-		case "IEEE1516e":
-		default:
-			logger.warn (':TS_HelloWorld:No RTI is used. TS_HelloWorld will not be runnable')
-			compile     group: 'msg134-ivct-framework', name: 'IEEE1516e', version: ivctVersion
-	}
+	compileOnly     group: 'msg134-ivct-framework', name: 'IEEE1516e', version: ivctVersion
 
 	compileOnly     group: 'msg134-ivct-framework', name: 'TC.lib', version: ivctVersion
 	compileOnly     group: 'msg134-ivct-framework', name: 'MessagingHelpers', version: ivctVersion
