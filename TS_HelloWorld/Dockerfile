@@ -10,7 +10,7 @@ ENTRYPOINT [ "sh", "-c", " \
    fi" , \
 "--" ]
 
-COPY ./build/distributions/TS_HelloWorld-1.0.1 /root/conf/TestSuites/TS_HelloWorld-1.0.1
+ADD ./build/distributions/TS_HelloWorld-1.0.1.tar /root/conf/TestSuites/
 ENV VOLUMEDIR /root/conf/TestSuites/TS_HelloWorld-1.0.1
 ENV VOLUME ${VOLUMEDIR}/.
 VOLUME ${VOLUMEDIR}
