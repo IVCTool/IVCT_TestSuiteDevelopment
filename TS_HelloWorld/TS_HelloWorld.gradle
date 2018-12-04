@@ -3,10 +3,10 @@ apply plugin: 'application'
 mainClassName = 'de.fraunhofer.iosb.tc_helloworld.TC0001'
 
 dependencies {
-	compileOnly     group: 'msg134-ivct-framework', name: 'IEEE1516e', version: ivctVersion
+	compileOnly     group: 'io.github.msg134', name: 'IEEE1516e', version: ivctVersion
 
-	compileOnly     group: 'msg134-ivct-framework', name: 'TC.lib', version: ivctVersion
-	compileOnly     group: 'msg134-ivct-framework', name: 'MessagingHelpers', version: ivctVersion
+	compileOnly     libraries.tc_lib
+	compileOnly     group: 'io.github.msg134', name: 'MessagingHelpers', version: ivctVersion
 
 	compileOnly     libraries.slf4j_api
 

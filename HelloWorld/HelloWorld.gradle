@@ -3,7 +3,7 @@ apply plugin: 'application'
 mainClassName = 'de.fraunhofer.iosb.helloworld.HelloWorld'
 
 dependencies {
-	compileOnly     group: 'msg134-ivct-framework', name: 'IEEE1516e', version: ivctVersion
+	compileOnly     group: 'io.github.msg134', name: 'IEEE1516e', version: ivctVersion
 
 	compile     libraries.slf4j_api
 
