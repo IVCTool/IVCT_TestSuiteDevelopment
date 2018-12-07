@@ -14,7 +14,7 @@ script:
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 - echo "$TNO_DOCKER_PASSWORD" | docker login app-docker136.hex.tno.nl -u "$TNO_DOCKER_USERNAME" --password-stdin
 - cd TS_HelloWorld
-- docker build --build-arg version=$VERSION -t ivct/ts-helloworld:$TRAVIS_BRANCH-latest -t ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION -t ivct/ts-helloworld:$TRAVIS_BRANCH-$TRAVIS_COMMIT .
+- docker build --build-arg version=$VERSION -t ivct/ts-helloworld:$TRAVIS_BRANCH-latest -t ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION .
 - if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION ivct/ts-helloworld:$VERSION && docker tag ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION ivct/ts-helloworld:latest; fi
 - docker push ivct/ts-helloworld
 
