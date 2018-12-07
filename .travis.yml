@@ -1,11 +1,14 @@
 language: java
 jdk:
 - oraclejdk8
+
 branches:
   only:
   - master
   - development
+  
 install: gradle install
+
 script:
 - export VERSION=$(grep "helloWorldVersion" ./.shared/libraries.gradle | awk '{print $3}' | tr -d \')
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -14,13 +17,16 @@ script:
 - docker build --build-arg version=$VERSION -t ivct/ts-helloworld:$TRAVIS_BRANCH-latest -t ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION -t ivct/ts-helloworld:$TRAVIS_BRANCH-$TRAVIS_COMMIT .
 - if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION ivct/ts-helloworld:$VERSION && docker tag ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION ivct/ts-helloworld:latest; fi
 - docker push ivct/ts-helloworld
+
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
+  
 env:
   global:
   - secure: iBIt+cVUyPnBD8aoQlCh8XVhp1kgYKGNIPj4VKPaq1s1HaDFRJIP7azaIQYRX/yWFX6UQNgEPIQ2QQyrrrT2aWdTdn+ERIhIVOm8bo1hoNTmPTNGHOxqZODw8pKk+0SAfaI/km4+1EXGU2OtYN1k4pUEuuvzX4N55ADxKfGC02TbeTtzJ4OKl2MkULR56JsomeiDAIIIX11dbsKjOaPjQm10pX/oK2bUy3KfhGXBy6QHNQ7N7+xKqJGUDira02oSt6irO4GLAQqID3daulFvCRsP5FJhASJMDIdkQLrh3MV7765qLAXO3Y6Mj9jsIDS3KPSnKNEtHoWUkheFhOxKC79NQ4F0PGpSKFB7S1hfJBcUviO/dJr7d1hDqQK5hCiCiJaYVEk7GhTSekNgOsthwpjY4Y3rPDQVsT4ALDvU7nkLhtECJ7SVXfh6+J6dxMZ8RyXpaWwAE6IczFZIhlmwiAz+HCJmBV96VQ7o2SZcjmpZekkcJp2PV2lVcXhqwRoOH7dh7jR2LUP9fueU0jk+hjxf3elcCtocrHYAf7HDcmenqB0oCVeC2kBX3TOLaTqH9oa2q/o8WOpFJnlD0FRTu5+TsD77twjkRLDyxf94OEsOAkgvTjgVOjzzNMxkPo1Dfl/kTylxw2d9LF1BUILxxpJrcRaGX4Y0zcPgtQ4OGB8=
