@@ -17,6 +17,7 @@ limitations under the License.
 package de.fraunhofer.iosb.tc_lib_helloworld;
 
 import java.net.URL;
+import java.util.Properties;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,7 +25,6 @@ import org.json.simple.parser.ParseException;
 
 import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
 import de.fraunhofer.iosb.tc_lib.TcInconclusive;
-
 
 /**
  * Store test case parameters
@@ -35,8 +35,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     // Get test case parameters
     //      use some constants for this example till we get params from a file
     private String federation_name;
-    private String rtiHost;
-    private String rtiPort;
     private String settingsDesignator;
     private final int    fileNum            = 1;
     private URL[]        urls               = new URL[this.fileNum];
@@ -45,7 +43,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     private String sutFederate;
 
 
-    public HelloWorldTcParam(final String paramJson) throws TcInconclusive {
+    public HelloWorldTcParam(final String paramJson, final Properties props) throws TcInconclusive {
 		JSONParser jsonParser = new JSONParser();
 		JSONObject jsonObject;
 		try {
@@ -55,16 +53,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
 			if (federation_name == null) {
                 throw new TcInconclusive("The key  federationName  was not found");
 			}
-			// get a String from the JSON object
-			rtiHost =  (String) jsonObject.get("rtiHostName");
-			if (rtiHost == null) {
-                throw new TcInconclusive("The key  rtiHostName  was not found");
-			}
-			rtiPort = (String) jsonObject.get("rtiPort");
-			if (rtiPort == null) {
-				throw new TcInconclusive("The rti port id was not found");
-			}
-			settingsDesignator = "crcAddress=" + this.rtiHost + ":" + this.rtiPort;
+			this.settingsDesignator = props.getProperty("SETTINGS_DESIGNATOR");
 			
 			// get a String from the JSON object
 			sutFederate =  (String) jsonObject.get("sutFederateName");
@@ -94,14 +83,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
      */
     public float getPopulationGrowthValue() {
         return 1.03f;
-    }
-
-
-    /**
-     * @return the RTI host value
-     */
-    public String getRtiHost() {
-        return this.rtiHost;
     }
 
 
