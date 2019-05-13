@@ -34,30 +34,30 @@ public class TestHelloWorldBaseModel {
     LOGGER_TestHelloBaseModel.info("---------------------------------------------------------------------");
     LOGGER_TestHelloBaseModel.info("Test  testSetPopulationInRange()");
 
-    CountryValues ctyval = new CountryValues("Country_1");
-    LOGGER_TestHelloBaseModel.info("Country Name: " + ctyval);
-
-    ctyval.setPopulation(1000.0F);
-    populationReport(1, ctyval);
-
-    // Population increases 1/1000
-    ctyval.setPopulation(1001.0F);
-
-    populationReport(2, ctyval);
-
-    // Test with delta 1/1000
+    CountryValues ctval1 = new CountryValues("Country_1");
+    LOGGER_TestHelloBaseModel.info("Country Name: " + ctval1);
     
-    // if (ctyval.testPopulation(1.001F, LOGGER_TestHelloBaseModel)) {
-    // LOGGER_TestHelloBaseModel.info("\nIncrease of population not in expected
-    // range\n");
-    // }
+    // set the basic population value
+    ctval1.setPopulation(2000.0F);
+        
+    populationReport(1, ctval1);               // show us curent and previous Population
 
-    if (!ctyval.testPopulation(1.001F, LOGGER_TestHelloBaseModel)) {
+    
+    // Population increases 1/1000
+    ctval1.setPopulation(2002.0F);
+    
+    //ctval1.setPopulation(2032.0F);          // with this Number the test will fail
+    
+
+    populationReport(2, ctval1);               // show us curent and previous Population
+
+    // Test with delta 1/1000    
+    if (!ctval1.testPopulation(1.001F, LOGGER_TestHelloBaseModel)) {
       LOGGER_TestHelloBaseModel.info("Increase of population in expected range \n");
     }
 
     // CountryValues.testPopulation @return true when NOT within the test range
-    assertFalse("Population not Range ", (ctyval.testPopulation(1.001F, LOGGER_TestHelloBaseModel)));
+    assertFalse("Population not Range ", (ctval1.testPopulation(1.001F, LOGGER_TestHelloBaseModel)));
 
   }
 
@@ -67,32 +67,35 @@ public class TestHelloWorldBaseModel {
     LOGGER_TestHelloBaseModel.info("---------------------------------------------------------------------");
     LOGGER_TestHelloBaseModel.info("Test  testSetPopulationNotInRange()");
 
-    CountryValues ctyval = new CountryValues("Country_2");
-    LOGGER_TestHelloBaseModel.info("Country Name: " + ctyval);
+    CountryValues ctval1 = new CountryValues("Country_2");
+    LOGGER_TestHelloBaseModel.info("Country Name: " + ctval1);
 
-    ctyval.setPopulation(5000.0F);
-    populationReport(1, ctyval);
-
+    ctval1.setPopulation(5000.0F);
+    populationReport(1, ctval1);
+ 
+    // Population increases 1/1000
+    //ctval1.setPopulation(5005.0F);            // whith this the test should fail
+    
     // Population increases 20%
-    ctyval.setPopulation(6000.0F);
+    ctval1.setPopulation(6000.0F);
+    
 
-    populationReport(2, ctyval);
+    populationReport(2, ctval1);
 
-    if (ctyval.testPopulation(1.001F, LOGGER_TestHelloBaseModel)) {
-      LOGGER_TestHelloBaseModel.info("Increase of population not in expected range\n");
+    // Test with delta 1/1000    
+    if (ctval1.testPopulation(1.001F, LOGGER_TestHelloBaseModel)) {
+      LOGGER_TestHelloBaseModel.info("As planned increase of population not in range\n");
     }
 
 
     // CountryValues.testPopulation @return true when NOT within the test range
-
-    assertTrue("Population increases too much, not recognized",
-        (ctyval.testPopulation(1.001F, LOGGER_TestHelloBaseModel)));
+    assertTrue("Population growth unexpectedly in range", (ctval1.testPopulation(1.001F, LOGGER_TestHelloBaseModel)));
 
   }
 
-  private void populationReport(int call, CountryValues ctyval) {
-    LOGGER_TestHelloBaseModel.info("current  population:  (" + call + ") " + ctyval.getPopulation());
-    LOGGER_TestHelloBaseModel.info("previous population:  (" + call + ") " + ctyval.getPrevPopulation());
+  private void populationReport(int call, CountryValues ctval1) {
+    LOGGER_TestHelloBaseModel.info("current  population(" + call + "): " + ctval1.getPopulation());
+    LOGGER_TestHelloBaseModel.info("previous population(" + call + "): " + ctval1.getPrevPopulation());
   }
 
 }
