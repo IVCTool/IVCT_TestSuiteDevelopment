@@ -40,8 +40,6 @@ import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
 
-import nato.ivct.commander.Factory;
-
 import java.util.Properties;
 
 /**
@@ -50,7 +48,6 @@ import java.util.Properties;
 public class TC0002 extends AbstractTestCase {
     FederateHandle                              federateHandle;
     private String                              federateName                   = "IVCT";
-	public Properties props = Factory.props;
 
     // Build test case parameters to use
     static HelloWorldTcParam              helloWorldTcParam;
@@ -63,7 +60,7 @@ public class TC0002 extends AbstractTestCase {
 
     @Override
     public IVCT_BaseModel getIVCT_BaseModel(final String tcParamJson, final Logger logger) throws TcInconclusive {
-        helloWorldTcParam              = new HelloWorldTcParam(tcParamJson, props);
+        helloWorldTcParam              = new HelloWorldTcParam(tcParamJson);
     	ivct_rti             = IVCT_RTI_Factory.getIVCT_RTI(logger);
     	helloWorldBaseModel          = new HelloWorldBaseModel(logger, ivct_rti, helloWorldTcParam);
     	ivct_LoggingFederateAmbassador = new IVCT_LoggingFederateAmbassador(helloWorldBaseModel, logger);
@@ -173,7 +170,7 @@ public class TC0002 extends AbstractTestCase {
             if (helloWorldBaseModel.sleepFor(helloWorldTcParam.getSleepTimeCycle())) {
                 throw new TcInconclusive("sleepFor problem");
             }
-            
+
             sendTcStatus ("running", i*10+5);
         }
     }
