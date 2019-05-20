@@ -26,7 +26,6 @@ import de.fraunhofer.iosb.tc_lib.TcInconclusive;
 import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldBaseModel;
 import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldTcParam;
 import hla.rti1516e.FederateHandle;
-import nato.ivct.commander.Factory;
 
 import java.util.Properties;
 
@@ -40,7 +39,6 @@ import org.slf4j.LoggerFactory;
 public class TC0001 extends AbstractTestCase {
     private String                              federateName                   = "IVCT";
     FederateHandle                              federateHandle;
-	public Properties props = Factory.props;
 
     // Build test case parameters to use
     static HelloWorldTcParam              helloWorldTcParam;
@@ -53,7 +51,7 @@ public class TC0001 extends AbstractTestCase {
 
     @Override
     public IVCT_BaseModel getIVCT_BaseModel(final String tcParamJson, final Logger logger) throws TcInconclusive {
-        helloWorldTcParam              = new HelloWorldTcParam(tcParamJson, props);
+        helloWorldTcParam              = new HelloWorldTcParam(tcParamJson);
     	ivct_rti             = IVCT_RTI_Factory.getIVCT_RTI(logger);
     	helloWorldBaseModel          = new HelloWorldBaseModel(logger, ivct_rti, helloWorldTcParam);
     	ivct_LoggingFederateAmbassador = new IVCT_LoggingFederateAmbassador(helloWorldBaseModel, logger);
@@ -132,7 +130,7 @@ public class TC0001 extends AbstractTestCase {
             if (helloWorldBaseModel.sleepFor(helloWorldTcParam.getSleepTimeCycle())) {
                 throw new TcInconclusive("sleepFor problem");
             }
-            
+
             sendTcStatus ("running", i*10);
         }
     }

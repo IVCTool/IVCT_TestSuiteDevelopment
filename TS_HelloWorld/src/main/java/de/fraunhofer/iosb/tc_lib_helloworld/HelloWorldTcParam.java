@@ -36,6 +36,8 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     //      use some constants for this example till we get params from a file
     private String federation_name;
     private String settingsDesignator;
+    private String rtiHost;
+    private String rtiPort;
     private final int    fileNum            = 1;
     private URL[]        urls               = new URL[this.fileNum];
     private long         sleepTimeCycle     = 1000;
@@ -43,7 +45,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     private String sutFederate;
 
 
-    public HelloWorldTcParam(final String paramJson, final Properties props) throws TcInconclusive {
+    public HelloWorldTcParam(final String paramJson) throws TcInconclusive {
 		JSONParser jsonParser = new JSONParser();
 		JSONObject jsonObject;
 		try {
@@ -53,8 +55,22 @@ public class HelloWorldTcParam implements IVCT_TcParam {
 			if (federation_name == null) {
                 throw new TcInconclusive("The key  federationName  was not found");
 			}
-			this.settingsDesignator = props.getProperty("SETTINGS_DESIGNATOR");
-			
+
+            // the settingsDesignator logic will be overrideable in future version
+            // currently it is only set via TC.param
+			//this.settingsDesignator = props.getProperty("SETTINGS_DESIGNATOR");
+
+            // get a String from the JSON object
+			rtiHost =  (String) jsonObject.get("rtiHostName");
+			if (rtiHost == null) {
+                throw new TcInconclusive("EncodingRulesTesterTcParam: the key  rtiHostName  was not found");
+			}
+			rtiPort = (String) jsonObject.get("rtiPort");
+			if (rtiPort == null) {
+				throw new TcInconclusive("EncodingRulesTesterTcParam: the rti port id was not found");
+			}
+			settingsDesignator = "crcAddress=" + this.rtiHost + ":" + this.rtiPort;
+
 			// get a String from the JSON object
 			sutFederate =  (String) jsonObject.get("sutFederateName");
 			if (sutFederate == null) {
