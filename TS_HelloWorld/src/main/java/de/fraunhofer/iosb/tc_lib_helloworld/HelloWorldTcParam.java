@@ -35,6 +35,8 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     // Get test case parameters
     //      use some constants for this example till we get params from a file
     private String federation_name;
+    private String rtiHost;
+    private String rtiPort;
     private String settingsDesignator;
     private final int    fileNum            = 1;
     private URL[]        urls               = new URL[this.fileNum];
@@ -43,7 +45,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     private String sutFederate;
 
 
-    public HelloWorldTcParam(final String paramJson, final Properties props) throws TcInconclusive {
+    public HelloWorldTcParam(final String paramJson) throws TcInconclusive {
 		JSONParser jsonParser = new JSONParser();
 		JSONObject jsonObject;
 		try {
@@ -53,7 +55,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
 			if (federation_name == null) {
                 throw new TcInconclusive("The key  federationName  was not found");
 			}
-			this.settingsDesignator = props.getProperty("SETTINGS_DESIGNATOR");
 			
 			// get a String from the JSON object
 			sutFederate =  (String) jsonObject.get("sutFederateName");
