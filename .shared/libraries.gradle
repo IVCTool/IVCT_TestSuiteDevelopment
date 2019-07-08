@@ -26,7 +26,6 @@ ext {
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~  now create libraries with the versions from above
 		libraries = [
 				tc_lib:							"io.github.msg134:TC.lib:${ivctVersion}",
-                ieee:                           "io.github.msg134:IEEE1516e:${ivctVersion}",
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~ thirdparty
                 logback_classic:                "ch.qos.logback:logback-classic:${logbackVersion}",
