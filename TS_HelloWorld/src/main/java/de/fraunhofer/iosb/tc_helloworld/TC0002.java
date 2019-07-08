@@ -40,7 +40,6 @@ import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
 
-
 import java.util.Properties;
 
 /**
@@ -171,7 +170,7 @@ public class TC0002 extends AbstractTestCase {
             if (helloWorldBaseModel.sleepFor(helloWorldTcParam.getSleepTimeCycle())) {
                 throw new TcInconclusive("sleepFor problem");
             }
-            
+
             sendTcStatus ("running", i*10+5);
         }
     }

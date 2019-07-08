@@ -35,8 +35,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     // Get test case parameters
     //      use some constants for this example till we get params from a file
     private String federation_name;
-    private String rtiHost;
-    private String rtiPort;
     private String settingsDesignator;
     private final int    fileNum            = 1;
     private URL[]        urls               = new URL[this.fileNum];
@@ -55,7 +53,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
 			if (federation_name == null) {
                 throw new TcInconclusive("The key  federationName  was not found");
 			}
-			
 			// get a String from the JSON object
 			sutFederate =  (String) jsonObject.get("sutFederateName");
 			if (sutFederate == null) {

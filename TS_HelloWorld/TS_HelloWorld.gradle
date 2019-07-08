@@ -25,28 +25,19 @@ apply plugin: 'application'
 mainClassName = 'de.fraunhofer.iosb.tc_helloworld.TC0001'
 
 dependencies {
+
 	compileOnly     group: 'io.github.msg134', name: 'IEEE1516e', version: ivctVersion
 
 	compileOnly     libraries.tc_lib
+
 	compileOnly     libraries.slf4j_api
 	compileOnly		libraries.logback_classic
 	compileOnly		libraries.logback_core
 	compileOnly     libraries.slf4j_jcl_over_slf4j
 	compileOnly     libraries.slf4j_jul_to_slf4j
 	compileOnly     libraries.slf4j_log4j_over_slf4j
-	compileOnly     libraries.jsonSimple
-
-	testImplementation     group: 'io.github.msg134', name: 'IEEE1516e', version: ivctVersion
-
-	testImplementation     libraries.tc_lib
-
-	testCompileOnly     libraries.slf4j_api
-	testCompileOnly		libraries.logback_classic
-	testCompileOnly		libraries.logback_core
-	testCompileOnly     libraries.slf4j_jcl_over_slf4j
-	testCompileOnly     libraries.slf4j_jul_to_slf4j
-	testCompileOnly     libraries.slf4j_log4j_over_slf4j
-    testCompileOnly(
+	compileOnly		libraries.jsonSimple
+    compileOnly(
             'junit:junit:4.12'
     )
     testImplementation(

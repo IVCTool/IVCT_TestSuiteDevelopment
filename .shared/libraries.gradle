@@ -13,7 +13,7 @@ ext {
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ HelloWorld settings
 		helloWorldVersion = '2.0.0'
-		
+
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
         junitVersion = '4.+'
 
