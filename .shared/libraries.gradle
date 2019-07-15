@@ -21,6 +21,7 @@ ext {
 		logbackVersion = '1.1.3'
 		slf4jVersion = '1.7.10'
         jsonSimpleVersion = '1.1.1'
+        gradleDockerPluginVersion = '3.0.12'
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~  now create libraries with the versions from above
 		libraries = [
@@ -37,6 +38,7 @@ ext {
                 jsonSimple:						"com.googlecode.json-simple:json-simple:${jsonSimpleVersion}",
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
-                junit:                          "junit:junit:${junitVersion}"
+                junit:                          "junit:junit:${junitVersion}",
+                docker:	                        "com.bmuschko:gradle-docker-plugin:${gradleDockerPluginVersion}"
         ]
 }
