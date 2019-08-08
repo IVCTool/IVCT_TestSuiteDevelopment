@@ -16,4 +16,7 @@ dependencies {
 	compileOnly     libraries.slf4j_jul_to_slf4j
 	compileOnly     libraries.slf4j_log4j_over_slf4j
 	compileOnly     libraries.jsonSimple
+
+	testCompileOnly libraries.junit
+	testCompileOnly	libraries.slf4j_api
 }

@@ -9,7 +9,7 @@ ext {
         gradleWrapperVersion = "${gradleVersion}"
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ IVCT settings
-		ivctVersion = '2.0.1'
+        ivctVersion = '2.1.0-SNAPSHOT'
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ HelloWorld settings
 		helloWorldVersion = '2.0.0'
