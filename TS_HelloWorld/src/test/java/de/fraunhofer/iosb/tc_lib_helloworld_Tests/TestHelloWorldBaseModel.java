@@ -74,7 +74,7 @@ public class TestHelloWorldBaseModel {
     populationReport(1, ctval1);
  
     // Population increases 1/1000
-    //ctval1.setPopulation(5005.0F);            // whith this the test should fail
+    //ctval1.setPopulation(5005.0F);            // with this the test should fail
     
     // Population increases 20%
     ctval1.setPopulation(6000.0F);
