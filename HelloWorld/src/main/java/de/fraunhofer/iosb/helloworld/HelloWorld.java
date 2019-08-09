@@ -1,3 +1,4 @@
+
 /*
 Copyright 2015, [name of copyright owner, Johannes Mulder (Fraunhofer IOSB)"]
 
@@ -51,6 +52,12 @@ import java.util.Map;
 
 
 public class HelloWorld extends NullFederateAmbassador {
+
+    protected String                                settingsDesignator;
+    protected String                                   myCountry;
+    private float                                    myPopulation          = (float) 100.0;
+    private int numberOfCycles = 1000;
+
     private RTIambassador                            _rtiAmbassador;
     private final String[]                           _args;
     private InteractionClassHandle                   _messageId;
@@ -59,9 +66,6 @@ public class HelloWorld extends NullFederateAmbassador {
     private ObjectInstanceHandle                     _countryId;
     private AttributeHandle                          _attributeIdName;
     private AttributeHandle                          _attributeIdPopulation;
-    private String                                   myCountry;
-    private float                                    myPopulation          = (float) 100.0;
-    private int numberOfCycles = 1000;
 
     private volatile boolean                         _reservationComplete;
     private volatile boolean                         _reservationSucceeded;
@@ -74,6 +78,17 @@ public class HelloWorld extends NullFederateAmbassador {
 
     private final Map<ObjectInstanceHandle, Country> _knownObjects         = new HashMap<ObjectInstanceHandle, Country>();
     private final Map<String, HLAfloat32LE>          countryPopulations    = new HashMap<String, HLAfloat32LE>();
+
+
+    public static final String SETTINGS_DESIGNATOR_ID     = "SETTINGS_DESIGNATOR";
+    public static final String SETTINGS_DESIGNATOR_DEFLT  = "crcAddress=localhost:8989";
+    public static final String FEDERATION_NAME_ID         = "FEDERATION_NAME";
+    public static final String FEDERATION_NAME_DEFLT      = "HelloWorld";
+    public static final String POPULATION_SIZE_ID         = "POPULATION";
+    public static final String POPULATION_SIZE_DEFLT      = "10";
+    public static final String CYCLES_ID                  = "CYCLES";
+    public static final String CYCLES_DEFLT               = "1000000";
+
 
     private static class Country {
         private final String _name;
@@ -90,9 +105,50 @@ public class HelloWorld extends NullFederateAmbassador {
         }
     }
 
+    private boolean getEnvironmentSettings (HelloWorld hw) {
+       hw.settingsDesignator = System.getenv(SETTINGS_DESIGNATOR_ID);
+       hw.myCountry = System.getenv(FEDERATION_NAME_ID, FEDERATION_NAME_DEFLT);
+       hw.myPopulation = System.getenv(POPULATION_SIZE_ID, POPULATION_SIZE_DEFLT);
+       hw.numberOfCycles = System.getenv(CYCLES_ID, CYCLES_DEFLT);
+       if (hw.settingsDesignator != null) return true;
+       else return false;
+    }
 
     public static void main(final String[] args) {
-        new HelloWorld(args).run();
+
+      // initialization procedure:
+      HelloWorld hw = new HelloWorld(args);
+      // 1. if args given, use them (settingsDesignator [fedName [populationsize [numberOfCycles]]])
+      if (this._args.length > 0) {
+        System.out.println("using arguments (syntax: settingsDesignator [fedName [populationsize [numberOfCycles]]])")
+        System.out.println("args: ", args);
+          rtiHost = this._args[0];
+          if (this._args.length > 1) {
+              this.myCountry = this._args[1];
+          }
+          if (this._args.length > 2) {
+              myPopulation = Float.parseFloat(this._args[2]);
+          }
+          if (this._args.length > 3) {
+              numberOfCycles = Integer.parseInt(this._args[3]);
+          }
+      }
+      // 2. else if environment settings are given, use them
+      else if (getEnvironmentSettings(hw)) {
+        System.out.println("using environment settings");
+        System.out.println("env: settingsDesignator = " + hw.settingsDesignator);
+      }
+      // 3. else request user input
+      else {
+        System.out.println("Enter the CRC address, such as");
+        System.out.println("'localhost', 'localhost:8989', '192.168.1.62'");
+        System.out.println("or when using Pitch Booster on the form");
+        System.out.println("<CRC name>@<booster address>:<booster port>");
+        System.out.println("such as 'MyCRCname@192.168.1.70:8688'");
+        System.out.println();
+      }
+
+      hw.run();
     }
 
 
