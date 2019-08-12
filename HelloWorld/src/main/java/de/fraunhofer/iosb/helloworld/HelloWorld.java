@@ -1,6 +1,5 @@
-
 /*
-Copyright 2015, [name of copyright owner, Johannes Mulder (Fraunhofer IOSB)"]
+Copyright 2015, Johannes Mulder (Fraunhofer IOSB)"
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,6 +15,13 @@ limitations under the License.
 */
 
 package de.fraunhofer.iosb.helloworld;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
@@ -43,12 +49,6 @@ import hla.rti1516e.exceptions.FederationExecutionAlreadyExists;
 import hla.rti1516e.exceptions.FederationExecutionDoesNotExist;
 import hla.rti1516e.exceptions.IllegalName;
 import hla.rti1516e.exceptions.RTIexception;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class HelloWorld extends NullFederateAmbassador {
@@ -85,19 +85,16 @@ public class HelloWorld extends NullFederateAmbassador {
     public static final String FEDERATION_NAME_ID         = "FEDERATION_NAME";
     public static final String FEDERATION_NAME_DEFLT      = "HelloWorld";
     public static final String POPULATION_SIZE_ID         = "POPULATION";
-    public static final String POPULATION_SIZE_DEFLT      = "10";
+    public static final float  POPULATION_SIZE_DEFLT      = 10;
     public static final String CYCLES_ID                  = "CYCLES";
-    public static final String CYCLES_DEFLT               = "1000000";
+    public static final int    CYCLES_DEFLT               = 1000000;
 
 
     private static class Country {
         private final String _name;
-
-
         Country(final String name) {
             this._name = name;
         }
-
 
         @Override
         public String toString() {
@@ -105,32 +102,33 @@ public class HelloWorld extends NullFederateAmbassador {
         }
     }
 
-    private boolean getEnvironmentSettings (HelloWorld hw) {
+
+    private static boolean getEnvironmentSettings (HelloWorld hw) {
        hw.settingsDesignator = System.getenv(SETTINGS_DESIGNATOR_ID);
-       hw.myCountry = System.getenv(FEDERATION_NAME_ID, FEDERATION_NAME_DEFLT);
-       hw.myPopulation = System.getenv(POPULATION_SIZE_ID, POPULATION_SIZE_DEFLT);
-       hw.numberOfCycles = System.getenv(CYCLES_ID, CYCLES_DEFLT);
+       hw.myCountry = (System.getenv(FEDERATION_NAME_ID) != null) ? System.getenv(FEDERATION_NAME_ID) : FEDERATION_NAME_DEFLT;
+       hw.myPopulation = (System.getenv(POPULATION_SIZE_ID) != null) ? Float.parseFloat(System.getenv(POPULATION_SIZE_ID)) : POPULATION_SIZE_DEFLT;
+       hw.numberOfCycles = (System.getenv(CYCLES_ID) != null) ? Integer.parseInt(System.getenv(CYCLES_ID)) : CYCLES_DEFLT;
        if (hw.settingsDesignator != null) return true;
        else return false;
     }
 
-    public static void main(final String[] args) {
 
+    public static void main(final String[] args) {
       // initialization procedure:
       HelloWorld hw = new HelloWorld(args);
       // 1. if args given, use them (settingsDesignator [fedName [populationsize [numberOfCycles]]])
-      if (this._args.length > 0) {
-        System.out.println("using arguments (syntax: settingsDesignator [fedName [populationsize [numberOfCycles]]])")
-        System.out.println("args: ", args);
-          rtiHost = this._args[0];
-          if (this._args.length > 1) {
-              this.myCountry = this._args[1];
+      if (args.length > 0) {
+        System.out.println("using arguments (syntax: settingsDesignator [fedName [populationsize [numberOfCycles]]])");
+        System.out.println("args: " + args.toString());
+          String rtiHost = args[0];
+          if (args.length > 1) {
+              hw.myCountry = args[1];
           }
-          if (this._args.length > 2) {
-              myPopulation = Float.parseFloat(this._args[2]);
+          if (args.length > 2) {
+              hw.myPopulation = Float.parseFloat(args[2]);
           }
-          if (this._args.length > 3) {
-              numberOfCycles = Integer.parseInt(this._args[3]);
+          if (args.length > 3) {
+              hw.numberOfCycles = Integer.parseInt(args[3]);
           }
       }
       // 2. else if environment settings are given, use them
