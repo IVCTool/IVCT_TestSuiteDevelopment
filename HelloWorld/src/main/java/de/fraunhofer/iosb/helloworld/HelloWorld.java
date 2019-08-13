@@ -80,8 +80,8 @@ public class HelloWorld extends NullFederateAmbassador {
 
 	public static final String SETTINGS_DESIGNATOR_ID = "SETTINGS_DESIGNATOR";
 	public static final String SETTINGS_DESIGNATOR_DEFLT = "crcAddress=localhost:8989";
-	public static final String FEDERATION_NAME_ID = "FEDERATION_NAME";
-	public static final String FEDERATION_NAME_DEFLT = "HelloWorld";
+	public static final String FEDERATE_NAME_ID = "FEDERATION_NAME";
+	public static final String FEDERATE_NAME_DEFLT = "A";
 	public static final String POPULATION_SIZE_ID = "POPULATION";
 	public static final float POPULATION_SIZE_DEFLT = 10;
 	public static final String CYCLES_ID = "CYCLES";
@@ -102,8 +102,8 @@ public class HelloWorld extends NullFederateAmbassador {
 
 	private static boolean getEnvironmentSettings(HelloWorld hw) {
 		hw.settingsDesignator = System.getenv(SETTINGS_DESIGNATOR_ID);
-		hw.myCountry = (System.getenv(FEDERATION_NAME_ID) != null) ? System.getenv(FEDERATION_NAME_ID)
-				: FEDERATION_NAME_DEFLT;
+		hw.myCountry = (System.getenv(FEDERATE_NAME_ID) != null) ? System.getenv(FEDERATE_NAME_ID)
+				: FEDERATE_NAME_DEFLT;
 		hw.myPopulation = (System.getenv(POPULATION_SIZE_ID) != null)
 				? Float.parseFloat(System.getenv(POPULATION_SIZE_ID))
 				: POPULATION_SIZE_DEFLT;
