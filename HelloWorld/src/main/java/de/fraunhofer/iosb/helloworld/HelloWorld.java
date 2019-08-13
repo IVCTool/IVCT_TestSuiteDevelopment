@@ -56,6 +56,7 @@ public class HelloWorld extends NullFederateAmbassador {
 	protected String myCountry;
 	private float myPopulation = (float) 100.0;
 	private int numberOfCycles = 1000;
+	private float growthRate = 1.0003f;
 
 	private RTIambassador _rtiAmbassador;
 	private final String[] _args;
@@ -80,7 +81,7 @@ public class HelloWorld extends NullFederateAmbassador {
 
 	public static final String SETTINGS_DESIGNATOR_ID = "SETTINGS_DESIGNATOR";
 	public static final String SETTINGS_DESIGNATOR_DEFLT = "crcAddress=localhost:8989";
-	public static final String FEDERATE_NAME_ID = "FEDERATION_NAME";
+	public static final String FEDERATE_NAME_ID = "FEDERATE_NAME";
 	public static final String FEDERATE_NAME_DEFLT = "A";
 	public static final String POPULATION_SIZE_ID = "POPULATION";
 	public static final float POPULATION_SIZE_DEFLT = 10;
@@ -272,7 +273,7 @@ public class HelloWorld extends NullFederateAmbassador {
 						.create(2);
 				final HLAfloat32LE messageEncoder = this._encoderFactory.createHLAfloat32LE();
 				messageEncoder.setValue(this.myPopulation);
-				this.myPopulation *= (float) 1.03;
+				this.myPopulation *= this.growthRate;
 				attributes.put(this._attributeIdPopulation, messageEncoder.toByteArray());
 				attributes.put(this._attributeIdName, nameEncoder.toByteArray());
 

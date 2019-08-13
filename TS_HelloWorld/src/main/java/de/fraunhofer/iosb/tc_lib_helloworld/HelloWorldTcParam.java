@@ -53,7 +53,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
      * @return the RTI host value
      */
     public float getPopulationGrowthValue() {
-        return 1.03f;
+        return 1.0003f;
     }
 
 

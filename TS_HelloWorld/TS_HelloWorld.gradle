@@ -17,7 +17,7 @@ import com.bmuschko.gradle.docker.tasks.image.*
 // Use task types
 task buildMyAppImage(type: DockerBuildImage) {
     inputDir = file('.')
-    tag="ivct/ts-hla-encoding-rules:${ivctVersion}"
+    tag="ivct/ts-helloworld:${helloWorldVersion}"
 }
 
 apply plugin: 'application'
@@ -26,8 +26,7 @@ mainClassName = 'de.fraunhofer.iosb.tc_helloworld.TC0001'
 
 dependencies {
 
-	compileOnly     group: 'io.github.msg134', name: 'IEEE1516e', version: ivctVersion
-
+    compileOnly     libraries.ieee_lib
 	compileOnly     libraries.tc_lib
 
 	compileOnly     libraries.slf4j_api
@@ -40,8 +39,11 @@ dependencies {
     compileOnly(
             'junit:junit:4.12'
     )
+
+    testCompileOnly     libraries.tc_lib
     testImplementation(
-            'org.junit.jupiter:junit-jupiter-api:5.1.0'
+            'org.junit.jupiter:junit-jupiter-api:5.1.0',
+            "io.github.ivctool:Command:${ivctVersion}"
     )
     testRuntimeOnly(
             'org.junit.jupiter:junit-jupiter-engine:5.1.0',
