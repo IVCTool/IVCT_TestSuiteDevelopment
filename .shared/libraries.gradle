@@ -5,7 +5,7 @@ ext {
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~ Gradle Build Environment
 		//artifactCache = "${artifactory_contextUrl}/gradle"
-        gradleVersion = '4.9'
+        gradleVersion = '5.5.1'
         gradleWrapperVersion = "${gradleVersion}"
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ IVCT settings
@@ -26,6 +26,7 @@ ext {
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~  now create libraries with the versions from above
 		libraries = [
 				tc_lib:							"io.github.msg134:TC.lib:${ivctVersion}",
+                ieee_lib:                       "io.github.msg134:IEEE1516e:${ivctVersion}",
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~ thirdparty
                 logback_classic:                "ch.qos.logback:logback-classic:${logbackVersion}",

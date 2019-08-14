@@ -34,8 +34,6 @@ import de.fraunhofer.iosb.tc_lib.TcInconclusive;
 public class HelloWorldTcParam implements IVCT_TcParam {
     // Get test case parameters
     //      use some constants for this example till we get params from a file
-    private String federation_name;
-    private String settingsDesignator;
     private final int    fileNum            = 1;
     private URL[]        urls               = new URL[this.fileNum];
     private long         sleepTimeCycle     = 1000;
@@ -44,35 +42,10 @@ public class HelloWorldTcParam implements IVCT_TcParam {
 
 
     public HelloWorldTcParam(final String paramJson) throws TcInconclusive {
-		JSONParser jsonParser = new JSONParser();
-		JSONObject jsonObject;
-		try {
-			jsonObject = (JSONObject) jsonParser.parse(paramJson);
-			// get a String from the JSON object
-			federation_name =  (String) jsonObject.get("federationName");
-			if (federation_name == null) {
-                throw new TcInconclusive("The key  federationName  was not found");
-			}
-			// get a String from the JSON object
-			sutFederate =  (String) jsonObject.get("sutFederateName");
-			if (sutFederate == null) {
-                throw new TcInconclusive("The key  sutFederateName  was not found");
-			}
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+    	// paramJson are not needed for this test suite
 
+    	// get FOM model
 		this.urls[0] = this.getClass().getClassLoader().getResource("HelloWorld.xml");
-    }
-
-
-    /**
-     * @return the federation name
-     */
-    @Override
-    public String getFederationName() {
-        return this.federation_name;
     }
 
 
@@ -80,16 +53,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
      * @return the RTI host value
      */
     public float getPopulationGrowthValue() {
-        return 1.03f;
-    }
-
-
-    /**
-     * @return the settings designator
-     */
-    @Override
-    public String getSettingsDesignator() {
-        return this.settingsDesignator;
+        return 1.0003f;
     }
 
 
