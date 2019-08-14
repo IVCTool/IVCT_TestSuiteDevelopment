@@ -9,12 +9,12 @@ branches:
 
 before_install:
   - echo "$TNO_DOCKER_PASSWORD" | docker login app-docker136.hex.tno.nl -u "$TNO_DOCKER_USERNAME" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 install: gradle install buildMyAppImage dockerBuildImage
 
 script:
 - export VERSION=$(grep "helloWorldVersion" ./.shared/libraries.gradle | awk '{print $3}' | tr -d \')
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 # - cd TS_HelloWorld
 # - docker build --build-arg version=$VERSION -t ivct/ts-helloworld:$TRAVIS_BRANCH-latest -t ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION .
 - if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION ivct/ts-helloworld:$VERSION && docker tag ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION ivct/ts-helloworld:latest; fi
@@ -29,10 +29,3 @@ cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
-
-env:
-  global:
-  - secure: iBIt+cVUyPnBD8aoQlCh8XVhp1kgYKGNIPj4VKPaq1s1HaDFRJIP7azaIQYRX/yWFX6UQNgEPIQ2QQyrrrT2aWdTdn+ERIhIVOm8bo1hoNTmPTNGHOxqZODw8pKk+0SAfaI/km4+1EXGU2OtYN1k4pUEuuvzX4N55ADxKfGC02TbeTtzJ4OKl2MkULR56JsomeiDAIIIX11dbsKjOaPjQm10pX/oK2bUy3KfhGXBy6QHNQ7N7+xKqJGUDira02oSt6irO4GLAQqID3daulFvCRsP5FJhASJMDIdkQLrh3MV7765qLAXO3Y6Mj9jsIDS3KPSnKNEtHoWUkheFhOxKC79NQ4F0PGpSKFB7S1hfJBcUviO/dJr7d1hDqQK5hCiCiJaYVEk7GhTSekNgOsthwpjY4Y3rPDQVsT4ALDvU7nkLhtECJ7SVXfh6+J6dxMZ8RyXpaWwAE6IczFZIhlmwiAz+HCJmBV96VQ7o2SZcjmpZekkcJp2PV2lVcXhqwRoOH7dh7jR2LUP9fueU0jk+hjxf3elcCtocrHYAf7HDcmenqB0oCVeC2kBX3TOLaTqH9oa2q/o8WOpFJnlD0FRTu5+TsD77twjkRLDyxf94OEsOAkgvTjgVOjzzNMxkPo1Dfl/kTylxw2d9LF1BUILxxpJrcRaGX4Y0zcPgtQ4OGB8=
-  - secure: NQnzDZr74TdYbWbb5HjVy1rk33bB21AW01o7KRzSMQk8vuG6CxhGP1jnvzQ2C37bOJEuQ0uRia5qt++/Q9tEMBhiXDFrZ1ASqSG9rREVXvZh5SOn3beA9FLtlVjpx8mHQHzKpl2avaaeQPd7OAQZsm/9fbS+BNJQxdPTIa57no2TiLM8G4zSZI75zwgNrDYB7ZiMqaYMro+QghNC4mlg7VRVRE6eQLKB63LKdcsqqCfMOyEzRtEj917F8PnhzudT32d8h9k++3W1iKcXztdSQ1uYWPkj6hl5k770b/G0e/jsqAGZZJkOLHUtqNRs7nPDboZb8CJ9jSFPv1n02vBNmZoZQ3ClbAL2E6g/03eBNobGMzkOa/4PYf9YzeXcEhh/xZQ1fpvN/LhjABfOsUB2r7HU5lpdfkVn7+iKI6cGFtMGcazl7CqKeb/9O7YoCHC0ahRARn/uZczycwJkX+0HHg0BVqEgN4Ty85o1cEOu168EYAwyIfuQbZD6uTp5X9+Pnzalhj+O1ynV2pvnEp2EWIfdMO9k2vAo+TQ0rO35iVVo6Kz/kxuBiU4RGvFR1ixeadOz4yQrT/UUF8a0THNzDPZmjftqjVW8TQErKYYRjzRkErheKvpf7IYqs88v2cLWY+vN7bi2KKmwvc4T7hUlR7J0arQ2XaC6fDvZYIhmBJk=
-  - secure: hjfeNguE2Bv1ghQaza1127XkNDFzkzmKAcT41eeWmPUBxvCa0/6vMDftIAcmixb5zvMzxDlTTqWXOAwrxIs9N41/2VQSaGcFhUYn9hpThXl0Q1lou4EsGbEjj0TY50n4mYfDbcHvBlMJuYGV1rmKM/g+rVHQcF2JM8w4IPk2XjdptPNMCJT7aWjwM2wqkLtOnpfmWLqhcutih3y9FOZ6c9ZjaFplna0OA5kaBFLhCBWc9MJaMLKiPuJiB2KhI2orSXQVBDCEi7r5OXyF5pDO/ssG++ZH/poRBispP9HrgN2Hi/3fAjIVfahP2D/R5eHIbDQhm7nM18ySzwcPOzaHYN5EUjLKsoeR6rQ99OVICoUNbUZ15EGrYmm8zGsU4d47ECLOd+NZfi49wHfFkriBwAJI5AkK3BLiSqbynw2d0/kP60HTpQdGfcPqS30LBQdSiAgKL9QzsV/QRlAQc+tol1xE9NR0OWxdM+neO9oqc0yr+W7tH6Wo1/9U9QPuOJ8QTGYu9s2Di+KowKEvGA/o/93mhVYG9ZpPTMDTQJCMTgwJOvnydWEi4K+qkqMvEXjy/yctTBUBjP8XBPkgx1ivISyGaNgHmw/ZjuCNYe6sGgTmNkv7sKHhOlW/LwhJf4MaWmv/eanfvCTSrwdBBvU56BdPeUQv3Cq1MmhoMOFgNoY=
-  - secure: dRpjL89GVyK5sPn5++gB6uKOmEyjjf9YexS219tTQA+rmjZrrPGbSpbsHsC7ki7GS+lU62mYVU45+NvWSTloA9WFSXxAnmpqXwvS5tgwnd+ok04fm2/7Z8atMW4WbmtmIvr19H/yn5Hbrb5d/LI4I/A2td1br9q+ZX9wvQtuJHmS6weuoe2SI2QCDfZPkOlihb2DviiCKCH0Rl1/WDlG+SNRAU7EW++EbaOwgGdoOjPspYc934+Wjlxue1qH2GmOTKh36i6yeMWKIhBqAfTLHPy6pHlqll2519YM5HyqBukH5TGFBlVRg2Ax3Cl6msCRZGCyVQG+P5D/AmckthkR9PX6lRrV8HAshRgcR3mRXMA4ZqmhQz/5+DbR/VfcEMh3vvQpviwji3DSsofKtO0PeEaLoFfLrsOS4JlBP86ErF87lIV1FeSd7pNGlM13thpzrX3dsfG3HWPzh86fyFH0MUUhGOx2PO0stkwa0rU2mqKCquYvF+kwPuIzSTqyOx6L8B5QYd6MN6e2McXQFh31hvwCO+mt8t8MxnH4bVu6MDIzX0VXUOQ3z2jVnTzv2DPxjXPxHzycE8DkxO9FkacdiNOCFkXCqynjdOdvgIVxisgzlxyAAEzvKvW8V0v60ueEx57ISHtSghPdglFQC6Ztx+1Qzw4H2groS7ACISzuGJE=
