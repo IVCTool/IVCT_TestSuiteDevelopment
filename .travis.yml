@@ -7,7 +7,7 @@ branches:
   - master
   - development
 
-install: gradle install buildMyAppImage
+install: gradle install buildMyAppImage dockerBuildImage
 
 script:
 - export VERSION=$(grep "helloWorldVersion" ./.shared/libraries.gradle | awk '{print $3}' | tr -d \')
