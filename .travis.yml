@@ -19,6 +19,7 @@ script:
 # - docker build --build-arg version=$VERSION -t ivct/ts-helloworld:$TRAVIS_BRANCH-latest -t ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION .
 - if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION ivct/ts-helloworld:$VERSION && docker tag ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION ivct/ts-helloworld:latest; fi
 - docker push ivct/ts-helloworld
+- if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/helloworld:$TRAVIS_BRANCH-$VERSION ivct/helloworld:$VERSION && docker tag ivct/helloworld:$TRAVIS_BRANCH-$VERSION ivct/helloworld:latest; fi
 - docker push ivct/helloworld
 
 before_cache:
