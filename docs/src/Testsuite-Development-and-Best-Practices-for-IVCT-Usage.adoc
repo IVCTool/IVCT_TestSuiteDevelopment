@@ -1,0 +1,142 @@
+== Testsuite Development
+
+This wiki describes the various aspects of testcase development and testing to produce a testsuite for IVCT.
+
+The MSG134/TS_HelloWorld repository shows examples of much of the logic described below.
+
+=== Source Code Repository
+
+The IVCT project uses GitHub as its repository. The IVCT test engine is found in the IVCT_Framework repository.
+
+In GitHub a testsuite is another repository at the directory level. A name has to be assigned to this repository.
+
+TIP: _Best Practice_: A new testsuite should have the prefix TS_ to denote that it is a testsuite.
+
+A new repository is created by the IVCT administrator and access rights for read/write to this repository have to be granted to the programmers developing the new test suite.
+
+TIP: _Best Practice_:  A clone should be made of this empty repository into a development environment.
+
+Option 1: Build up the new testsuite by creating all the necessary components one-by-one.
+
+Option 2: A clone can be made of the TS_HelloWorld repository, the .git folder should be deleted and the remaining TS_HelloWorld files copied into the empty repository. All the existing classes (which also means the corresponding file names) and necessary gradle files should be changed to reflect the desired classes. After examining the code to get a good understanding of the structure, all unwanted HelloWorld specific code may be removed. This may avoid some problems compared to building the testsuite from scratch.
+
+The testsuite developers should create a work plan to meet their needs.
+
+==== _Best Practice_:  Folder Structure: The _TEST_SUITE_ folder structure is as follows:
+
+----
+_TEST_SUITE_ (Test federate source: optional)
+_TEST_SUITE_/_TEST_SUITE_/src
+_TEST_SUITE_/src/main
+_TEST_SUITE_/src/main/java
+_TEST_SUITE_/src/main/java/_CLASS_STRUCTURE..._ (Test federate source)
+_TEST_SUITE_/src/main/resources (Test federate resources)
+_TS_TEST_SUITE_ (Testsuite source)
+_TS_TEST_SUITE_/src
+_TS_TEST_SUITE_/src/main
+_TS_TEST_SUITE_/src/main/java
+_TS_TEST_SUITE_/src/main/java/_CLASS_STRUCTURE..._
+_TS_TEST_SUITE_/src/main/java/_CLASS_STRUCTURE..._/tc_test_suite (Testcase source)
+_TS_TEST_SUITE_/src/main/java/_CLASS_STRUCTURE..._/tc_lib_test_suite (Testcase library source)
+_TS_TEST_SUITE_/src/main/resources (Testsuite resources)
+----
+
+==== _EXAMPLE_: The HelloWorld folder structure is as follows:
+
+
+HelloWorld (Test federate source)
+----
+HelloWorld/src
+HelloWorld/src/main
+HelloWorld/src/main/java
+HelloWorld/src/main/java/de
+HelloWorld/src/main/java/de/fraunhofer
+HelloWorld/src/main/java/de/fraunhofer/iosb
+HelloWorld/src/main/java/de/fraunhofer/iosb/helloworld (Test federate source)
+HelloWorld/src/main/resources (Test federate resources)
+----
+
+TS_HelloWorld (Testsuite source)
+----
+TS_HelloWorld/src
+TS_HelloWorld/src/main
+TS_HelloWorld/src/main/java
+TS_HelloWorld/src/main/java/de
+TS_HelloWorld/src/main/java/de/fraunhofer
+TS_HelloWorld/src/main/java/de/fraunhofer/iosb
+TS_HelloWorld/src/main/java/de/fraunhofer/iosb/tc_helloworld (Testcase source)
+TS_HelloWorld/src/main/java/de/fraunhofer/iosb/tc_lib_helloworld (Testcase library source)
+TS_HelloWorld/src/main/resources (Testsuite resources)
+----
+
+=== Inheritance
+
+An IVCT testcase extends the AbstractTestCase class which provides the framework for the testcase. The AbstractTestCase class forces the testcase writer to decide which testcase code belongs in the preamble, testbody or postamble sections.
+
+_Best Practice_: The testcase writer should try to only have the code in the testbody which is applicable to the test purpose: in this way a FAILED verdict applies to the testpurpose and not to any other problem. If an error occurs in the preamble or postamble, the verdict shall be INCONCLUSIVE.
+
+The AbstractTestCase class also provides the method to update the percentage completed, which lets the testsystem operator see how far the testcase has advanced and judge how long it may still run. _See Logging below._
+
+=== Testsuite Library
+
+A testcase generally needs a specific set of support methods to perform either complex sequences of teststeps, or complex test logic or other code which is used in more than one testcase.
+
+The parsing of the testcase configuration files is also done in this library.
+
+_Best Practice_: There is an example of such code in MSG134/TS_HelloWorld/src/main/java/de/fraunhofer/iosb/tc_lib_helloworld to show how this can be done.
+
+=== Logging
+The Logback logging framework is used to perform testcase logging. The testsystem provides the functionality of dynamically setting the logging level.
+
+_Best Practice_: The testcase writer shall provide the test purpose and operating instructions for the test system operator. These texts will be logged in the testcase log and form part of the testcase report.
+
+The IVCT IVCT_LoggingFederateAmbassador and IVCT_RTIambassador classes are be used for any RTI calls. These classes encapsulate the RTI calls and perform logging of the parameters used in each call.
+
+_Best Practice_: The testcase should display its progess as an estimated percentage of expected running time.  The logic for this may be relatively complex or even not applicable in case of purely monitoring test case - the test case writer should decide what is useful and implement this accordingly.
+
+=== Compilation
+
+The testsuite gradle files should use https://oss.sonatype.org/content/repositories/snapshots to get the necessary IEEE1516e, MessagingHelpers and tc_lib jar files. This makes it possible to develop testcase without installing the test engine. Only the jar files containing the testcases, the specific testsuite library and any libraries not provided by the test engine, are needed in the lib directory created by gradlew install: this is achieved by using gradle compileOnly for all other libraries. The runtime environment is provided by the test engine: a testcase is not expected to run standalone.
+
+=== Configuration
+
+==== The SUT Conformance Statement
+The IVCT Testsystem selects the testcases applicable to an SUT by reading the Badges stated in the SUT conformance statement.
+
+==== The SUT Configuration files
+Each testsuite requires one or more files to help configure the executable testcase. The file used for SUT specific configuration information should be called TcParam.json - this file will be read by the GUI and the content may be edited within the GUI interface. This file should be provided within the _testsuite_/src/main/resources folder. Other configuration files may be provided as template samples within the testsuite, but these will not be editable within the GUI - the mechanism will be that the SUT Vendor takes a copy of these files and and import function within GUI will copy the files provided by the SUT Vendor into the SUT specific folder managed by the IVCT Test System. Until this mechanism is available the files have to be copied manually.
+There is a certain standard logic used by gradle for copying files into the install directory: whatever is found in src/main/resources is included in the install jar file. This makes it somewhat difficult for a user to edit: which may be alright for FOM files, but not for other configuration files such as the SOM file. In this case, there should be sample files with some sample parameters made available outside of the jar files.
+A testcase typically needs
+1. The FOM/SOM files needed for the HLA Federation
+2. The TcParam.json
+
+=== Runtime
+
+There are several ways to configure the IVCT Test System:
+1. Defaults are used
+2. The file $IVCT_CONF/IVCT.properties is available
+3. Environment variables are used
+If any environment variables are found they are used, else if any other variables exist in IVCT.properties these values are used, else if any other variables are not found the defaults are used.
+
+The test engine provides the environment to start and monitor a testcase. The test engine finds the necessary components required through the configuration above:
+1. SUTs are found via the IVCT_SUT_HOME_ID environment variable
+2. Badges are found via the IVCT_BADGE_HOME_ID environment variable
+3. The testsuite libraries and configuration files are found via the IVCT_TS_HOME_ID environment variable
+
+=== Testing the Testcase
+
+The test case should be tested as far as possible in a systematic manner. This increases the quality of the testcase by exercising various test functions in manner which may not occur very often otherwise.
+
+==== Junit
+
+For each method in the testsuite library, check if making a junit test is appropriate and feasible.
+
+==== Test Federate
+
+It is recommended that a test federate be produced to reflect the correct behaviour expected or deliberately false behaviour to be caught by a testcase. This will help the testcase writer to verify if the testcase is complete by checking the various possible behaviours of an SUT.
+
+This federate should be provided in the repository as source code.
+
+=== Docker
+
+The IVCT test system is configured to also run in a Docker environment. This means that a Docker docker-compose.yml file shall be produced to make the testsuite as a Docker image.

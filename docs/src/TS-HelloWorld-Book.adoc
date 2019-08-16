@@ -1,0 +1,11 @@
+= Welcome to the TS_HelloWorld Tutorial!
+
+include::Testsuite-Development-and-Best-Practices-for-IVCT-Usage.adoc[]
+
+include::HelloWorld-Federation-Design.adoc[]
+
+include::Test-Case-Example.adoc[]
+
+include::More-Information.adoc[]
+
+The general test case design guidance can be found in the IVCT_Framework wiki (https://github.com/IVCTool/IVCT_Framework/wiki/TcDevelGuide).
