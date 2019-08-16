@@ -1,0 +1,134 @@
+== Hello World
+
+=== Country Concept
+
+The idea behind the hello world program is that it represents a country with a population growing at a fixed rate. The country has an initial population which will increase by the fixed rate for each cycle of the program loop. At the end of each cycle, the program will announce the current population. The population value will be sent via an HLA `updateAttributeValue` request. A second functionality is that the hello world program will send a welcome message as a HLA `sendInteraction` with its name upon demand. The program has a user defined country name, starting population and number of cycles to run. The growth rate is fixed at 3% per cycle (in a future version this could be made configurable).
+
+=== HLA Federation Management Services
+
+==== Connect
+
+This is a service to register the federateAmbassador and callback model to the RTI.
+
+==== CreateFederationExecution
+
+This is a service to set the federation name and load the class model.
+
+==== JoinFederationExecution
+
+This is a service to set the federate's name and load the class model. Countries are implemented as HLA federates and take part in the _HelloWorld_ federation.
+
+==== ResignFederationExecution
+
+This is a service to resign the federate from the federation and remove all references to the federate. What should be done with any attributes owned by this federate is also specified in this call.
+
+==== DestroyFederationExecution
+
+This is a a service to destroy the federation, but can only be successful when there are no federates in the federation.
+
+==== Disconnect
+
+This service will disconnect any software connections to the HLA and render all referances invalid.
+
+=== HLA Declaration Management Services
+
+==== Publish and Subscribe Interactions
+
+All countries will `publishInteractionClass` and `subscribeInteractionClass` the following classes:
+
+Interaction class
+
+`Communication`
+
+with the parameter:
+
+`Message`
+
+The `sendInteraction` call will send a text message in the Communication.Message parameter. The subscribers of this class will receive a `receiveInteraction` with this data.
+
+==== Publish and Subscribe Object Attributes
+
+All countries will `publishObjectClassAttributes` and `subscribeObjectClassAttributes` the following classes:
+
+Object class
+
+`Country`
+
+with the attributes:
+
+`Name`
+
+`Population`
+
+The `updateAttributeValues` call will send a text value in the Communication.Country and a float value in the Communication.Population attributes. The subscribers of this class will receive a `reflectAttributeValues` with this data.
+
+=== HLA Object Management Services
+
+==== Reserve Object Instance Name and Register Object Instance
+
+An object instance name is reserved by calling the method `reserveObjectInstanceName` to announce the intention that an object with this name will be registered at some point in the future. An object is made known to the subscribers of the _Country_ class in the rest of the federation by calling the method `registerObjectInstance`. The subscribers of the _Country_ class will receive a `discoverObjectInstance`.
+
+The `updateObjectAttributes` call will send a country name in the Country.Name attribute and a HLAfloat32LE population value in the Country.Population attribute. The subscribers will receive a `reflectAttributeValues` with this data.
+
+=== HLA Support Services
+
+==== GetInteractionClassHandle
+
+This method will return the interaction class handle for a given interaction class name. This handle is required whenever the interaction class is used in an HLA call.
+
+==== GetParameterHandle
+
+This method will return a parameter handle for a interaction class handle and parameter name. This handle is required whenever the parameter is used in an HLA call.
+
+==== GetObjectClassHandle
+
+This method will return the object class handle for a given object class name. This handle is required whenever the object class is used in an HLA call.
+
+==== GetAttributeHandle
+
+This method will return a attribute handle for a object class handle and attribute name. This handle is required whenever the attribute is used in an HLA call.
+
+=== Callbacks
+
+In the file HelloWorld.java the methods `objectInstanceNameReservationSucceeded`, `objectInstanceNameReservationFailed`, `discoverObjectInstance`, `removeObjectInstance`, `provideAttributeValueUpdate`, `receiveInteraction` and `reflectAttributeValues` are implemented to override the same signature NullFederateAmbassador methods. All these methods are implemented to save the data from the calls to the HelloWorld class where the data can be used at later point in time.
+
+The callbacks are asynchronous to the main thread and thus require a syncronization mechanism. In the HelloWorld, a boolean value is used to determine whether an update has been received. Another possibility to synchronize the callbacks is to use semaphores instead of the boolean flag.
+
+=== Internal Logic
+
+There are fixed initial values for population and population increase. The program has a loop with a fixed number of cycles. Within each cycle the population will increase by the population increase factor. The value of the population is then published by sending an `updateObjectAttributes` call. This will be repeated every second until the maximum number of cycles has been attained.
+
+The federate also listens for interactions and upon receiving a Communication.Message interaction, it will send a Communication.Message interaction with the value:
+
+`Hello World from <country name>`
+
+The federate name of the SUT is known from the Conformance Statement and thus an exact message content can be expected and may be tested.
+
+=== Start Dialog
+
+When HelloWorld is started, the program will ask for some parameters from the user. These parameters will either change the address required to find the RTI or the parameters that affect the country name, starting population or number of cycles.
+
+----
+Enter the CRC address, such as
+'localhost', 'localhost:8989', '192.168.1.62'
+or when using Pitch Booster on the form
+<CRC name>@<booster address>:<booster port>
+such as 'MyCRCname@192.168.1.70:8688'
+[localhost]
+----
+
+The user has to provide the address information to locate the RTI. The default value of `localhost` will used when no other value is entered.
+
+`Enter your country:`
+
+The name of the country the HelloWorld application represents will be entered now. There is no default for country name.
+
+`Enter starting population [100]:`
+
+The desired starting population will be entered now. The default value of `100` will used when no other value is entered.
+
+`Enter number of cycles [1000]:`
+
+The desired number of cycles required is entered now. The default value of `1000` will used when no other value is entered.
+
+The program will terminate itself when the number of cycles has been reached.

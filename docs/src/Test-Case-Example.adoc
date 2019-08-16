@@ -1,0 +1,67 @@
+== Test Case TC0001
+
+The following will describe the purpose, structure and implementation logic of TC0001.
+
+=== Test Purpose
+
+Test if a HelloWorld federate calculates a fixed population increase correctly.
+
+Observe the federate for a fixed number of cycles and compare the latest received value with the previously received value plus the fixed percentage and a small tolerence for each cycle.
+
+=== Test Case Structure
+
+A Test Case (TC) is a java program with a package, import and java code sections. The package and import sections are necessary to compile the TC. The java code section defines the TC logic and will be explained in more detail below. A good amount of the code in TC0001 also applies to other TCs as well and can be made into a TC template.
+
+By taking some time to design the whole test suite, it is possible to save a lot of effort by programming the code and placing it into the HelloWorldBaseModel which accessible from all TCs. Effort can also be optimized by management of TC variables in a separate class (not shown in this example).
+
+=== Test Case Variables
+
+`logger`
+
+This is a reference to a SLF4J logger and should be used for all logging purposes. All other I/O tends to disappear in the vast amount of logging data and thus will not serve a useful purpose.
+
+`federateName`
+
+The name of the IVCT federate is held in this variable. It is fixed in this TC, but should come out of a XML or properties config file.
+
+`federateHandle`
+
+This is the HLA federate handle of the IVCT federate. The value is assigned when the HLA joinFederateExecution method is called.
+
+`helloWorldTcParam`
+
+At the moment, the Test Case uses fixed values for the name of the SUT federate and the rate of population increase. These values should come from either an XML or properties config file to show how a proper test suite is designed. The values from the config file should be stored within this call and be accessed by retrieval methods.
+
+`ivct_rti`
+
+This is a reference to a IVCT HLA interface logger and logs the methods and parameters before sending the HLA call to the RTIambassador.
+
+`helloWorldBaseModel`
+
+This is a class which acts as a library for TC methods which are required for more than one TC. The test suite writer should take time to plan the methods, variables and the sets which are required. A well-designed library can save a good amount of time by not having to do the same code twice.
+
+`ivct_LoggingFederateAmbassador`
+
+The ivct logging federate ambassador will log all callbacks (with parameters) from the RTI and pass on the call to the helloWorldBaseModel where the data may be stored as required.
+
+=== Preamble
+
+In the preamble (preambleAction) the methods
+
+`helloWorldBaseModel.initiateRti`
+
+`helloWorldBaseModel.init`
+
+are called.
+
+The initiateRti method will connect to the RTI platform, create a federation and join the federation execution. This method will be used by most TCs and was implemented in the IVCT_BaseModel (base class of helloWorldBaseModel) where it is available to all TCs.
+
+The init method will perform the necessary HLA calls to get interaction handles, parameter handles, object class handles, attribute handles. Using these handles, publish and subscribe on these interactions and object attributes will be done for the hello world specific classes.
+
+=== Test Body
+
+In the test_body (performTest) there is a loop to perform several cycles of testing population growth. To make sure that at least one previous comparison value is available, a sleep for a given value is done before starting the loop. In the loop, a primitive synchronization is used: a method to check that new data has arrived, an evaluation of the data compared to the previous value is made and finally a short sleep before doing another cycle or finish the TC.
+
+=== Postamble
+
+The postamble (postambleAction) will call the terminateRti method to resign the federate, destroy the federation (if possible) and disconnect from the RTI. This method will be used by most TCs and was implemented in the IVCT_BaseModel (base class of helloWorldBaseModel) where it is available to all TCs.
