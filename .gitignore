@@ -1,5 +1,8 @@
 *.class
 
+# local settings for gradle shall be ignored
+gradle.properties
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
