@@ -62,12 +62,13 @@ public class CountryValues {
     final float mid = this.prevPopulation * delta;
     final float max = this.prevPopulation * delta * (float) 1.01;
 
-    logger.info("---------------------------------------------------------------------");
-    logger.info("testPopulation: test value received " + this.currPopulation + " in range " + mid + " +/-1%");
-    logger.info("---------------------------------------------------------------------");
+    logger.info("testPopulation: test value received: " + this.currPopulation + " growth rate: " + delta);
     if (this.currPopulation > min && this.currPopulation < max) {
       return false;
     }
+    logger.info("---------------------------------------------------------------------");
+    logger.info("testPopulation FAILED: prevPopulation: " + this.prevPopulation + " currPopulation: " + currPopulation + " growthRate: " + delta);
+    logger.info("---------------------------------------------------------------------");
 
     return true;
   }

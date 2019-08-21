@@ -152,6 +152,7 @@ public class HelloWorld extends NullFederateAmbassador {
 			try {
 				final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 				String rtiHost;
+                System.out.print("[localhost]: ");
 				rtiHost = in.readLine();
 				if (rtiHost.length() == 0) {
 					rtiHost = "localhost";
