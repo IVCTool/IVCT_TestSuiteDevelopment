@@ -1,6 +1,4 @@
 {
-  "federationName" : "HelloWorld",
-  "rtiHostName" : "10.1.4.29",
-  "rtiPort" : "8989",
+  "growthRate" : "1.03",
   "sutFederateName" : "A"
 }

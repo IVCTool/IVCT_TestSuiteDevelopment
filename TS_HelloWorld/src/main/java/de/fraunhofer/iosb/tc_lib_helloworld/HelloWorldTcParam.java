@@ -36,8 +36,9 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     private final int    fileNum            = 1;
     private URL[]        urls               = new URL[this.fileNum];
     private long         sleepTimeCycle     = 1000;
-    private long         sleepTimeWait      = 4000;
+    private long         sleepTimeWait      = 5000;
     private String sutFederate;
+    private float growthRate = 1.03f;
 
 
     public HelloWorldTcParam(final String paramJson) throws TcInconclusive {
@@ -49,6 +50,15 @@ public class HelloWorldTcParam implements IVCT_TcParam {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject;
 			jsonObject = (JSONObject) jsonParser.parse(paramJson);
+
+			// get a String from the JSON object
+			String growthRateStr =  (String) jsonObject.get("growthRate");
+			if (growthRateStr == null) {
+                throw new TcInconclusive("The key  growthRate  was not found");
+			}
+			growthRate = Float.parseFloat(growthRateStr);
+			System.out.println("Growth rate: " + growthRate);
+
 			// get a String from the JSON object
 			sutFederate =  (String) jsonObject.get("sutFederateName");
 			if (sutFederate == null) {
@@ -65,7 +75,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
      * @return the RTI host value
      */
     public float getPopulationGrowthValue() {
-        return 1.0003f;
+        return growthRate;
     }
 
 
