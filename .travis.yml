@@ -17,9 +17,11 @@ script:
 - export VERSION=$(grep "helloWorldVersion" ./.shared/libraries.gradle | awk '{print $3}' | tr -d \')
 # - cd TS_HelloWorld
 # - docker build --build-arg version=$VERSION -t ivct/ts-helloworld:$TRAVIS_BRANCH-latest -t ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION .
-- if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/ts-helloworld:$VERSION ivct/ts-helloworld:$TRAVIS_BRANCH-latest; fi
+# - if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/ts-helloworld:$VERSION ivct/ts-helloworld:$TRAVIS_BRANCH-latest; fi
+- docker tag ivct/ts-helloworld:$VERSION ivct/ts-helloworld:$TRAVIS_BRANCH-latest
 - docker push ivct/ts-helloworld
-- if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest; fi
+# - if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest; fi
+- docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest
 - docker push ivct/helloworld
 
 before_cache:
