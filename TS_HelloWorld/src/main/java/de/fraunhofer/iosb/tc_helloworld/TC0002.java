@@ -122,7 +122,7 @@ public class TC0002 extends AbstractTestCase {
         }
 
         final String message = "Hello World " + this.federateName;
-        final String testMessage = "Hello World from " + helloWorldTcParam.getSutFederate();
+        final String testMessage = "Hello World from " + getSutFederateName();
 
         // Loop a number of cycles and test whether the sut answers the hello world call
         for (int i = 0; i < 10; i++) {

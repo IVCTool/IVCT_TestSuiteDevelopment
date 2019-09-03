@@ -122,7 +122,7 @@ public class TC0001 extends AbstractTestCase {
             }
 
             // Test the population increase based on the previous and the current values within a percent range tolerance
-            if (helloWorldBaseModel.testCountryPopulation(helloWorldTcParam.getSutFederate(), helloWorldTcParam.getPopulationGrowthValue())) {
+            if (helloWorldBaseModel.testCountryPopulation(getSutFederateName(), helloWorldTcParam.getPopulationGrowthValue())) {
                 throw new TcFailed("Population incorrectly calculated");
             }
 
