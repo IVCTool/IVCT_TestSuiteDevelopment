@@ -1,8 +1,19 @@
 = Welcome to the TS_HelloWorld Tutorial!
 
-* <<Testsuite-Development-and-Best-Practices-for-IVCT-Usage.adoc#,Testsuite Development and Best Practices for IVCT Usage>>
-* <<HelloWorld-Federation-Design.adoc#, HelloWorld Federation Design>>
+This tutorial is supposed to give some first ideas on how to write a write a test case for the IVCTool, as well as some background about the concepts behind test cases and testsuites.
+
+== Getting Started
+
 * <<Test-Case-Example.adoc#, The first test case>>
+* <<HelloWorld-Federation-Design.adoc#, HelloWorld Federation Design>>
+
+== Understanding the Concepts
+
+* <<Testsuite-Development-and-Best-Practices-for-IVCT-Usage.adoc#,Testsuite Development and Best Practices for IVCT Usage>>
 * <<More-Information.adoc#, More Information and considerations for future testing methods>>
+
+== Test Suites
+
+* <<4-5-testsuite-overview.adoc#, Test Suite Overview>>
 
 The general test case design guidance can be found in the IVCT_Framework wiki (https://github.com/IVCTool/IVCT_Framework/wiki/TcDevelGuide).
