@@ -1,0 +1,15 @@
+FROM app-docker136.hex.tno.nl/vtmak/lrc:4.5f-alpine
+
+ARG version
+
+ADD ./build/distributions/HelloWorld-${version}.zip /root/application/
+
+ADD ./docker/start.sh /root/application/start.sh
+
+RUN unzip /root/application/HelloWorld-${version}.zip -d /root/application/ && rm /root/application/HelloWorld-${version}.zip
+
+RUN ln -s /root/application/HelloWorld-${version} /root/application/HelloWorld
+
+RUN chmod a+x /root/application/start.sh
+
+ENV LRC_ENTRYPOINT=/root/application/start.sh
