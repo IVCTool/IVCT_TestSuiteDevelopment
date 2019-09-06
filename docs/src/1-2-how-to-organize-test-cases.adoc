@@ -2,11 +2,18 @@
 
 === Test case classes
 
-. support libraries
+- interoperability requirements
+- one test case for one requirement: this gives flexibility for combining
+- support functions can be integrated
 
 === Test suites
+
+- combining test cases and support libraries into one project
+- compile with gradle,
+- automate with travis
+- integrate test suites into the IVCTool deployment
 
 
 === Containerize test suites
 
-docker containers
+- docker containers

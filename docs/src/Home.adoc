@@ -1,4 +1,4 @@
-= Welcome to the TS_HelloWorld Tutorial!
+= IVCTool Test Case Tutorial
 
 This tutorial is supposed to give some first ideas on how to write a write a test case for the IVCTool, as well as some background about the concepts behind test cases and testsuites.
 
@@ -9,6 +9,7 @@ This tutorial is supposed to give some first ideas on how to write a write a tes
 
 == Understanding the Concepts
 
+* <<2-1-testing-interoperability-requirements.adoc#, The Test Purpose>>
 * <<5-1-TcDevelGuide0.adoc#, Test Case Developer Guide>>
 
 == Test Suites

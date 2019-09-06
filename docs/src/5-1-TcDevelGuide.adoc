@@ -127,7 +127,7 @@ Even TCs have to be tested and the best way to test them is to have a reference 
 
 == Test Case Parameter
 
-The execution of a test case requires some parameterization. The following figure gives an overview how these parameters are being put togehter. The main part of the test cases parameters is contained in the TC.param section in the graphical user interface (GUI). These parameters are defined by the TcParam.json file. Each test suite may have its own parameters. The connection information to the SuT federate is configured with the conformance statements and will be the same for all test cases. 
+The execution of a test case requires some parameterization. The following figure gives an overview how these parameters are being put togehter. The main part of the test cases parameters is contained in the TC.param section in the graphical user interface (GUI). These parameters are defined by the TcParam.json file. Each test suite may have its own parameters. The connection information to the SuT federate is configured with the conformance statements and will be the same for all test cases.
 
 image:images/tc-parameters.png[Test Case Parameters]
 
