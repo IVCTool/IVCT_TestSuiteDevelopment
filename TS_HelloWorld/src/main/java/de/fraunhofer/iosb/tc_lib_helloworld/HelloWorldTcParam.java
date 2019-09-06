@@ -37,7 +37,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     private URL[]        urls               = new URL[this.fileNum];
     private long         sleepTimeCycle     = 1000;
     private long         sleepTimeWait      = 5000;
-    private String sutFederate;
     private float growthRate = 1.03f;
 
 
@@ -58,12 +57,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
 			}
 			growthRate = Float.parseFloat(growthRateStr);
 			System.out.println("Growth rate: " + growthRate);
-
-			// get a String from the JSON object
-			sutFederate =  (String) jsonObject.get("sutFederateName");
-			if (sutFederate == null) {
-                throw new TcInconclusive("The key  sutFederateName  was not found");
-			}
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -92,14 +85,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
      */
     public long getSleepTimeWait() {
         return this.sleepTimeWait;
-    }
-
-
-    /**
-     * @return name of sut federate
-     */
-    public String getSutFederate() {
-        return this.sutFederate;
     }
 
 
