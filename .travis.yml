@@ -11,7 +11,7 @@ before_install:
   - echo "$TNO_DOCKER_PASSWORD" | docker login app-docker136.hex.tno.nl -u "$TNO_DOCKER_USERNAME" --password-stdin
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-install: gradle install buildMyAppImage dockerBuildImage
+install: gradle install dockerBuildImage
 
 script:
 - export VERSION=$(grep "helloWorldVersion" ./.shared/libraries.gradle | awk '{print $3}' | tr -d \')
@@ -21,7 +21,11 @@ script:
 - docker tag ivct/ts-helloworld:$VERSION ivct/ts-helloworld:$TRAVIS_BRANCH-latest
 - docker push ivct/ts-helloworld
 # - if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest; fi
+# - docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest
+# tag and push all rti specfic helloworld images (Pitch, Mak, Portico)
 - docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest
+- docker tag ivct/helloworld:po-$VERSION ivct/helloworld:po-$TRAVIS_BRANCH-latest
+- docker tag ivct/helloworld:ma-$VERSION ivct/helloworld:ma-$TRAVIS_BRANCH-latest
 - docker push ivct/helloworld
 
 before_cache:
