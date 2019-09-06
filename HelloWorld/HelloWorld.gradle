@@ -17,8 +17,8 @@ buildscript {
 apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
 
 // import remote API plugin task groups
+import com.bmuschko.gradle.docker.tasks.*
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 
 mainClassName = 'de.fraunhofer.iosb.helloworld.HelloWorld'
 

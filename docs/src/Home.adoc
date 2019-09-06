@@ -4,16 +4,27 @@ This tutorial is supposed to give some first ideas on how to write a write a tes
 
 == Getting Started
 
-* <<Test-Case-Example.adoc#, The first test case>>
-* <<HelloWorld-Federation-Design.adoc#, HelloWorld Federation Design>>
+* <<1-1-what-is-a-test-case.adoc#, What is a test case?>>
+* <<1-2-how-to-organize-test-cases.adoc#, Where to start writing a test cases?>>
 
 == Understanding the Concepts
 
-* <<Testsuite-Development-and-Best-Practices-for-IVCT-Usage.adoc#,Testsuite Development and Best Practices for IVCT Usage>>
-* <<More-Information.adoc#, More Information and considerations for future testing methods>>
+* <<5-1-TcDevelGuide0.adoc#, Test Case Developer Guide>>
 
 == Test Suites
 
 * <<4-5-testsuite-overview.adoc#, Test Suite Overview>>
+
+== Old Documentation Artifacts
+
+CAUTION: rework required
+
+* <<Test-Case-Example.adoc#, The first test case>>
+* <<HelloWorld-Federation-Design.adoc#, HelloWorld Federation Design>>
+
+
+* <<Testsuite-Development-and-Best-Practices-for-IVCT-Usage.adoc#,Testsuite Development and Best Practices for IVCT Usage>>
+* <<More-Information.adoc#, More Information and considerations for future testing methods>>
+
 
 The general test case design guidance can be found in the IVCT_Framework wiki (https://github.com/IVCTool/IVCT_Framework/wiki/TcDevelGuide).
