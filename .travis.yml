@@ -10,6 +10,8 @@ branches:
 before_install:
   - echo "$TNO_DOCKER_PASSWORD" | docker login app-docker136.hex.tno.nl -u "$TNO_DOCKER_USERNAME" --password-stdin
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  # the following pull commands are required because gradle docker task behaviour
+  # are not supporting multible image builds within one project
   - docker pull app-docker136.hex.tno.nl/vtmak/lrc:4.5f-alpine
   - docker pull app-docker136.hex.tno.nl/pitch/lrc:5.4.0.0-alpine-noslf4j
   - docker pull app-docker136.hex.tno.nl/portico/lrc:nightly-20160528-alpine
@@ -18,13 +20,9 @@ install: gradle install dockerBuildImage
 
 script:
 - export VERSION=$(grep "helloWorldVersion" ./.shared/libraries.gradle | awk '{print $3}' | tr -d \')
-# - cd TS_HelloWorld
-# - docker build --build-arg version=$VERSION -t ivct/ts-helloworld:$TRAVIS_BRANCH-latest -t ivct/ts-helloworld:$TRAVIS_BRANCH-$VERSION .
-# - if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/ts-helloworld:$VERSION ivct/ts-helloworld:$TRAVIS_BRANCH-latest; fi
+# tag and push test suite image
 - docker tag ivct/ts-helloworld:$VERSION ivct/ts-helloworld:$TRAVIS_BRANCH-latest
 - docker push ivct/ts-helloworld
-# - if [ $TRAVIS_BRANCH == "master" ]; then docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest; fi
-# - docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest
 # tag and push all rti specfic helloworld images (Pitch, Mak, Portico)
 - docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest
 - docker tag ivct/helloworld:po-$VERSION ivct/helloworld:po-$TRAVIS_BRANCH-latest
