@@ -56,7 +56,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
                 throw new TcInconclusive("The key  growthRate  was not found");
 			}
 			growthRate = Float.parseFloat(growthRateStr);
-			System.out.println("Growth rate: " + growthRate);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
