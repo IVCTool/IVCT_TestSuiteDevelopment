@@ -4,15 +4,16 @@ When we talk about a *Test Case (TC)* in the context of the IVCTool, we normal m
 
 In a more generic context, a test case would be distinguished into two forms. The specification the test algorithm is called *Abstract Test Case (ATC)* and the implementation of this algorithm is called *Executable Test Case (ETC)*. But because the IVCTool does not deal with any abstract test cases, whenever we talk about a test case, we are refering to the concept of an ETC.
 
-The TC will be embedded in process called *Test Case Runner*. The runner is a IVCTool component, to load the TC code, to join the federation with with the SuT, and finally to execute the TC.
+The TC will be executed in a process called *Test Case Runner*. The runner is a IVCTool component, to load the TC code, to join the federation with the SuT, and finally to execute the tests.
 
 .Test Federation Setup
 image:images/TestCase.png[]
 
-Each IVCTool TC is implemented as a subclass of ``AbstractTestCase``, which is defined in the test case library. The main methods of this class are shown in the listing below. This interface is known by the runner and it is used to provide the TC with parameters, to prepare the execution, to execute the test and finally to perform any post actions to evaluate and to cleanup the test run.
+=== The Test Case Programm
 
+Each TC is implemented as a subclass of ``AbstractTestCase``, which is defined in the test case library. The main methods of this class are shown in the listing below. This interface is known by the runner and it is used to provide the TC with parameters, to prepare the execution, to execute the test and finally to perform any post actions to evaluate and to cleanup the test run.
 
-.class AbstractTestCase
+.The Java Class AbstractTestCase
 [source, java]
 ----
 public abstract class AbstractTestCase {
