@@ -2,7 +2,7 @@
 
 === The Test Purpose
 
-The purpose of each test case is to test the interoperability of a *System under Test (SuT)*. In order to do this, the understanding of interoperability need to be defined. The IVCTool is using the concept if a *Interoperability Requirement (IR)* to define a specific requirement that a federate need to fullfill in order to be considered interoperable in a certain aspect. A IR can be anything, starting from a simple object to be published, up to a certain behavior pattern to be compliant to.
+The test case development always starts with a purpose. The purpose of each test case is to test the interoperability of a *System under Test (SuT)*. In order to do this, the understanding of interoperability need to be defined. The IVCTool is using the concept if a *Interoperability Requirement (IR)* to define a specific requirement that a federate need to fullfill in order to be considered interoperable in a certain aspect. A IR can specify anything, starting from a simple object to be published, up to a certain behavior pattern to be compliant to.
 
 IRs are as simple and atomic as possible, in order to be testable. They are compiled into sets of IRs, defined as interoperability patterns, called *Badges*. Such badges are used to express the capabilities of federates.
 
@@ -10,8 +10,9 @@ Test Cases may test one or more IRs, depending on the complexity of the IR and a
 
 The figure below shows links between badges, IR and TC. For deployment and maintaince reasons, the test cases are structured witin *Test Suites (TS)*. A TS is individual component, normally containerized in a docker image, and linked to the IVCTool.
 
-.How to connect test suites to badges
+.Test Cases are testing Interoperability Requirements
 image:images/BadgesAndTestsuites.png[Link between test suites and badges]
+
 
 === Test case classes
 
