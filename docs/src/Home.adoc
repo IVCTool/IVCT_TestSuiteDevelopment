@@ -35,10 +35,7 @@ In the third part of this tutorial there are set of reference documents to give 
 
 CAUTION: rework required
 
-* <<Test-Case-Example.adoc#, The first test case>>
-* <<HelloWorld-Federation-Design.adoc#, HelloWorld Federation Design>>
 * <<Testsuite-Development-and-Best-Practices-for-IVCT-Usage.adoc#,Testsuite Development and Best Practices for IVCT Usage>>
-* <<More-Information.adoc#, More Information and considerations for future testing methods>>
 
 
 The general test case design guidance can be found in the IVCT_Framework wiki (https://github.com/IVCTool/IVCT_Framework/wiki/TcDevelGuide).
