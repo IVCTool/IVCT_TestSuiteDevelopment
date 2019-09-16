@@ -10,7 +10,6 @@ Test Cases may test one or more IRs, depending on the complexity of the IR and a
 
 The figure below shows links between badges, IR and TC. For deployment and maintaince reasons, the test cases are structured witin *Test Suites (TS)*. A TS is individual component, normally containerized in a docker image, and linked to the IVCTool.
 
-.Test Cases are testing Interoperability Requirements
 image:images/BadgesAndTestsuites.png[Link between test suites and badges]
 
 === The Test Case Federate
