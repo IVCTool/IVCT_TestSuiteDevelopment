@@ -134,6 +134,7 @@ public class HelloWorld extends NullFederateAmbassador {
 			if (args.length > 3) {
 				hw.numberOfCycles = Integer.parseInt(args[3]);
 			}
+			hw.settingsDesignator = "crcAddress=" + rtiHost;
 		}
 		// 2. else if environment settings are given, use them
 		else if (getEnvironmentSettings(hw)) {
