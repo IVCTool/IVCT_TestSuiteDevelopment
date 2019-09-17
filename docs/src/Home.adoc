@@ -1,19 +1,41 @@
-= Welcome to the TS_HelloWorld Tutorial!
+= IVCTool Test Case Tutorial
 
-This tutorial is supposed to give some first ideas on how to write a write a test case for the IVCTool, as well as some background about the concepts behind test cases and testsuites.
+This tutorial is supposed to give you some guidance on developing test cases for the IVCTool.
+
+The tutorial starts with an short overview on the basic concepts to give some first ideas on what a test case is and how test cases are organized. It is recommended to start with these sections, before you dive any deeper into the examples.
+
+The second part of the tutorial is dedicated to the HelloWorld test suite example. This is simple but complete test suite to give an example for test case developers to start with. It is recommended to start with a copy of that test suite, if you plan to develop a new test suites.
+
+In the third part of this tutorial there are set of reference documents to give some more background information on interfaces, build scripts, deployments and existing test suites.
 
 == Getting Started
 
-* <<Test-Case-Example.adoc#, The first test case>>
-* <<HelloWorld-Federation-Design.adoc#, HelloWorld Federation Design>>
+* <<1-1-what-is-a-test-case.adoc#, What is a test case?>>
+* <<1-2-how-to-organize-test-cases.adoc#, Where to start writing a test cases?>>
 
-== Understanding the Concepts
+
+== The TS_HelloWorld Example
+
+* <<2-1-hw-federation.adoc#, The HelloWorld Federation Concept>>
+* <<2-2-hw-interoperability-badge.adoc#, The Interoperbility Badge>>
+* <<2-3-hw-test-case-0001.adoc#, The HelloWorld Test Cases TC0001 - Growing Rate Test>>
+* <<2-4-hw-test-case-0002.adoc#, The HelloWorld Test Cases TC0002 - Country Interaction Test>>
+* <<2-5-hw-sut.adoc#, The helloWorld System under Test>>
+* <<2-6-ts-hw-structure.adoc#, The Test Suite Project Structure>>
+
+== Further Reading
+
+* <<3-1-testing-interoperability-requirements.adoc#, The Test Purpose>>
+* <<3-2-TcDevelGuide.adoc#, Test Case Developer Guide>>
+* <<3-9-ModelBasedTesting.adoc#,Model Based Testing>>
+* <<3-5-testsuite-overview.adoc#, Test Suite Overview>>
+
+
+== Old Documentation Artifacts
+
+CAUTION: rework required
 
 * <<Testsuite-Development-and-Best-Practices-for-IVCT-Usage.adoc#,Testsuite Development and Best Practices for IVCT Usage>>
-* <<More-Information.adoc#, More Information and considerations for future testing methods>>
 
-== Test Suites
-
-* <<4-5-testsuite-overview.adoc#, Test Suite Overview>>
 
 The general test case design guidance can be found in the IVCT_Framework wiki (https://github.com/IVCTool/IVCT_Framework/wiki/TcDevelGuide).

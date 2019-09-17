@@ -5,7 +5,7 @@
 
 # TS_HelloWorld
 
-The TS_HelloWorld is a sample test suite explain the concepts for writing test cases for the IVCTool. It includes a small set of test cases, compined into the TS_HelloWorld test suite, and a simple helloworld-federate to run against the test cases. 
+The TS_HelloWorld is a sample test suite to explain the concepts for writing test cases for the IVCTool. It includes a small set of test cases, combined into the TS_HelloWorld test suite, and a simple helloworld federate to run against the test cases. 
 
 The documentation section is a good starting point to learn about the basic concepts to behind the test cases:
 

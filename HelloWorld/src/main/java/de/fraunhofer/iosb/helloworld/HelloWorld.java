@@ -59,7 +59,6 @@ public class HelloWorld extends NullFederateAmbassador {
 	private float growthRate = 1.0003f;
 
 	private RTIambassador _rtiAmbassador;
-	private final String[] _args;
 	private InteractionClassHandle _messageId;
 	private ParameterHandle _parameterIdText;
 	private ParameterHandle _parameterIdSender;
@@ -118,7 +117,7 @@ public class HelloWorld extends NullFederateAmbassador {
 
 	public static void main(final String[] args) {
 		// initialization procedure:
-		HelloWorld hw = new HelloWorld(args);
+		HelloWorld hw = new HelloWorld();
 		// 1. if args given, use them (settingsDesignator [fedName [populationsize
 		// [numberOfCycles]]])
 		if (args.length > 0) {
@@ -186,8 +185,7 @@ public class HelloWorld extends NullFederateAmbassador {
 		hw.run();
 	}
 
-	private HelloWorld(final String[] args) {
-		this._args = args;
+	private HelloWorld() {
 	}
 
 	private void run() {

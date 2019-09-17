@@ -9,7 +9,7 @@ ext {
         gradleWrapperVersion = "${gradleVersion}"
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ IVCT settings
-        ivctVersion = '2.1.0-SNAPSHOT'
+        ivctVersion = '2.1.1'
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ HelloWorld settings
 		helloWorldVersion = '2.0.0'
@@ -21,7 +21,7 @@ ext {
 		logbackVersion = '1.1.3'
 		slf4jVersion = '1.7.10'
         jsonSimpleVersion = '1.1.1'
-        gradleDockerPluginVersion = '3.0.12'
+        gradleDockerPluginVersion = '4.9.0'
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~  now create libraries with the versions from above
 		libraries = [

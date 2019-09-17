@@ -12,12 +12,14 @@ buildscript {
 apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
 
 // Import task types
-import com.bmuschko.gradle.docker.tasks.image.*
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 // Use task types
-task buildMyAppImage(type: DockerBuildImage) {
+task dockerBuildImage(type: DockerBuildImage) {
+    dependsOn 'install'
     inputDir = file('.')
-    tag="ivct/ts-helloworld:${helloWorldVersion}"
+    buildArgs.put('version', "${helloWorldVersion}")
+    tags.add ("ivct/ts-helloworld:${helloWorldVersion}")
 }
 
 apply plugin: 'application'

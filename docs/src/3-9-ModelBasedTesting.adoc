@@ -1,0 +1,11 @@
+== Model Based Testing (MBT)
+
+
+What is Model Based Testing (MBT)?
+...
+
+Typical MBT process
+...
+
+
+More Information on Interoperability testing tools and techniques can be found in Tom's SISO presenation, see https://www.sisostds.org/DigitalLibrary.aspx?Command=Core_Download&EntryId=47956
