@@ -1,1 +1,42 @@
-== The HelloWorld Interoperbility Badge
+.HelloWorld Compliance Badge
+image::https://github.com/IVCTool/IVCT_Framework/blob/TestSuites/RuntimeConfig/Badges/HelloWorld-2019.png?raw=true[HelloWorld, 300, role="right"]
+
+== The HelloWorld Interoperability Badge
+
+
+As explained in the HelloWorld federation section, the original definition did not contain any requirements on _correct_ behavior. So anything a helloWorld federate could do or not do, would be fine. It could create a Country object or it could not. It could create one or many objects. It could give them a Name or it could not. It could let the Population grow or shrink. It could send Messages or it could not.
+
+While this is a perfectly reasonable approach to demonstrate the HLA features, it might be not enough to ensure that HelloWorld federates from different developers are building a well interworking federation. If federates shall comply to certain interoperability patterns, it is important that these patterns are unambiguously identified.
+
+For that purpose the IVCTool is using the concept of an *Interoperability Badge*. Such a badge is a named collection of *Interoperability Requirements (IR)*. Each IR is defined by its unique identifier and it has a description explaining the requirement. It is important that the requirement description is unambiguous und testable.
+
+
+
+.The HelloWorld-2019 Interoperability Badge
+[source, yaml]
+----
+{
+  "id": 	"HelloWorld-2019",
+  "version":	"2.0.0",
+  "name": "HelloWorld Tutorial Badge",
+  "description": "This is a simple example for a capability badge
+                  to define the compliance of an federate for
+                  the hello world federation.",
+  "graphics":	"HelloWorld-2019.png",
+  "dependency":	["HLA-BASE-2019"],
+  "requirements": [
+  {
+    "id": "IR-HW-0001",
+    "description":
+        "The population growing rate of a country between
+         two update cycles shall be lower than given percentage",
+  },
+  {
+    "id": "IP-HW-0002",
+    "description":
+        "A HelloWorld federate shall answer to Communication
+        interaction with a message \"HelloWorld <country name>\"
+        This interaction shall be repeated for several cycles",
+  }]
+}
+----
