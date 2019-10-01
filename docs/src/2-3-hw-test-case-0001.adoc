@@ -6,7 +6,7 @@ The following will describe the purpose, structure and implementation logic of T
 
 Test if a HelloWorld federate calculates a fixed population increase correctly.
 
-Observe the federate for a fixed number of cycles and compare the latest received value with the previously received value plus the fixed percentage and a small tolerence for each cycle.
+Observe the federate for a fixed number of cycles and compare the latest received value with the previously received value plus the fixed percentage and a small tolerance for each cycle.
 
 === Test Case Structure
 

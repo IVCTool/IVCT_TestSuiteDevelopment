@@ -2,3 +2,30 @@
 
 
 The general test case design guidance can be found in the IVCT_Framework wiki (https://github.com/IVCTool/IVCT_Framework/wiki/TcDevelGuide).
+
+
+include::1-1-what-is-a-test-case.adoc[]
+
+include::1-2-how-to-organize-test-cases.adoc[]
+
+
+include::2-1-hw-federation.adoc[]
+
+include::2-2-hw-interoperability-badge.adoc[]
+
+include::2-3-hw-test-case-0001.adoc[]
+
+include::2-4-hw-test-case-0002.adoc[]
+
+include::2-5-hw-sut.adoc[]
+
+include::2-6-ts-hw-structure.adoc[]
+
+
+include::3-1-testing-interoperability-requirements.adoc[]
+
+include::3-2-TcDevelGuide.adoc[]
+
+include::3-5-testsuite-overview.adoc[]
+
+include::3-9-ModelBasedTesting.adoc[]

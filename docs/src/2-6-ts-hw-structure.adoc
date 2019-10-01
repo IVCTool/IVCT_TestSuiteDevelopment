@@ -1,0 +1,45 @@
+== The HelloWorld Test Suite
+
+The test cases need to be compiled and packaged into a component, that can be installed into the IVCTool installation. For that purpose, the HelloWorld test cases are packaged into test suite. Technically a test suite is Java software package including the test case code together with supporting libraries and template files. The content of the test suite is defined by a configuration, as shown below.
+
+A test suite requires a unique identifier, with a version tag, a meaningful name, along with a description explaining the purpose of the test suite. It also contains some information for the test case engine about the run-time folder to execute the code and the path to the libraries containing the code.
+
+The containing test cases are defined in a list, where each test case identified by its fully qualified class name, a list of interoperability requirements it tests, and a textual description of the test case.
+
+.HelloWorld Test Suite
+[source, yaml]
+----
+{
+    "id": "TS-HelloWorld-2019",
+    "version": "2.0.0",
+    "name": "HelloWorld Tutorial Badge",
+    "description": "This is a simple example for a test suite to
+                    test the compliance of an federate to the
+                    hello world federation.",
+    "tsRunTimeFolder": "TS_HelloWorld-2.0.0/bin",
+    "tsLibTimeFolder": "TS_HelloWorld-2.0.0/lib",
+    "testcases": [{
+            "TC": "de.fraunhofer.iosb.tc_helloworld.TC0001",
+            "IR": ["IR-HW-0001"],
+            "description": "Test population growing rate"
+        },
+        {
+            "TC": "de.fraunhofer.iosb.tc_helloworld.TC0002",
+            "IR": ["IP-HW-0002"],
+            "description": "Test inter-country communication"
+        }
+    ]
+}
+----
+
+
+=== Test Suite Parameter File
+
+All test cases within a test suite are sharing the same set of parameters. For the HelloWorld example, only the TC0001 requires a parameter. It is the accepted growthRate for the country population. The IVCTool user interfaces provides options to set the parameter values and delivers these values to the test case.
+
+[source, yaml]
+----
+{
+  "growthRate" : "1.03"
+}
+----
