@@ -285,7 +285,9 @@ public class HelloWorld extends NullFederateAmbassador {
 				final String message = "Hello World from " + this.myCountry;
 				messageEncoderString.setValue(message);
 				parameters.put(this._parameterIdText, messageEncoderString.toByteArray());
-				parameters.put(this._parameterIdSender, messageEncoderString.toByteArray());
+				final HLAunicodeString senderString = this._encoderFactory.createHLAunicodeString();
+				senderString.setValue(this.myCountry);
+				parameters.put(this._parameterIdSender, senderString.toByteArray());
 
 				this._rtiAmbassador.sendInteraction(this._messageId, parameters, null);
 

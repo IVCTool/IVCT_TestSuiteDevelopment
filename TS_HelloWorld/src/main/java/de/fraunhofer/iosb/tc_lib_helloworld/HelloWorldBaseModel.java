@@ -16,6 +16,13 @@ limitations under the License.
 
 package de.fraunhofer.iosb.tc_lib_helloworld;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_RTIambassador;
 import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
@@ -58,9 +65,6 @@ import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
 import hla.rti1516e.exceptions.UnsupportedCallbackModel;
-import java.util.HashMap;
-import java.util.Map;
-import org.slf4j.Logger;
 
 /**
  * @author mul (Fraunhofer IOSB)
@@ -69,16 +73,16 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
 
   private AttributeHandle _attributeIdName;
   private AttributeHandle _attributeIdPopulation;
-  private boolean receivedInteraction = false;
   private boolean receivedReflect = false;
+  private boolean saveInteractions = false;
   private EncoderFactory _encoderFactory;
   private InteractionClassHandle messageId;
   private IVCT_RTIambassador ivct_rti;
   private Logger logger;
   private ParameterHandle parameterIdSender;
   private ParameterHandle parameterIdText;
-  private String message;
   private final Map<ObjectInstanceHandle, CountryValues> knownObjects = new HashMap<ObjectInstanceHandle, CountryValues>();
+  private Map<String, LinkedList<ParameterHandleValueMap>> interactionsReceived = new HashMap<String, LinkedList<ParameterHandleValueMap>>();
 
   
   // ----------------------------------  CountryValues Anfang -----------------
@@ -116,24 +120,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
   }
 
   /**
-   * @return false if a message received, true otherwise
-   */
-  public boolean getInteractionMessageStatus() {
-    for (int j = 0; j < 100; j++) {
-      if (this.receivedInteraction) {
-        return false;
-      }
-      try {
-        Thread.sleep(20);
-      } catch (final InterruptedException ex) {
-        continue;
-      }
-    }
-    return true;
-  }
-
-  /**
-   * @return false if a message received, true otherwise
+   * @return false if an interaction received, true otherwise
    */
   public boolean getReflectMessageStatus() {
     for (int j = 0; j < 100; j++) {
@@ -152,9 +139,23 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
   /**
    * @return the message received
    */
-  public String getMessage() {
-    this.receivedInteraction = false;
-    return this.message;
+  public LinkedList<String> getSavedSutTextMessages(final String sut) {
+	  this.logger.error("getSavedSutTextMessages SUT: " + sut);
+	  LinkedList<String> textMessages = new LinkedList<String>();
+	  LinkedList<ParameterHandleValueMap> sutInteractionsHandleValueMap = interactionsReceived.get(sut);
+	  if (sutInteractionsHandleValueMap == null) {
+		  return textMessages;
+	  }
+	  for (ParameterHandleValueMap msg : sutInteractionsHandleValueMap) {
+		  final HLAunicodeString textDecoder = this._encoderFactory.createHLAunicodeString();
+		  try {
+			  textDecoder.decode(msg.get(this.parameterIdText));
+		  } catch (final DecoderException e) {
+			  this.logger.error("Failed to decode incoming parameter: sender");
+		  }
+		  textMessages.add(textDecoder.getValue());
+	  }
+	  return textMessages;
   }
 
   /**
@@ -288,6 +289,14 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
     return true;
   }
 
+  public void startSavingInteractions() {
+	  saveInteractions = true;
+  }
+
+  public void stopSavingInteractions() {
+	  saveInteractions = false;
+  }
+
   /**
    * @param interactionClass
    *          specify the interaction class
@@ -295,22 +304,34 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
    *          specify the parameter handles and values
    */
   private void doReceiveInteraction(final InteractionClassHandle interactionClass,
-      final ParameterHandleValueMap theParameters) {
-    if (interactionClass.equals(this.messageId)) {
-      if (!theParameters.containsKey(this.parameterIdText)) {
-        System.out.println("Bad message received: No text.");
-        return;
-      }
-      try {
-        final HLAunicodeString messageDecoder = this._encoderFactory.createHLAunicodeString();
-        messageDecoder.decode(theParameters.get(this.parameterIdText));
-        this.message = messageDecoder.getValue();
-      } catch (final DecoderException e) {
-        System.out.println("Failed to decode incoming interaction");
-      }
-    }
-
-    this.receivedInteraction = true;
+		  final ParameterHandleValueMap theParameters) {
+	  if (interactionClass.equals(this.messageId)) {
+		  if (!theParameters.containsKey(this.parameterIdText)) {
+			  this.logger.error("Improper interaction received: No text.");
+			  return;
+		  }
+		  if (!theParameters.containsKey(this.parameterIdSender)) {
+			  this.logger.error("Improper interaction received: No sender.");
+			  return;
+		  }
+		  if (saveInteractions) {
+			  try {
+				  final HLAunicodeString senderDecoder = this._encoderFactory.createHLAunicodeString();
+				  senderDecoder.decode(theParameters.get(this.parameterIdSender));
+				  String sender = senderDecoder.getValue();
+				  LinkedList<ParameterHandleValueMap> l= interactionsReceived.get(sender);
+				  if (l == null) {
+					  l = new LinkedList<ParameterHandleValueMap>();
+					  l.add(theParameters);
+					  interactionsReceived.put(sender, l);
+				  } else {
+					  l.add(theParameters);
+				  }
+			  } catch (final DecoderException e) {
+				  this.logger.error("Failed to decode incoming parameter: sender");
+			  }
+		  }
+	  }
   }
 
   /**
