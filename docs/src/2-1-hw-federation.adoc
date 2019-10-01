@@ -1,0 +1,66 @@
+== The HelloWorld Federation Concept
+
+The HelloWorld federation was presented at the very beginning of the HLA developments. As so many "hello world" applications, it was designed to give very simple but fully functional example for a distributed simulation.
+
+The idea is simple and it follows the HLA federation paradigm in a straight forward way. Each instance of the helloWorld application implements a *Country* object, which is represented by its *Ambassador*, and it is joining a *HelloWorld* federation. So the HelloWorld federation is a set of countries, where each country is simulated by one helloWorld application.
+
+
+=== The Country Object
+
+The *Country* object is used to model the country simulated by a helloWorld application. When entering the HelloWorld federation, the application will create its own Country object instance. It has a country *Name* and a country *Population* attribute.
+
+
+[source, xml]
+----
+<objectClass>
+   <name>Country</name>
+   <sharing>Neither</sharing>
+   <attribute>
+      <name>Name</name>
+      <dataType>HLAunicodeString</dataType>
+      <updateType>Conditional</updateType>
+      <ownership>DivestAcquire</ownership>
+      <sharing>Neither</sharing>
+      <transportation>HLAreliable</transportation>
+      <order>Receive</order>
+   </attribute>
+   <attribute>
+      <name>Population</name>
+      <dataType>HLAunicodeString</dataType>
+      <updateType>Conditional</updateType>
+      <ownership>DivestAcquire</ownership>
+      <sharing>Neither</sharing>
+      <transportation>HLAreliable</transportation>
+      <order>Receive</order>
+   </attribute>
+</objectClass>
+----
+
+=== The Country Interaction
+
+To make the HelloWorld federation a bit more interesting, the interaction class *Communication* was introduced. This interaction consists of a *Message* from a named *Sender*, which is send from one federate into the federation to be received by all other federates.
+
+[source, xml]
+----
+<interactionClass>
+   <name>Communication</name>
+   <sharing>Publish</sharing>
+   <transportation>HLAreliable</transportation>
+   <order>Receive</order>
+   <semantics>Communication</semantics>
+   <parameter>
+      <name>Message</name>
+      <dataType>HLAunicodeString</dataType>
+      <semantics>Contents of message</semantics>
+   </parameter>
+   <parameter>
+      <name>Sender</name>
+      <dataType>HLAunicodeString</dataType>
+      <semantics>The name of the person that sent the message.</semantics>
+   </parameter>
+</interactionClass>
+----
+
+=== The Behaviour Model
+
+While the original HelloWorld Federation behaviour design was not very strict, for the sake of this tutorial we introduced some requirements. One is, that the population of a country shall grow at a specific rate. Another one is that from time to time, each country is expected to send greeting messages. That behavior is explained in the next chapter <<2-2-hw-interoperability-badge.adoc#, HelloWorld Interoperability Badge>>

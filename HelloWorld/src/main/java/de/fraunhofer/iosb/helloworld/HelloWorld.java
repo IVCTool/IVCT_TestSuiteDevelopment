@@ -59,7 +59,6 @@ public class HelloWorld extends NullFederateAmbassador {
 	private float growthRate = 1.0003f;
 
 	private RTIambassador _rtiAmbassador;
-	private final String[] _args;
 	private InteractionClassHandle _messageId;
 	private ParameterHandle _parameterIdText;
 	private ParameterHandle _parameterIdSender;
@@ -118,7 +117,7 @@ public class HelloWorld extends NullFederateAmbassador {
 
 	public static void main(final String[] args) {
 		// initialization procedure:
-		HelloWorld hw = new HelloWorld(args);
+		HelloWorld hw = new HelloWorld();
 		// 1. if args given, use them (settingsDesignator [fedName [populationsize
 		// [numberOfCycles]]])
 		if (args.length > 0) {
@@ -135,6 +134,7 @@ public class HelloWorld extends NullFederateAmbassador {
 			if (args.length > 3) {
 				hw.numberOfCycles = Integer.parseInt(args[3]);
 			}
+			hw.settingsDesignator = "crcAddress=" + rtiHost;
 		}
 		// 2. else if environment settings are given, use them
 		else if (getEnvironmentSettings(hw)) {
@@ -152,6 +152,7 @@ public class HelloWorld extends NullFederateAmbassador {
 			try {
 				final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 				String rtiHost;
+                System.out.print("[localhost]: ");
 				rtiHost = in.readLine();
 				if (rtiHost.length() == 0) {
 					rtiHost = "localhost";
@@ -184,8 +185,7 @@ public class HelloWorld extends NullFederateAmbassador {
 		hw.run();
 	}
 
-	private HelloWorld(final String[] args) {
-		this._args = args;
+	private HelloWorld() {
 	}
 
 	private void run() {
@@ -285,7 +285,9 @@ public class HelloWorld extends NullFederateAmbassador {
 				final String message = "Hello World from " + this.myCountry;
 				messageEncoderString.setValue(message);
 				parameters.put(this._parameterIdText, messageEncoderString.toByteArray());
-				parameters.put(this._parameterIdSender, messageEncoderString.toByteArray());
+				final HLAunicodeString senderString = this._encoderFactory.createHLAunicodeString();
+				senderString.setValue(this.myCountry);
+				parameters.put(this._parameterIdSender, senderString.toByteArray());
 
 				this._rtiAmbassador.sendInteraction(this._messageId, parameters, null);
 

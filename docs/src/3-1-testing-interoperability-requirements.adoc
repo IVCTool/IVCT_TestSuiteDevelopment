@@ -1,0 +1,8 @@
+== The Test Purpose
+
+starting point is the interoperability requirement
+
+Link between test suites and badges
+
+.How to connect test suites to badges 
+image:images/BadgesAndTestsuites.png[Link between test suites and badges]

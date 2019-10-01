@@ -1,0 +1,34 @@
+== Where to start when writing a test case?
+
+
+=== Test suites
+
+- combining test cases and support libraries into one project
+- compile with gradle,
+- automate with travis
+- integrate test suites into the IVCTool deployment
+
+=== Project setup
+
+Before start coding you need to setup your project. While it is not too complex to start from scratch, it might save some time to use an exiting test suite to start with.
+
+=== Test case classes
+
+- the purpose is to test interoperability requirements
+- one test case for one requirement: this gives flexibility for combining
+- support functions can be integrated
+
+
+=== Testing the Test Cases
+
+if possible include some tests for the test cases.
+
+Its often useful to have a simple test federate along with the test suite.
+
+=== Containerize test suites
+
+A test suite will be configured into the IVCTools
+
+The important parts are the jar-files containing the test case classed.
+
+for pre-configuration docker containers are used.

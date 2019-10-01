@@ -40,6 +40,7 @@ import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
 
+import java.util.LinkedList;
 import java.util.Properties;
 
 /**
@@ -122,27 +123,30 @@ public class TC0002 extends AbstractTestCase {
         }
 
         final String message = "Hello World " + this.federateName;
-        final String testMessage = "Hello World from " + helloWorldTcParam.getSutFederate();
+        final String testMessage = "Hello World from " + getSutFederateName();
 
+        // Create fields to hold values to send
+        ParameterHandleValueMap parameters;
+        try {
+            parameters = ivct_rti.getParameterHandleValueMapFactory().create(2);
+        }
+        catch (FederateNotExecutionMember | NotConnected ex1) {
+            throw new TcInconclusive(ex1.getMessage());
+        }
+
+        // Encode the values
+        final HLAunicodeString messageEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
+        final HLAunicodeString senderEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
+        messageEncoderString.setValue(message);
+        senderEncoderString.setValue(federateName);
+
+        // Put the values into parameters
+        parameters.put(helloWorldBaseModel.getParameterIdText(), messageEncoderString.toByteArray());
+        parameters.put(helloWorldBaseModel.getParameterIdSender(), senderEncoderString.toByteArray());
+
+        helloWorldBaseModel.startSavingInteractions();
         // Loop a number of cycles and test whether the sut answers the hello world call
         for (int i = 0; i < 10; i++) {
-
-            // Create fields to hold values to send
-            ParameterHandleValueMap parameters;
-            try {
-                parameters = ivct_rti.getParameterHandleValueMapFactory().create(2);
-            }
-            catch (FederateNotExecutionMember | NotConnected ex1) {
-                throw new TcInconclusive(ex1.getMessage());
-            }
-
-            // Encode the values
-            final HLAunicodeString messageEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
-            final HLAunicodeString senderEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
-            messageEncoderString.setValue(message);
-            senderEncoderString.setValue(federateName);
-            parameters.put(helloWorldBaseModel.getParameterIdText(), messageEncoderString.toByteArray());
-            parameters.put(helloWorldBaseModel.getParameterIdSender(), senderEncoderString.toByteArray());
 
             // Send the interaction
             try {
@@ -152,26 +156,28 @@ public class TC0002 extends AbstractTestCase {
                 throw new TcInconclusive(ex1.getMessage());
             }
 
-            // Check if a hello world message has arrived
-            if (helloWorldBaseModel.getInteractionMessageStatus()) {
-                throw new TcInconclusive("Did not receive any HelloWorld message");
-            }
-
-            // Get the message
-            final String messageReceived = helloWorldBaseModel.getMessage();
-            logger.info(messageReceived);
-
-            // Test the value of the message
-            if (messageReceived.equals(testMessage) == false) {
-                throw new TcFailed("Incorrect message received: got  " + messageReceived + "  expected  " + testMessage);
-            }
-
             // Allow for some time to pass
             if (helloWorldBaseModel.sleepFor(helloWorldTcParam.getSleepTimeCycle())) {
                 throw new TcInconclusive("sleepFor problem");
             }
 
             sendTcStatus ("running", i*10+5);
+        }
+        helloWorldBaseModel.stopSavingInteractions();
+
+        // Get the saved text messages
+        LinkedList<String> savedSutTextMessages = helloWorldBaseModel.getSavedSutTextMessages(getSutFederateName());
+        if (savedSutTextMessages.isEmpty()) {
+            throw new TcInconclusive("Did not receive any HelloWorld text messages");
+        }
+
+        // Compare the text messages
+        for (String entry : savedSutTextMessages) {
+            logger.info(entry);
+            // Test the value of the message
+            if (entry.equals(testMessage) == false) {
+                throw new TcFailed("Incorrect message received: got  " + entry + "  expected  " + testMessage);
+            }
         }
     }
 

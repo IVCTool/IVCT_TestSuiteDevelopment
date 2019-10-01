@@ -17,7 +17,6 @@ limitations under the License.
 package de.fraunhofer.iosb.tc_lib_helloworld;
 
 import java.net.URL;
-import java.util.Properties;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -37,8 +36,8 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     private final int    fileNum            = 1;
     private URL[]        urls               = new URL[this.fileNum];
     private long         sleepTimeCycle     = 1000;
-    private long         sleepTimeWait      = 4000;
-    private String sutFederate;
+    private long         sleepTimeWait      = 5000;
+    private float growthRate = 1.03f;
 
 
     public HelloWorldTcParam(final String paramJson) throws TcInconclusive {
@@ -46,6 +45,21 @@ public class HelloWorldTcParam implements IVCT_TcParam {
 
     	// get FOM model
 		this.urls[0] = this.getClass().getClassLoader().getResource("HelloWorld.xml");
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject;
+			jsonObject = (JSONObject) jsonParser.parse(paramJson);
+
+			// get a String from the JSON object
+			String growthRateStr =  (String) jsonObject.get("growthRate");
+			if (growthRateStr == null) {
+                throw new TcInconclusive("The key  growthRate  was not found");
+			}
+			growthRate = Float.parseFloat(growthRateStr);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     }
 
 
@@ -53,7 +67,7 @@ public class HelloWorldTcParam implements IVCT_TcParam {
      * @return the RTI host value
      */
     public float getPopulationGrowthValue() {
-        return 1.0003f;
+        return growthRate;
     }
 
 
@@ -70,14 +84,6 @@ public class HelloWorldTcParam implements IVCT_TcParam {
      */
     public long getSleepTimeWait() {
         return this.sleepTimeWait;
-    }
-
-
-    /**
-     * @return name of sut federate
-     */
-    public String getSutFederate() {
-        return this.sutFederate;
     }
 
 

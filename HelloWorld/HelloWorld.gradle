@@ -13,17 +13,53 @@ buildscript {
     }
 }
 
-apply plugin: 'com.bmuschko.docker-java-application'
+// docker plugin
+apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+
+// import remote API plugin task groups
+import com.bmuschko.gradle.docker.tasks.*
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 mainClassName = 'de.fraunhofer.iosb.helloworld.HelloWorld'
 
-docker {
-    javaApplication {
-		baseImage = 'app-docker136.hex.tno.nl/pitch/lrc:5.4.0.0-alpine-noslf4j'
-        maintainer = 'Reinhard Herzog "reinhard.herzog@iosb.fraunhofer.de"'
-        tag = "ivct/helloworld:pi-${helloWorldVersion}"
-    }
+task dockerBuildPitchImage(type: DockerBuildImage) {
+    dependsOn 'install'
+	group = 'Docker'
+	description = 'Builds the helloworld docker image for Pitch'
+    dockerFile = project.file('Dockerfile-pi')
+    buildArgs.put('version', "${helloWorldVersion}")
+	inputDir = file('.')
+    tags.add ("ivct/helloworld:pi-${helloWorldVersion}")
 }
+
+task dockerBuildPorticoImage(type: DockerBuildImage) {
+    dependsOn 'install'
+	group = 'Docker'
+	description = 'Builds the helloworld docker image for Pitch'
+    dockerFile = project.file('Dockerfile-po')
+    buildArgs.put('version', "${helloWorldVersion}")
+	inputDir = file('.')
+    tags.add ("ivct/helloworld:po-${helloWorldVersion}")
+}
+
+task dockerBuildMakImage(type: DockerBuildImage) {
+    dependsOn 'install'
+	group = 'Docker'
+	description = 'Builds the helloworld docker image for Pitch'
+    dockerFile = project.file('Dockerfile-ma')
+    buildArgs.put('version', "${helloWorldVersion}")
+	inputDir = file('.')
+    tags.add ("ivct/helloworld:ma-${helloWorldVersion}")
+}
+
+tasks.register ("dockerBuildImage") {
+    group = 'Docker'
+    description = 'Creates docker images for RTIs'
+    dependsOn 'dockerBuildPitchImage'
+    dependsOn 'dockerBuildPorticoImage'
+    dependsOn 'dockerBuildMakImage'
+}
+
 
 dependencies {
 	compileOnly     group: 'io.github.msg134', name: 'IEEE1516e', version: ivctVersion

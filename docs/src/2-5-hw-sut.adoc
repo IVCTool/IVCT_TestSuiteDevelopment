@@ -1,8 +1,29 @@
 == Hello World
 
+=== The Conformance Statement
+
+Each *System under Test (SuT)* is defined by a *Conformance Statements (CS)*. Such a CS can be seen as the capability promise of a federate. It contains some administration information, like a unique identifier with a name, version, vendor name and a textual description. The important part from the test case point of view is the list of interoperability badges and the information to locate the federate within a HLA RTI. With the CS below the HelloWorld federate promises to be compliant to the basic HLA rules (`HLA-BASE-2019`) and to the HelloWorld federation rules (`HelloWorld-2019`)
+
+.Conformance Statement for the HelloWorld Test Federate
+[source, yaml]
+----
+{
+    "id": "hw_iosb",
+    "name": "HelloWorld Test Federate",
+    "description": "HelloWorld system under test federate for IVCT demonstration",
+    "vendor": "Fraunhofer IOSB",
+    "version": "2.0.0"
+    "badge": ["HLA-BASE-2019", "HelloWorld-2019"],
+    "settingsDesignator": "",
+    "federationName": "HelloWorld",
+    "sutFederateName": "A",
+}
+----
+
+
 === Country Concept
 
-The idea behind the hello world program is that it represents a country with a population growing at a fixed rate. The country has an initial population which will increase by the fixed rate for each cycle of the program loop. At the end of each cycle, the program will announce the current population. The population value will be sent via an HLA `updateAttributeValue` request. A second functionality is that the hello world program will send a welcome message as a HLA `sendInteraction` with its name upon demand. The program has a user defined country name, starting population and number of cycles to run. The growth rate is fixed at 3% per cycle (in a future version this could be made configurable).
+The idea behind the hello world program is that it represents a country with a population growing at a fixed rate. The country has an initial population which will increase by the fixed rate for each cycle of the program loop. At the end of each cycle, the program will announce the current population. The population value will be sent via an HLA `updateAttributeValue` request. A second functionality is that the hello world program will send a welcome message as a HLA `sendInteraction` with its name upon demand. The program has a user defined country name, starting population and number of cycles to run. The growth rate is on a configurable percentage cycle.
 
 === HLA Federation Management Services
 
@@ -106,7 +127,13 @@ The federate name of the SUT is known from the Conformance Statement and thus an
 
 === Start Dialog
 
-When HelloWorld is started, the program will ask for some parameters from the user. These parameters will either change the address required to find the RTI or the parameters that affect the country name, starting population or number of cycles.
+The HelloWorld federate is designed to be started either in
+
+. interactive mode to ask for configuration details,
+. with start parameters defining the connection information,
+. or with environment variables for configuration details.
+
+When HelloWorld is started in interactive mode, the program will ask for some parameters from the user. These parameters will either change the address required to find the RTI or the parameters that affect the country name, starting population or number of cycles.
 
 ----
 Enter the CRC address, such as
@@ -132,3 +159,7 @@ The desired starting population will be entered now. The default value of `100` 
 The desired number of cycles required is entered now. The default value of `1000` will used when no other value is entered.
 
 The program will terminate itself when the number of cycles has been reached.
+
+=== Starting HelloWorld as docker Image
+
+The HelloWorld federate is available as a docker image as well. The configuration and start procedure is explained in https://github.com/IVCTool/IVCT_Operation/blob/develop/docs/src/IVCT-GettingStarted-HelloWorld.adoc[Testing the Hello World application]
