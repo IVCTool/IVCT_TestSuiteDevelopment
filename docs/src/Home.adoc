@@ -36,6 +36,6 @@ In the third part of this tutorial there are set of reference documents to give 
 CAUTION: rework required
 
 * <<Testsuite-Development-and-Best-Practices-for-IVCT-Usage.adoc#,Testsuite Development and Best Practices for IVCT Usage>>
-
+* <<Executable-Test-Case-Development-Rules.adoc#, Executable Test Case Development Rules>>
 
 The general test case design guidance can be found in the IVCT_Framework wiki (https://github.com/IVCTool/IVCT_Framework/wiki/TcDevelGuide).

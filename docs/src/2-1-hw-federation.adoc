@@ -4,6 +4,15 @@ The HelloWorld federation was presented at the very beginning of the HLA develop
 
 The idea is simple and it follows the HLA federation paradigm in a straight forward way. Each instance of the helloWorld application implements a *Country* object, which is represented by its *Ambassador*, and it is joining a *HelloWorld* federation. So the HelloWorld federation is a set of countries, where each country is simulated by one helloWorld application.
 
+=== The Behavior Model
+
+While the original HelloWorld Federation behavior design was not very strict, for the sake of this tutorial we introduced two interoperability requirements that require specific behavior pattern.
+
+* One is, that the population of a country shall grow at a specific rate. More specifically the difference between two updates of the countries population attribute shall greater than null, but less than given percentage. 
+
+* Another one is that each country is expected to respond to a greeting messages along some predefined "diplomatic" rules. Technically that means to respond to *Communication* interaction with a response interaction in a predefined format.
+
+These interoperability requirements are defined in the *HelloWorld* badge, which is explained in the next chapter <<2-2-hw-interoperability-badge.adoc#, HelloWorld Interoperability Badge>>
 
 === The Country Object
 
@@ -60,7 +69,3 @@ To make the HelloWorld federation a bit more interesting, the interaction class 
    </parameter>
 </interactionClass>
 ----
-
-=== The Behaviour Model
-
-While the original HelloWorld Federation behaviour design was not very strict, for the sake of this tutorial we introduced some requirements. One is, that the population of a country shall grow at a specific rate. Another one is that from time to time, each country is expected to send greeting messages. That behavior is explained in the next chapter <<2-2-hw-interoperability-badge.adoc#, HelloWorld Interoperability Badge>>
