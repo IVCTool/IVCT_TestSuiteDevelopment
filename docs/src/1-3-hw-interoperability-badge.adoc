@@ -1,11 +1,6 @@
 == The HelloWorld Interoperability Badge
 
-As explained in the HelloWorld federation section, the original definition did not contain any requirements on _correct_ behavior. So anything a helloWorld federate could do or not do, would be fine. It could create a Country object or it could not. It could create one or many objects. It could give them a Name or it could not. It could let the Population grow or shrink. It could send Messages or it could not.
-
-While this is a perfectly reasonable approach to demonstrate the HLA features, it might be not enough to ensure that HelloWorld federates from different developers are building a well interworking federation. If federates shall comply to certain interoperability patterns, it is important that these patterns are unambiguously identified.
-
-For that purpose the IVCTool is using the concept of an *Interoperability Badge*. Such a badge is a named collection of *Interoperability Requirements (IR)*. Each IR is defined by its unique identifier and it has a description explaining the requirement. It is important that the requirement description is unambiguous und testable.
-
+The *HelloWorld Interoperability Badge* Badge is mainly a demonstration badge. It has no official relevance, it is just designed for the sake of this tutorial. A badge is a mainly a named collection of *Interoperability Requirements (IR)*. Each IR is defined by its unique identifier and it has a description explaining the requirement. It is important that the requirement description is unambiguous und testable. The two interoperability requirements are referring to the earlier explained behavior pattern (see <<2-1-hw-federation.adoc#,The Behavior Model>>)   
 
 
 .The HelloWorld-2019 Interoperability Badge
@@ -37,7 +32,7 @@ For that purpose the IVCTool is using the concept of an *Interoperability Badge*
 }
 ----
 
-Beside the definition JSON file, a interoperability badge will also have a graphical representation. The figure below shows is an example for such a badge logo. It is of course not a official badge, but only an example how such logo would look like. 
+Beside the definition JSON file, a interoperability badge will also have a graphical representation. The figure below shows is an example for such a badge logo. It is of course not a official badge, but only an example how such logo would look like.
 
 .HelloWorld Compliance Badge
 image::https://github.com/IVCTool/IVCT_Framework/blob/TestSuites/RuntimeConfig/Badges/HelloWorld-2019.png?raw=true[HelloWorld, 300]

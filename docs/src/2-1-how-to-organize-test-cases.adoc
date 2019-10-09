@@ -3,6 +3,7 @@
 
 === Test suites
 
+- required structure for test suite is lib folder with test case libraries and a bin folder was working directory for executing test cases (that is the gradle distribution structure)
 - combining test cases and support libraries into one project
 - compile with gradle,
 - automate with travis
@@ -10,7 +11,9 @@
 
 === Project setup
 
-Before start coding you need to setup your project. While it is not too complex to start from scratch, it might save some time to use an exiting test suite to start with.
+Before start coding you need to setup your project. While it is not too complex to start from scratch, it might save some time to use an existing test suite to start with.
+
+...get copy of TS_HelloWorld...download zip to get clean copy without git links...rename folder...adopt settings.gradle...add to github (optional)...
 
 === Test case classes
 

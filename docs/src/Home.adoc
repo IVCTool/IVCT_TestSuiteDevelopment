@@ -11,13 +11,14 @@ In the third part of this tutorial there are set of reference documents to give 
 == Getting Started
 
 * <<1-1-what-is-a-test-case.adoc#, What is a test case?>>
-* <<1-2-how-to-organize-test-cases.adoc#, Where to start writing a test cases?>>
+* <<1-2-hw-federation.adoc#, The HelloWorld Federation Concept>>
+* <<1-3-hw-interoperability-badge.adoc#, The Interoperbility Badge>>
+* <<1-4-test-suite.adoc#, Test Suite Definition>>
 
 
 == The TS_HelloWorld Example
 
-* <<2-1-hw-federation.adoc#, The HelloWorld Federation Concept>>
-* <<2-2-hw-interoperability-badge.adoc#, The Interoperbility Badge>>
+* <<2-1-how-to-organize-test-cases.adoc#, Where to start writing a test cases?>>
 * <<2-3-hw-test-case-0001.adoc#, The HelloWorld Test Cases TC0001 - Growing Rate Test>>
 * <<2-4-hw-test-case-0002.adoc#, The HelloWorld Test Cases TC0002 - Country Interaction Test>>
 * <<2-5-hw-sut.adoc#, The helloWorld System under Test>>

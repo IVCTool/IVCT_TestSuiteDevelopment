@@ -6,9 +6,13 @@ The idea is simple and it follows the HLA federation paradigm in a straight forw
 
 === The Behavior Model
 
-While the original HelloWorld Federation behavior design was not very strict, for the sake of this tutorial we introduced two interoperability requirements that require specific behavior pattern.
+The original definition in the early HelloWorld implementations, there are no strict requirements on _correct_ behavior. So anything a helloWorld federate could do or not do, would be fine. It could create a Country object or it could not. It could create one or many objects, or it could create none. It could give them a Name or it could not. It could let the Population grow or shrink. It could send Messages or it could not.
 
-* One is, that the population of a country shall grow at a specific rate. More specifically the difference between two updates of the countries population attribute shall greater than null, but less than given percentage. 
+While this is a perfectly reasonable approach to demonstrate the HLA features, it might be not enough to ensure that HelloWorld federates from different developers are building a well interworking federation. If federates shall comply to certain interoperability patterns, it is important that these patterns are unambiguously identified.
+
+For the sake of this tutorial we introduced two interoperability requirements to define a specific behavior pattern.
+
+* One is, that the population of a country shall grow at a specific rate. More specifically the difference between two updates of the countries population attribute shall greater than null, but less than given percentage.
 
 * Another one is that each country is expected to respond to a greeting messages along some predefined "diplomatic" rules. Technically that means to respond to *Communication* interaction with a response interaction in a predefined format.
 
