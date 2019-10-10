@@ -1,37 +1,70 @@
 == Where to start when writing a test case?
 
+As explained earlier, conceptually the starting point of every test cases is an *Interoperability Requirement (IR)*. That can be seen as the specification for the test case implementation. In some cases there might be *Abstract Test Case* provided for a IR. That will be the blueprint of the code you have to write, to create an *Executable Test Case (ETC)*.
 
-=== Test suites
+There are some requirements an ETC has to fulfill, in order to be useable by the IVCTool test engine. These are things like the implement the IVCTool test case library functions, as the interface class `AbstractTestCase`, or the way it is packaged into a jar file and containerized into a docker image. While you are free how to do this, we recommend to follow the example of the HelloWorld test suite, in order to avoid a confusing variety of test suites structures to be maintained for the IVCTool installations.
 
-- required structure for test suite is lib folder with test case libraries and a bin folder was working directory for executing test cases (that is the gradle distribution structure)
-- combining test cases and support libraries into one project
-- compile with gradle,
-- automate with travis
-- integrate test suites into the IVCTool deployment
+In the next steps we will walk you through the steps to create a test suite.
 
-=== Project setup
+=== Step 1: Create a Gradle Test Suite Project
 
-Before start coding you need to setup your project. While it is not too complex to start from scratch, it might save some time to use an existing test suite to start with.
+The IVCTool framework software is build with the link:https://gradle.org/[Gradle Build Tool]. There are several great link:https://gradle.org/guides/[Tutorials and Guides] to learn more about using gradle, and we encourage you got have a look to get some basic understanding on how this build tool works.
 
-...get copy of TS_HelloWorld...download zip to get clean copy without git links...rename folder...adopt settings.gradle...add to github (optional)...
+As a quickstart you can use the TS_HelloWorld project as template to start with. An easy way to do this, is to get a copy of the link:https://github.com/IVCTool/TS_HelloWorld[TS_HelloWorld] project. Use the *DownloadZIP* feature, to get clean copy without any references to the git project. That is important, because you don't want to mess with the original github repository. Later on you can create your own github repository, but for that you should start without any references to TS_HelloWorld.
 
-=== Test case classes
+Your copy should contain the following items:
 
-- the purpose is to test interoperability requirements
-- one test case for one requirement: this gives flexibility for combining
-- support functions can be integrated
+- `TS_HelloWorld/` : This is the folder with test cases.
+- `HelloWorld/` : This is folder with an implementation of the test federate.
+- `docs/` : folder with documentation files.
+- `gradle/` : The gradle wrapper code
+- `build.gradle` : The gradle build script
+- `settings.gradle` : The gradle build settings for the subprojects
+- `gradlew` : The gradle wrapper unix start script
+- `gradlew.bat` : The gradle wrapper windows start script
+- `LICENSE` : The license to define the code availability
+- `README.md` : The top level documentation
+
+.IMPORTANT: If you are using the TS_HelloWorld test suite as a template to create your own test suite, you need to adjust the naming of some folders, as well as the gradle scripts.
 
 
-=== Testing the Test Cases
 
-if possible include some tests for the test cases.
+=== Step 2: Adjust the Test Cases
 
-Its often useful to have a simple test federate along with the test suite.
+The test cases are located in the TS_HelloWorld subproject folder. The main items here are the `src` folder with the source code, the `TS_HelloWorld.gradle` script to build distribution packages and a `Dockerfile` for the containerized deployment.
 
-=== Containerize test suites
+==== Step 2.a: Test Case Parameters
 
-A test suite will be configured into the IVCTools
+A test cases may need some parameters to specify the test behavior for a given System under Test (SuT). In the case of the HelloWorld test suite it is the growing rate of a country population.
 
-The important parts are the jar-files containing the test case classed.
+These parameters will be set by the IVCTool operator, before test case is started. For that purpose the IVCTool user interface needs to know which parameters are required, i.e. it needs a template for the parameters. This template must be provided by the test suite as a resource file with the name `TS_HelloWorld/src/main/resources/TcParams.json`.
 
-for pre-configuration docker containers are used.
+If other resource are required for some test case, they need to be added into the resource folder. For the HelloWorld test suite this is the FOM file for the HelloWorld federation.
+
+The Gradle build script will include all resource files into the distribution package. The IVCTool will then copy these resource files of allow the operator to edit the values before starting a test case.
+
+==== Step 2.b: Test Case Implementation
+
+The actual implementation of the test cases is located in the `TS_HelloWorld/src/main/java` folder. Inside this folder you will find subfolders with the java code packages. The HelloWorld test suite is using packages name:
+
+* `de/fraunhofer/iosb/tc_helloworld` : For the two test cases TC0001 and TC0002.
+* `de/fraunhofer/iosb/tc_lib_helloworld` : For some helper classed used by both test cases.
+
+==== Step 2.c: Build the Test Cases
+
+To build the test cases you are using the gradle wrapper command. The build tasks to be used can be seen the command `gradlew tasks`. The most important ones are:
+
+* gradlew build : This task will compile the code and it will create a distribution package
+* gradlew dockerBuildImage: This task will create a docker image in your locale docker engine.
+
+=== Step 3: Deploy the Test Suite container into a IVCTool installation
+
+The test cases can not be executed by its own. They need to be deployed into a run-time configuration in a IVCTool installation. Currently where are two different ways to setup such a run-time configuration. It can be included into a docker configuration, or it can used in non-containerized version directly on a file system. The docker option is the most convenient way to distribute a test suite and the plain file installation is preferable in a development environment.
+
+==== Step 3.a: Docker Deployment
+
+t.b.c.
+
+==== Step 3.b: Plain File System Deployment
+
+t.b.c.
