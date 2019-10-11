@@ -5,7 +5,7 @@
 
 # TS_HelloWorld
 
-The TS_HelloWorld is a sample test suite to explain the concepts for writing test cases for the IVCTool. It includes a small two simple test cases, combined into the TS_HelloWorld test suite, and a simple helloworld federate to run against the test cases. 
+The TS_HelloWorld is a sample test suite to explain the concepts for writing test cases for the IVCTool. It includes a small two simple test cases, combined into the TS_HelloWorld test suite, and a simple helloworld federate to run against the test cases.
 
 # Test Case Tutorial
 
@@ -19,7 +19,7 @@ In the third part of this tutorial there are set of reference documents to give 
 
 ## Getting Started
 
-* [What is a test case?](docs/src/1-1-what-is-a-test-case.adoc) 
+* [What is a test case?](docs/src/1-1-what-is-a-test-case.adoc)
 * [The HelloWorld Federation Concept](docs/src/1-2-hw-federation.adoc)
 * [The Interoperbility Badge](docs/src/1-3-hw-interoperability-badge.adoc)
 * [Test Suite Definition](docs/src/1-4-test-suite.adoc)
@@ -31,7 +31,7 @@ In the third part of this tutorial there are set of reference documents to give 
 * [The HelloWorld Test Cases TC0001 - Growing Rate Test](docs/src/2-3-hw-test-case-0001.adoc)
 * [The HelloWorld Test Cases TC0002 - Country Interaction Test](docs/src/2-4-hw-test-case-0002.adoc)
 * [The helloWorld System under Test](docs/src/2-5-hw-sut.adoc)
-* [The Test Suite Project Structure](docs/src/2-6-ts-hw-structure.adoc)
+* [The Test Suite Definition](docs/src/2-6-ts-hw-structure.adoc)
 
 ## Further Reading
 

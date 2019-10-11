@@ -27,7 +27,7 @@ Your copy should contain the following items:
 
 .IMPORTANT: If you are using the TS_HelloWorld test suite as a template to create your own test suite, you need to adjust the naming of some folders, as well as the gradle scripts.
 
-
+-
 
 === Step 2: Adjust the Test Cases
 
@@ -54,17 +54,54 @@ The actual implementation of the test cases is located in the `TS_HelloWorld/src
 
 To build the test cases you are using the gradle wrapper command. The build tasks to be used can be seen the command `gradlew tasks`. The most important ones are:
 
-* gradlew build : This task will compile the code and it will create a distribution package
-* gradlew dockerBuildImage: This task will create a docker image in your locale docker engine.
+* `gradlew build` : This task will compile the code and it will create the libraries
 
 === Step 3: Deploy the Test Suite container into a IVCTool installation
 
-The test cases can not be executed by its own. They need to be deployed into a run-time configuration in a IVCTool installation. Currently where are two different ways to setup such a run-time configuration. It can be included into a docker configuration, or it can used in non-containerized version directly on a file system. The docker option is the most convenient way to distribute a test suite and the plain file installation is preferable in a development environment.
+The test cases can not be executed as stand-alone applications. They need to be deployed into a run-time configuration in a IVCTool installation. Currently where are two different ways to setup such a run-time configuration. It can be included into a docker configuration, or it can used in non-containerized version directly on a file system. The docker option is the most convenient way to distribute a test suite and the plain file installation is preferable in a development environment.
 
 ==== Step 3.a: Docker Deployment
 
-t.b.c.
+If you are using the IVCTool installation on a docker based installation, you need to build the test suite as a docker container.
+
+* `gradlew dockerBuildImage`: This task will create a docker image in your locale docker engine.
+
+This will create a docker image which will be used in the compose files to startup the IVCTool
+
+----
+$ docker image ls| grep ts-helloworld
+ivct/ts-helloworld                           2.0.0                     a76c25bc09a7        17 minutes ago      1.18MB
+----
+
+Detailed information on docker based deployment of the IVCTool can be found in the https://github.com/IVCTool/IVCT_Operation/blob/develop/docs/src/home.adoc[IVCTool/IVCT_Operation] repository.
 
 ==== Step 3.b: Plain File System Deployment
 
-t.b.c.
+* `gradlew distTar`: This task will create a tar archive with all lib files.
+* `gradlew distZip`: This task will create a zip archive with all lib files.
+
+
+The content of these archives should be the following:
+----
+./TS_HelloWorld-2.0.0:
+total 0
+drwxr-xr-x 1 hzg 1049089 0 Okt 11 11:37 ./
+drwxr-xr-x 1 hzg 1049089 0 Okt 11 11:37 ../
+drwxr-xr-x 1 hzg 1049089 0 Okt 11 11:37 bin/
+drwxr-xr-x 1 hzg 1049089 0 Okt 11 11:37 lib/
+
+./TS_HelloWorld-2.0.0/bin:
+total 12
+drwxr-xr-x 1 hzg 1049089    0 Okt 11 11:37 ./
+drwxr-xr-x 1 hzg 1049089    0 Okt 11 11:37 ../
+-rwxr-xr-x 1 hzg 1049089 5885 Okt 11 11:01 TS_HelloWorld*
+-rw-r--r-- 1 hzg 1049089 2930 Okt 11 11:01 TS_HelloWorld.bat
+
+./TS_HelloWorld-2.0.0/lib:
+total 20
+drwxr-xr-x 1 hzg 1049089     0 Okt 11 11:37 ./
+drwxr-xr-x 1 hzg 1049089     0 Okt 11 11:37 ../
+-rw-r--r-- 1 hzg 1049089 16446 Okt 11 11:01 TS_HelloWorld-2.0.0.jar
+----
+
+The extracted archive need to be deployed into IVCTool runtime folder for the test suites. The location of this folder is defined by `IVCT_TS_HOME_ID` setting, either in your IVCT properties file or as environment variable (see https://github.com/IVCTool/IVCT_Framework/blob/development/docs/src/2-8-IVCT_Configuration.adoc[Configuration of the IVCTool] for more information).
