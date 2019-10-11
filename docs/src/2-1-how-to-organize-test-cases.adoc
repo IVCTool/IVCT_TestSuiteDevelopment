@@ -84,24 +84,13 @@ Detailed information on docker based deployment of the IVCTool can be found in t
 The content of these archives should be the following:
 ----
 ./TS_HelloWorld-2.0.0:
-total 0
-drwxr-xr-x 1 hzg 1049089 0 Okt 11 11:37 ./
-drwxr-xr-x 1 hzg 1049089 0 Okt 11 11:37 ../
-drwxr-xr-x 1 hzg 1049089 0 Okt 11 11:37 bin/
-drwxr-xr-x 1 hzg 1049089 0 Okt 11 11:37 lib/
+bin/  lib/
 
 ./TS_HelloWorld-2.0.0/bin:
-total 12
-drwxr-xr-x 1 hzg 1049089    0 Okt 11 11:37 ./
-drwxr-xr-x 1 hzg 1049089    0 Okt 11 11:37 ../
--rwxr-xr-x 1 hzg 1049089 5885 Okt 11 11:01 TS_HelloWorld*
--rw-r--r-- 1 hzg 1049089 2930 Okt 11 11:01 TS_HelloWorld.bat
+TS_HelloWorld*  TS_HelloWorld.bat
 
 ./TS_HelloWorld-2.0.0/lib:
-total 20
-drwxr-xr-x 1 hzg 1049089     0 Okt 11 11:37 ./
-drwxr-xr-x 1 hzg 1049089     0 Okt 11 11:37 ../
--rw-r--r-- 1 hzg 1049089 16446 Okt 11 11:01 TS_HelloWorld-2.0.0.jar
+TS_HelloWorld-2.0.0.jar
 ----
 
 The extracted archive need to be deployed into IVCTool runtime folder for the test suites. The location of this folder is defined by `IVCT_TS_HOME_ID` setting, either in your IVCT properties file or as environment variable (see https://github.com/IVCTool/IVCT_Framework/blob/development/docs/src/2-8-IVCT_Configuration.adoc[Configuration of the IVCTool] for more information).
