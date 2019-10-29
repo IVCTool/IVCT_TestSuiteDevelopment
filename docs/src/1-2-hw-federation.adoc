@@ -6,7 +6,7 @@ The idea is simple and it follows the HLA federation paradigm in a straight forw
 
 === The Behavior Model
 
-The original definition in the early HelloWorld implementations, there are no strict requirements on _correct_ behavior. So anything a helloWorld federate could do or not do, would be fine. It could create a Country object or it could not. It could create one or many objects, or it could create none. It could give them a Name or it could not. It could let the Population grow or shrink. It could send Messages or it could not.
+The original definition in the early HelloWorld implementations, there are no strict requirements on _correct_ behavior. So almost anything a helloWorld federate could do or not do, would be fine. It could create a Country object or it could not. It could create one or many objects, or it could create none. It could give them a Name or it could not. It could let the Population grow or shrink. It could send Messages or it could not.
 
 While this is a perfectly reasonable approach to demonstrate the HLA features, it might be not enough to ensure that HelloWorld federates from different developers are building a well interworking federation. If federates shall comply to certain interoperability patterns, it is important that these patterns are unambiguously identified.
 

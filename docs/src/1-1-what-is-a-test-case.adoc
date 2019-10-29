@@ -8,7 +8,7 @@ IRs are as simple and atomic as possible, in order to be testable. They are comp
 
 Test Cases may test one or more IRs, depending on the complexity of the IR and also on the dependency between IRs. It is considered as good practices to have one test case per IR. That reduces the complexity of the tests and provides more flexibility for the composition of badges.
 
-The figure below shows links between badges, IR and TC. For deployment and maintaince reasons, the test cases are structured witin *Test Suites (TS)*. A TS is individual component, normally containerized in a docker image, and linked to the IVCTool.
+The figure below shows links between badges, IR and TC. For deployment and maintenance reasons, the test cases are structured within *Test Suites (TS)*. A TS is individual component, normally containerized in a docker image, and linked to the IVCTool.
 
 .Link between test suites and badges
 image:images/BadgesAndTestsuites.jpg[Link between test suites and badges]
@@ -23,7 +23,7 @@ The TC will be executed in a process called *Test Case Runner*. The runner is a 
 
 The figure below shows the Test Case and its interfaces. Technically a test cases is just a federate like the SuT. It connects to the HLA Run-Time Infrastucture (RTI) like any other federate. The only difference is, that the TC will use a slightly extended version of the *Local RTI Component (LRC)* Interface. The LRC is extended to provide protocol information for each interface method.
 
-.Test Case Interfaces
+.The Test Case Federation
 image:images/TestCaseInterface.jpg[Test Case Interfaces]
 
 The other interface a TC needs to implement is the *Abstract Test Case*. With that interface the test case runner actually controls the test case execution, like prepare, execute and cleanup.
