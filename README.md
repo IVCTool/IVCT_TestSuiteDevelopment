@@ -28,6 +28,7 @@ In the third part of this tutorial there are set of reference documents to give 
 ## The TS_HelloWorld Example
 
 * [Where to start writing a test cases?](docs/src/2-1-how-to-organize-test-cases.adoc)
+* [How to write a test case](docs/src/2-2-2-2-how-to-write-a-test-case.adoc)
 * [The HelloWorld Test Cases TC0001 - Growing Rate Test](docs/src/2-3-hw-test-case-0001.adoc)
 * [The HelloWorld Test Cases TC0002 - Country Interaction Test](docs/src/2-4-hw-test-case-0002.adoc)
 * [The helloWorld System under Test](docs/src/2-5-hw-sut.adoc)

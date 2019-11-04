@@ -1,0 +1,71 @@
+== How to write a Test Case?
+
+=== What is a test case
+
+As mentioned earlier, a test case is basically a standard federate, that joins a federation with the System under Test (SuT). The only thing that makes it to an test case, is the fact that it implements the 'AbstractTestCase' interface. This interface defines a standardized way to configure, initialize, prepare, execute and resign the test case, and to communicate the test progress with the IVCTool operator.
+
+The 'AbstractTestCase' is a abstract class that defines some abstract interface methods to be implemented by the test case, and it provides several methods to be inherited by the test case and to be used by the test engine.
+
+=== Interface Methods you need to implement
+
+Most of the test case logic is already implemented and will be explained in the next chapter. But there are four methods, each test case developer need to implement in order to have a working test case.
+
+The first method is a support service for the IVCTool operator. It is required to inform the operator about the test purpose. The test case developer is requested to prepare a log message to explain the test purpose and possibly any requirements on the general setup of the test. As an example this may be precondition of the test, like the requirement for the SuT to join the federation after the test case, in order to test the join behavior.
+
+The test engine will call this method before the test is started.
+
+[source, java]
+----
+protected abstract void logTestPurpose(final Logger logger);
+----
+
+The test engine will execute the test in three steps. First it will execute the 'preambleAction' method, second it will perform the test by executing the 'performTest' method, and finally it will finish the test by executing the 'postableAction'.
+
+The 'preambleAction' is meant to prepare the test by setting up the environment. This may include creating of joining the federation and creating objects to be used for the test. If anything goes wrong in the preamble action, the 'TcInconclusive' exception shall be raised. As the preamble action is not considered part of the test purpose, no passed of failed verdict is permitted.
+
+[source, java]
+----
+protected abstract void preambleAction(final Logger logger)
+throws TcInconclusive;
+----
+
+The main part of each test is supposed to be implemented in the 'performTest' method. The test case developer may do anything a HLA-Federate can do. It is not strictly required but considered as good practice, to inform the IVCTool operator about the progress of the test. This can be done by writing log messages to the 'logger' instance, of it can be done by calling the 'sendTcStatus' method with a short status message and a estimation of the test case completion.
+
+In case anything goes wrong during the test execution, the test case developer need to decide if it was caused by an invalid behavior of the SuT, or by anything else. Invalid behavior shall be indicated by raising a 'TcFaild' exception. Other issues shall be reported by the 'TcInconclusive' exception.
+
+[source, java]
+----
+protected abstract void performTest(final Logger logger)
+throws TcInconclusive, TcFailed;
+----
+
+After performing the test, the test case shall cleanup any artifacts it may have created during the test. Follow-on test cases shall not be disturbed by any leftovers of the preceding test case. This is equally important of the test case may have interrupted its normal operation sequence with an exception. This may be done in the 'postambleAction' method. This is also the place to perform any evaluations of the test results
+
+[source, java]
+----
+protected abstract void postambleAction(final Logger logger)
+throws TcInconclusive;
+----
+
+In case all test methods do finish without any exceptions, the test is considered to be 'PASSED'.
+
+Each method is provided with a Logger object, to be used for any log message the test case may want to create.
+
+=== Inherited Methods used by the Test Engine
+
+In order to provide the test case with configuration information about the federation connection, there are several setter and getter methods. These methods are inherited from the 'AbstractTestCase' class. Changing these methods should not be necessary.
+
+[source, java]
+----
+public String getTcName()
+public void setTcName(String tcName)
+
+public String getSutName()
+public void setSutName(String sutName)
+
+public void setSettingsDesignator(String settingsDesignator)
+public void setFederationName(String federationName)
+public void setSutFederateName(String sutFederateName)
+public String getSutFederateName()
+
+----
