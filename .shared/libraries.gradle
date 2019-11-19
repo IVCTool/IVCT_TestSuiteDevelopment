@@ -12,7 +12,7 @@ ext {
         ivctVersion = '2.1.1'
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ HelloWorld settings
-		helloWorldVersion = '2.0.0'
+		helloWorldVersion = '2.0.1'
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
         junitVersion = '4.+'

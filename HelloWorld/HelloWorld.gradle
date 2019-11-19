@@ -29,7 +29,7 @@ task dockerBuildPitchImage(type: DockerBuildImage) {
     dockerFile = project.file('Dockerfile-pi')
     buildArgs.put('version', "${helloWorldVersion}")
 	inputDir = file('.')
-    tags.add ("ivct/helloworld:pi-${helloWorldVersion}")
+    tags.add ("ivct/helloworld:pi-bare-${helloWorldVersion}")
 }
 
 task dockerBuildPorticoImage(type: DockerBuildImage) {

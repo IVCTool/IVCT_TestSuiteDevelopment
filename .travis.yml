@@ -13,7 +13,7 @@ before_install:
   # the following pull commands are required because gradle docker task behaviour
   # are not supporting multible image builds within one project
   - docker pull app-docker136.hex.tno.nl/vtmak/lrc:4.5f-alpine
-  - docker pull app-docker136.hex.tno.nl/pitch/lrc:5.4.0.0-alpine-noslf4j
+  - docker pull app-docker136.hex.tno.nl/pitch/lrc:5.4.3.0-alpine-nolib
   - docker pull app-docker136.hex.tno.nl/portico/lrc:nightly-20160528-alpine
 
 install: gradle install dockerBuildImage
@@ -26,7 +26,8 @@ script:
 # tag and push all rti specfic helloworld images (Pitch, Mak, Portico)
 - docker tag ivct/helloworld:pi-$VERSION ivct/helloworld:pi-$TRAVIS_BRANCH-latest
 - docker tag ivct/helloworld:po-$VERSION ivct/helloworld:po-$TRAVIS_BRANCH-latest
-- docker tag ivct/helloworld:ma-$VERSION ivct/helloworld:ma-$TRAVIS_BRANCH-latest
+# do not publish MäK image until IPC issues are solved
+# - docker tag ivct/helloworld:ma-$VERSION ivct/helloworld:ma-$TRAVIS_BRANCH-latest
 - docker push ivct/helloworld
 
 before_cache:
