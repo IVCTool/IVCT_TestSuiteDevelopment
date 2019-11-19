@@ -1,7 +1,7 @@
 | Branch | Build status |
 | ------ | ------------ |
-| Master | [![Build Status master branch](https://travis-ci.org/IVCTool/TS_HelloWorld.svg?branch=master)](https://travis-ci.org/IVCTool/TS_HelloWorld) |
-| Development | [![Build Status development branch](https://travis-ci.org/IVCTool/TS_HelloWorld.svg?branch=development)](https://travis-ci.org/IVCTool/TS_HelloWorld) |
+| Master | [![Build Status master branch](https://travis-ci.org/IVCTool/IVCT_TestSuiteDevelopment.svg?branch=master)](https://travis-ci.org/IVCTool/IVCT_TestSuiteDevelopment) |
+| Development | [![Build Status development branch](https://travis-ci.org/IVCTool/IVCT_TestSuiteDevelopment.svg?branch=development)](https://travis-ci.org/IVCTool/IVCT_TestSuiteDevelopment) |
 
 # IVCT_TestSuiteDevelopment
 
@@ -25,7 +25,7 @@ In the third part of this tutorial there are set of reference documents to give 
 * [Test Suite Definition](docs/src/1-4-test-suite.adoc)
 
 
-## The TS_HelloWorld Example
+## The IVCT_TestSuiteDevelopment Example
 
 * [Where to start writing a test cases?](docs/src/2-1-how-to-organize-test-cases.adoc)
 * [How to write a test case](docs/src/2-2-how-to-write-a-test-case.adoc)
