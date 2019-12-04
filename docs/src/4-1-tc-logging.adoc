@@ -1,0 +1,37 @@
+== Test Case Logging
+
+=== How does it work?
+
+HLA API instrumentation
+
+test case logging via logger provided by engine
+
+Log level can be set via user interface
+
+=== Meaning of log levels
+
+- trace: Can be very detailed information about the program execution.
+- debug: Only to be used while developing test cases.
+- info: Standard level for information about the test case execution status.
+- warn: Information with raised awareness level. This level shall be used for log messages which are not considered as the 'normal' test case execution. But they are not considered as an error.
+- error: The error level shall be used for messages which are indicating test case error.
+
+=== Example
+
+The test case log is formatted as JSON-File
+
+.Test Case Log File
+----
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036040,"event":"TestEngine:onMessageConsumer:run: tsRunFolder is \/root\/conf\/TestSuites\/TS_HLA_EncodingRulesTester-2.0.0\/bin","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036040,"event":"TestEngine:onMessageConsumer:run: setCurrentDirectory true","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036040,"event":"TestEngine:onMessageConsumer:run: TC DIR is \/root\/conf\/TestSuites\/TS_HLA_EncodingRulesTester-2.0.0\/bin","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036040,"event":"TestEngine:onMessageConsumer:run: The test case class is: de.fraunhofer.iosb.tc_encodingrulestester.TC0002","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036041,"event":"Test Case Started","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036041,"event":"\nTEST CASE GLOBAL VARIABLES -------------------------------------- BEGIN\nSUT Name: vrf\nSUT Federate Name: VRF\/UG\nSUT Federation Name: TheWorld\nsettingsDesignator: \nTEST CASE GLOBAL VARIABLES -------------------------------------- END","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036041,"event":"\nTEST CASE PARAMETERS -------------------------------------- BEGIN\n{\"somFiles\":[{\"fileName\":\"\\\/root\\\/conf\\\/IVCTsut\\\/vrf\\\/TS-HLA-Encoding-2019\\\/BasicSimpleTypes.xml\"},{\"fileName\":\"\\\/root\\\/conf\\\/IVCTsut\\\/vrf\\\/TS-HLA-Encoding-2019\\\/RPR_SOM_v2.0_1516-2010.xml\"}],\"fomFiles\":[{\"fileName\":\"\\\/root\\\/conf\\\/IVCTsut\\\/vrf\\\/TS-HLA-Encoding-2019\\\/RPR_FOM_v2.0_1516-2010.xml\"},{\"fileName\":\"\\\/root\\\/conf\\\/IVCTsut\\\/vrf\\\/TS-HLA-Encoding-2019\\\/BasicSimpleTypes.xml\"}],\"sleepTestTimeWaitSeconds\":\"60\"}\nTEST CASE PARAMETERS -------------------------------------- END","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"WARN","time":1575019036047,"event":"DISPLAY SOME HELPER VERSION NUMBER TO CONFIRM VERSION USED: 2019-01-04T15:00","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036047,"event":"\n---------------------------------------------------------------------\nTEST PURPOSE: Test if a federate correctly encodes the attribute and parameter data\nTEST PURPOSE: fields\nTEST PURPOSE: Use the SOM files to discover which classes the federate publishes and\nTEST PURPOSE: subscribe to these. For each attribute or parameter data received, use\nTEST PURPOSE: the OMT encoding rules to test if the buffer is consistent to the OMT\nTEST PURPOSE: encoding rules: length, padding and enumerator values.\nTEST PURPOSE: This does not imply correctness of the data item values\n---------------------------------------------------------------------\n","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036048,"event":"TEST CASE PREAMBLE","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036048,"event":"\n---------------------------------------------------------------------\nOPERATOR INSTRUCTIONS: Start the test federate before starting the test case with the same\nOPERATOR INSTRUCTIONS: federate name as in the TcParam.json file\nOPERATOR INSTRUCTIONS: The federate should run for the full duration of all the encoding\nOPERATOR INSTRUCTIONS: rules test\n---------------------------------------------------------------------\n","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+{"badge":"TS-HLA-Encoding-2019","sut":"vrf","level":"INFO","time":1575019036048,"event":"initiateRTI: settingsDesignator is empty, using installation defaults","testcase":"de.fraunhofer.iosb.tc_encodingrulestester.TC0002"}
+----
