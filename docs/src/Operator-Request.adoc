@@ -4,13 +4,33 @@
 
 Some testcases require a dynamic reaction from the SUT which cannot be automated. The test case writer knows what the SUT has to do at a certain point of the test: the testcase needs to make a request to the SUT Operator and wait until the SUT Operator confirms that the required action or configuration has been performed.
 
+
+.Operator Request Sequence Diagram
+image:images/OperatorRequest.jpg[Operator Request Sequence Diagram]
+
 === Usage
 
-The method sendOperatorRequest(String operatorRequest) provided by IVCT package TC.lib can be called within a testcase to send the operatorRequest to the GUI/OperatorRequestMonitor processes. The operatorRequest will be shown on the GUI/OperatorRequestMonitor and the testcase will wait until the SUT Operator confirms the request on the OperatorRequestMonitor console.
+The method sendOperatorRequest(String operatorRequestText) provided by IVCT TC.lib AbstractTestCase can be called within a testcase to send the operatorRequestText via the JMS bus to the GUI/OperatorRequestMonitor processes. The operatorRequestText will be shown on the GUI/OperatorRequestMonitor and the testcase will wait until the SUT Operator confirms the request on the GUI/OperatorRequestMonitor console.
 
 === Implementation
 
-Each testcase must have a unique identification associated to it. The sendOperatorRequest(String operatorRequest) will put the unique testcase identifier and the operatorRequest into a JSON string and send it to the OperatorRequestMonitor via the JMS bus. The method will wait on a semaphore halting the testcase until a confirmation by SUT Operator has been received from the OperatorRequestMonitor. Upon receiving the confirmation with the corresponding unique testcase identifier, the TC.exec TestEngine will release the semaphore associated with the testcase, allowing the testcase to continue.
+Each testcase must have a unique identifier associated with it. The sendOperatorRequest(String operatorRequestText) will put the unique testcase identifier and the operatorRequestText into a JSON string and send it to the GUI/OperatorRequestMonitor, where it will be displayed, via the JMS bus. The method will wait on a semaphore halting the testcase until a confirmation by SUT Operator has been received from the OperatorRequestMonitor. Upon receiving the confirmation with the corresponding unique testcase identifier, the TC.exec TestEngine will release the semaphore associated with the testcase, allowing the testcase to continue.
+
+==== Unique Testcase Identifier
+
+The value of this identifier has to be unique among all testcases running. The fully qualified testcase name is not sufficient, since the same testcase may be started more than once and be running in parallel.
+
+==== Operator Request Text
+
+The test case writer knows when a synchronization between the testcase and SUT is required. At the appropriate position in the testcase, the test case writer will put the sendOperatorRequest(String operatorRequestText) with the instructions to the SUT operator explaining what action has to be taken by the SUT operator.
+
+==== Confirmation
+
+The confirmation is created when SUT Operator responds to the operatorRequest in the GUI/OperatorRequestMonitor. A JSON string with the Unique Testcase Identifier (additional fields may be included later eg. a log message) is then sent onto the JMS bus. The confirmation from the SUT Operator is only useful for the testcase sending the operatorRequest. It may be useful to enable an automatic confirmation reply for tests where the SUT only needs to be started once for all tests.
+
+==== Testcase Semaphore
+
+The semaphore is created within the TC.exec TestEngine and given to the TC.lib AbstractTestCase base class for use by the testcase. In the TestEngine, a map <TestCaseIdentifier, SemaphoreID> will provide the mapping of the confirmation received in the TestEngine to the correct semaphore. The semaphore will then be released and the testcase able to continue.
 
 === Example: Test Case / SUT Synchronization
 
