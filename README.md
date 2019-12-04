@@ -38,3 +38,4 @@ In the third part of this tutorial there are set of reference documents to give 
 
 * [Test Case Developer Guide](docs/src/3-2-TcDevelGuide.adoc)
 * [Test Suite Overview](docs/src/3-5-testsuite-overview.adoc)
+* [Operator Request Concept](docs/src/Operator-Request.adoc)
