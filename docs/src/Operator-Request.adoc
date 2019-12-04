@@ -14,7 +14,7 @@ The method sendOperatorRequest(String operatorRequestText) provided by IVCT TC.l
 
 === Implementation
 
-Each testcase must have a unique identifier associated with it. The sendOperatorRequest(String operatorRequestText) will put the unique testcase identifier and the operatorRequestText into a JSON string and send it to the GUI/OperatorRequestMonitor, where it will be displayed, via the JMS bus. The method will wait on a semaphore halting the testcase until a confirmation by SUT Operator has been received from the OperatorRequestMonitor. Upon receiving the confirmation with the corresponding unique testcase identifier, the TC.exec TestEngine will release the semaphore associated with the testcase, allowing the testcase to continue.
+Each testcase must have a unique identifier associated with it. The `sendOperatorRequest(String operatorRequestText)` will put the unique testcase identifier and the operatorRequestText into a JSON string and send it to the GUI/OperatorRequestMonitor via the JMS bus, where it will be displayed. The method will wait on a semaphore halting the testcase until a confirmation by SUT Operator has been received from the OperatorRequestMonitor. Upon receiving the confirmation with the corresponding unique testcase identifier, the TC.exec TestEngine will release the semaphore associated with the testcase, allowing the testcase to continue.
 
 ==== Unique Testcase Identifier
 
@@ -22,7 +22,9 @@ The value of this identifier has to be unique among all testcases running. The f
 
 ==== Operator Request Text
 
-The test case writer knows when a synchronization between the testcase and SUT is required. At the appropriate position in the testcase, the test case writer will put the sendOperatorRequest(String operatorRequestText) with the instructions to the SUT operator explaining what action has to be taken by the SUT operator.
+The test case writer knows when a synchronization between the testcase and SUT is required. At the appropriate position in the testcase, the test case writer will put the `sendOperatorRequest(String operatorRequestText)` with the instructions to the SUT operator explaining what action has to be taken by the SUT operator.
+
+The message to the operator must be simple text message, where only line breaks (`'\n'`) are allowed to format the text.
 
 ==== Confirmation
 
@@ -36,4 +38,4 @@ The semaphore is created within the TC.exec TestEngine and given to the TC.lib A
 
 Each testcase has the requirement either that the SUT is running before or after the testcase is started. The testcase may need to observe actions at the beginning of an execution, in this case a SUT that is already running may have already completed this phase making the test useless. If the testcase makes observations for a limited period of time, the SUT must already be running or the testcase may time out before any observation is made.
 
-In either case, it is useful to make a request to the test operator to ensure that the SUT is correctly started for the test. The sendOperatorRequest(String operatorRequest) will be placed at beginning the preambleAction() method of the testcase to achieve the testcase/SUT synchronization.
+In either case, it is useful to make a request to the test operator to ensure that the SUT is correctly started for the test. The `sendOperatorRequest(String operatorRequest)` will be placed at beginning the `preambleAction()` method of the testcase to achieve the testcase/SUT synchronization.
