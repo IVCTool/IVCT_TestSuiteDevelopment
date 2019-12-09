@@ -56,3 +56,35 @@ dependencies {
 // test {
 //     useJUnitPlatform()
 // }
+
+
+// Write the  IVCT-Version as set to variable in libraries.gradle
+// in a  property-file
+task writeVersion {
+    group = "Build"
+    description = "Creates a properties file with version information"
+
+    doLast {
+        def prop = new Properties()
+        prop.version = ivctVersion
+        prop.ivctVersion = ivctVersion
+        prop.helloWorldVersion = helloWorldVersion
+        prop.build = "git describe --tags".execute().text.trim()
+        mkdir "src/main/resources"
+        File propFile = file('src/main/resources/testCaseBuild.properties')
+        prop.store(propFile.newWriter(), null)
+    }
+}
+processResources.dependsOn writeVersion
+
+
+// write IVCT-Version informations to manifest - file
+jar{ 
+  manifest{
+     attributes(
+     'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date()),
+        'ivctVersion' : ivctVersion,
+        'build' :       "git describe --tags".execute().text.trim()
+     )
+  }
+}
