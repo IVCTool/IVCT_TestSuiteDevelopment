@@ -86,6 +86,11 @@ public class TC0001 extends AbstractTestCase {
         +   "---------------------------------------------------------------------\n";
 
         logger.info(s);
+        try {
+			sendOperatorRequest(s);
+		} catch (InterruptedException e) {
+            logger.info("Exception: sendOperatorRequest: " + e);
+		}
     }
 
 
