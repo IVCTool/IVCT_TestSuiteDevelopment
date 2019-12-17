@@ -26,9 +26,22 @@ The test case writer knows when a synchronization between the testcase and SUT i
 
 The message to the operator must be simple text message, where only line breaks (`'\n'`) are allowed to format the text.
 
+==== Operator Request Listener
+
+In the GUI/OperatorRequestMonitor processes, a OnOperatorRequestListener is required with a user defined onOperatorRequest() to handle the desired program logic.
+
 ==== Confirmation
 
 The confirmation is created when SUT Operator responds to the operatorRequest in the GUI/OperatorRequestMonitor. A JSON string with the Unique Testcase Identifier, a boolean value (true means continue with the testcase, false means end the testcase) and a log message (additional fields may be included later) is then sent onto the JMS bus. The confirmation from the SUT Operator is only acted on by the testcase sending the operatorRequest. It may be useful to enable an automatic confirmation reply for tests where the SUT only needs to be started once for all tests.
+
+The call may be as follows to send the confirmation:
+
+    	CmdOperatorConfirmation operatorConfirmationCmd = Factory.createCmdOperatorConfirmation(sutName, testSuiteId, tcName, confirmationBoolean, text);
+    	operatorConfirmationCmd.execute();
+
+==== OperatorRequestListener
+
+In the TC.exec process, a OperatorRequestListener has been implemented with a specific functionality.
 
 ==== Testcase Semaphore
 
