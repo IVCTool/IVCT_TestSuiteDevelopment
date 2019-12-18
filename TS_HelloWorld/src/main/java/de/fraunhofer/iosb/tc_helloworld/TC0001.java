@@ -80,10 +80,10 @@ public class TC0001 extends AbstractTestCase {
         s = "\n"
         +   "---------------------------------------------------------------------\n"
         +   "OPERATOR INSTRUCTIONS: \n"
-		+   "1. Start the test federate before starting the test case with the federate name "
+		+   "1. Make sure that you start the test federate "
 		+	getSutFederateName()	
-		+ 	"\n"
-        +   "2. The federate should run for the full duration of all the HelloWorld tests\n"
+        +   " before the confirmation\n"
+        +   "2. The federate should run for the full duration of the tests\n"
         +   "---------------------------------------------------------------------\n";
 
         logger.info(s);
