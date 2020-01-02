@@ -22,26 +22,53 @@ The value of this identifier has to be unique among all testcases running. The f
 
 ==== Operator Request Text
 
-The test case writer knows when a synchronization between the testcase and SUT is required. At the appropriate position in the testcase, the test case writer will put the `sendOperatorRequest(String operatorRequestText)` with the instructions to the SUT operator explaining what action has to be taken by the SUT operator.
+The test case writer knows when a synchronization between the testcase and SUT is required. At the appropriate position in the testcase, the test case writer will put the `sendOperatorRequest(String operatorRequestText)` method with the instructions to the SUT operator explaining what action has to be taken by the SUT operator.
 
 The message to the operator must be simple text message, where only line breaks (`'\n'`) are allowed to format the text.
+
+The implementation of `sendOperatorRequest(String operatorRequestText)` contains the following lines:
+
+	import nato.ivct.commander.CmdOperatorRequest;
+
+	CmdOperatorRequest operatorRequestCmd = Factory.createCmdOperatorRequest(sutName, testSuiteId, tcName, text);
+	operatorRequestCmd.execute();
+
+Where the values of sutName, testSuiteId and tcName are known within the library.
 
 ==== Operator Request Listener
 
 In the GUI/OperatorRequestMonitor processes, a OnOperatorRequestListener is required with a user defined onOperatorRequest() to handle the desired program logic.
 
-==== Confirmation
+	import nato.ivct.commander.CmdOperatorRequestListener.OnOperatorRequestListener;
+	import nato.ivct.commander.CmdOperatorRequestListener.OperatorRequestInfo;
+
+	public void onOperatorRequest(OperatorRequestInfo operatorRequestInfo) {
+	// Extract data and apply any actions
+	}
+
+==== Operator Confirmation
 
 The confirmation is created when SUT Operator responds to the operatorRequest in the GUI/OperatorRequestMonitor. A JSON string with the Unique Testcase Identifier, a boolean value (true means continue with the testcase, false means end the testcase) and a log message (additional fields may be included later) is then sent onto the JMS bus. The confirmation from the SUT Operator is only acted on by the testcase sending the operatorRequest. It may be useful to enable an automatic confirmation reply for tests where the SUT only needs to be started once for all tests.
 
 The call may be as follows to send the confirmation:
 
+	import nato.ivct.commander.CmdOperatorConfirmation;
+
     	CmdOperatorConfirmation operatorConfirmationCmd = Factory.createCmdOperatorConfirmation(sutName, testSuiteId, tcName, confirmationBoolean, text);
     	operatorConfirmationCmd.execute();
 
-==== OperatorRequestListener
+Where the values of sutName, testSuiteId and tcName are known within the library.
 
-In the TC.exec process, a OperatorRequestListener has been implemented with a specific functionality.
+==== OperatorConfirmationListener
+
+In the TC.exec process, an OperatorConfirmationListener has been implemented with a specific functionality.
+
+	import nato.ivct.commander.CmdOperatorConfirmationListener.OnOperatorConfirmationListener;
+	import nato.ivct.commander.CmdOperatorConfirmationListener.OperatorConfirmationInfo;
+
+	public void onOperatorRequest(OperatorRequestInfo operatorRequestInfo) {
+	// Extract data and apply any actions
+	}
 
 ==== Testcase Semaphore
 
