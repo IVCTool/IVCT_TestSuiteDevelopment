@@ -57,9 +57,9 @@ The call may be as follows to send the confirmation:
     	CmdOperatorConfirmation operatorConfirmationCmd = Factory.createCmdOperatorConfirmation(sutName, testSuiteId, tcName, confirmationBoolean, text);
     	operatorConfirmationCmd.execute();
 
-Where the values of sutName, testSuiteId and tcName are known within the library.
+Where the values of sutName, testSuiteId and tcName are known within the GUI/OperatorRequestMonitor.
 
-==== OperatorConfirmationListener
+==== Operator Confirmation Listener
 
 In the TC.exec process, an OperatorConfirmationListener has been implemented with a specific functionality.
 
