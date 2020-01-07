@@ -89,7 +89,7 @@ public class TC0002 extends AbstractTestCase {
         s = "\n"
         +   "---------------------------------------------------------------------\n"
         +   "OPERATOR INSTRUCTIONS: \n"
-        +   "1. Make sure that you start the test federate "
+        +   "1. Start the test federate "
         +   getSutFederateName()    
         +   " before the confirmation\n"
         +   "2. The federate should run for the full duration of the tests\n"
