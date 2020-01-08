@@ -75,13 +75,13 @@ public class TC0001 extends AbstractTestCase {
         logger.info(testPurpose);
     }
 
-    public void displayOperatorInstructions(final Logger logger) {
+    public void displayOperatorInstructions(final Logger logger) throws TcInconclusive {
         String s = new String();
         s = "\n"
         +   "---------------------------------------------------------------------\n"
         +   "OPERATOR INSTRUCTIONS: \n"
 		+   "1. Start the test federate "
-		+	getSutFederateName()	
+		+	getSutFederateName()
         +   " before the confirmation\n"
         +   "2. The federate should run for the full duration of the tests\n"
         +   "---------------------------------------------------------------------\n";
