@@ -91,7 +91,7 @@ public class TC0002 extends AbstractTestCase {
         +   "OPERATOR INSTRUCTIONS: \n"
         +   "1. Start the test federate "
         +   getSutFederateName()    
-        +   " before the confirmation\n"
+        +   " and then hit confirm button\n"
         +   "2. The federate should run for the full duration of the tests\n"
         +   "---------------------------------------------------------------------\n";
 
