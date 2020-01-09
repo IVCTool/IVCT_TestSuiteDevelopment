@@ -75,17 +75,23 @@ public class TC0001 extends AbstractTestCase {
         logger.info(testPurpose);
     }
 
-    public void displayOperatorInstructions(final Logger logger) {
+    public void displayOperatorInstructions(final Logger logger) throws TcInconclusive {
         String s = new String();
         s = "\n"
         +   "---------------------------------------------------------------------\n"
-        +   "OPERATOR INSTRUCTIONS: Start the test federate before starting the test case with the same\n"
-        +   "OPERATOR INSTRUCTIONS: federate name as in the TcParam.json file\n"
-        +   "OPERATOR INSTRUCTIONS: The federate should run for the full duration of all the HelloWorld\n"
-        +   "OPERATOR INSTRUCTIONS: tests\n"
+        +   "OPERATOR INSTRUCTIONS: \n"
+		+   "1. Start the test federate "
+		+	getSutFederateName()
+        +   " and then hit confirm button\n"
+        +   "2. The federate should run for the full duration of the tests\n"
         +   "---------------------------------------------------------------------\n";
 
         logger.info(s);
+        try {
+			sendOperatorRequest(s);
+		} catch (InterruptedException e) {
+            logger.info("Exception: sendOperatorRequest: " + e);
+		}
     }
 
 

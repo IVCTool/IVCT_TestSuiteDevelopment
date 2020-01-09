@@ -84,7 +84,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
   private final Map<ObjectInstanceHandle, CountryValues> knownObjects = new HashMap<ObjectInstanceHandle, CountryValues>();
   private Map<String, LinkedList<ParameterHandleValueMap>> interactionsReceived = new HashMap<String, LinkedList<ParameterHandleValueMap>>();
 
-  
+
   // ----------------------------------  CountryValues Anfang -----------------
   // ----------------------------------  CountryValues Ende -------------------
 
@@ -137,6 +137,8 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
   }
 
   /**
+   * @param sut
+   *          name of the system under test
    * @return the message received
    */
   public LinkedList<String> getSavedSutTextMessages(final String sut) {
