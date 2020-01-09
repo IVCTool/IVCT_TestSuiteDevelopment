@@ -3,6 +3,9 @@
 # local settings for gradle shall be ignored
 gradle.properties
 
+# verion file for test suite compatibility check
+testCaseBuild.properties
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
