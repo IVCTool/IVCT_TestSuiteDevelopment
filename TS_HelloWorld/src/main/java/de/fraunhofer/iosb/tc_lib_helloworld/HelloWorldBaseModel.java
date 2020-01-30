@@ -142,7 +142,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
    * @return the message received
    */
   public LinkedList<String> getSavedSutTextMessages(final String sut) {
-	  this.logger.error("getSavedSutTextMessages SUT: " + sut);
+	  this.logger.trace("getSavedSutTextMessages SUT: " + sut);
 	  LinkedList<String> textMessages = new LinkedList<String>();
 	  LinkedList<ParameterHandleValueMap> sutInteractionsHandleValueMap = interactionsReceived.get(sut);
 	  if (sutInteractionsHandleValueMap == null) {
