@@ -202,14 +202,15 @@ public class HelloWorld extends NullFederateAmbassador {
 
 			this._rtiAmbassador.connect(this, CallbackModel.HLA_IMMEDIATE, settingsDesignator);
 
-			try {
-				// Clean up old federation
-				this._rtiAmbassador.destroyFederationExecution(FEDERATION_NAME);
-			} catch (final FederatesCurrentlyJoined ignored) {
-				// No problem just ignore
-			} catch (final FederationExecutionDoesNotExist ignored) {
-				// No problem just ignore
-			}
+			// try {
+			// 	// Clean up old federation
+			// 	this._rtiAmbassador.destroyFederationExecution(FEDERATION_NAME);
+			// } catch (final FederatesCurrentlyJoined ignored) {
+			// 	// No problem just ignore
+			// } catch (final FederationExecutionDoesNotExist ignored) {
+			// 	// No problem just ignore
+			// }
+			
 			final URL fddFileUrl = this.getClass().getClassLoader().getResource("HelloWorld.xml");
 			try {
 				this._rtiAmbassador.createFederationExecution(FEDERATION_NAME, new URL[] { fddFileUrl },
