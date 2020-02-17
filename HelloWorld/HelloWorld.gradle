@@ -29,7 +29,7 @@ task dockerBuildPitchImage(type: DockerBuildImage) {
     dockerFile = project.file('Dockerfile-pi')
     buildArgs.put('version', "${helloWorldVersion}")
 	inputDir = file('.')
-    tags.add ("ivct/helloworld:pi-bare-${helloWorldVersion}")
+    tags.add ("ivct/helloworld:pi-skeleton-${helloWorldVersion}")
 }
 
 task dockerBuildPorticoImage(type: DockerBuildImage) {
@@ -49,7 +49,7 @@ task dockerBuildMakImage(type: DockerBuildImage) {
     dockerFile = project.file('Dockerfile-ma')
     buildArgs.put('version', "${helloWorldVersion}")
 	inputDir = file('.')
-    tags.add ("ivct/helloworld:ma-${helloWorldVersion}")
+    tags.add ("ivct/helloworld:ma-skeleton-${helloWorldVersion}")
 }
 
 tasks.register ("dockerBuildImage") {
@@ -57,7 +57,7 @@ tasks.register ("dockerBuildImage") {
     description = 'Creates docker images for RTIs'
     dependsOn 'dockerBuildPitchImage'
     dependsOn 'dockerBuildPorticoImage'
-    // dependsOn 'dockerBuildMakImage'
+    dependsOn 'dockerBuildMakImage'
 }
 
 
