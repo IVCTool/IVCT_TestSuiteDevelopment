@@ -26,8 +26,7 @@ script:
 # tag and push all rti specfic helloworld images (Pitch, Mak, Portico)
 - docker tag ivct/helloworld:pi-skeleton-$VERSION ivct/helloworld:pi-skeleton-$TRAVIS_BRANCH-latest
 - docker tag ivct/helloworld:po-$VERSION ivct/helloworld:po-$TRAVIS_BRANCH-latest
-# do not publish MäK image until IPC issues are solved
-- docker tag ivct/helloworld:ma-skeleton-$VERSION ivct/helloworld:ma-skeleton-$TRAVIS_BRANCH-latest
+- docker tag ivct/helloworld:ma-$VERSION ivct/helloworld:ma-$TRAVIS_BRANCH-latest
 - docker push ivct/helloworld
 
 before_cache:
