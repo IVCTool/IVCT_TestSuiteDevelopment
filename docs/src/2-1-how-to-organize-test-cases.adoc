@@ -64,18 +64,42 @@ The test cases can not be executed as stand-alone applications. They need to be 
 
 If you are using the IVCTool installation on a docker based installation, you need to build the test suite as a docker container.
 
+The HelloWorld example includes a `Dockerfile` inside the `TS_HelloWorld` folder where also the test cases are located. This `Dockerfile` is used by the `TS_HelloWorld.gradle` build file, to provide the following task:
+
 * `gradlew dockerBuildImage`: This task will create a docker image in your locale docker engine.
 
 This will create a docker image which will be used in the compose files to startup the IVCTool
 
 ----
 $ docker image ls| grep ts-helloworld
-ivct/ts-helloworld                           2.0.0                     a76c25bc09a7        17 minutes ago      1.18MB
+ivct/ts-helloworld    2.0.0    a76c25bc09a7    17 minutes ago      1.18MB
 ----
+
+Before you can use test cases inside the IVCT, you need to add this image into the ivct start composition. Inside the compose yml file, the test suite distribution image must be added:
+
+----
+# =============================================
+# IVCT Test Suite data for Helloworld
+# =============================================
+  ts-helloworld:
+    image: ivct/ts-helloworld:${TS_HW_VERSION}
+    volumes:
+    - ts-helloworld:/root/conf/TestSuites/TS_HelloWorld-${TS_HW_VERSION}
+    networks:
+    - ivctnet
+----
+
+The test suite distribution image must be mounted into the GUI and the Test Case Engine image (for more details on that, see in https://github.com/IVCTool/IVCT_Operation/blob/develop/docs/src/IVCT-Container-Overview.adoc).
+
+The mounting will be done by defining volume and linking that volume into the volume sections of the `GUI` and the `tc-runner` services.
 
 Detailed information on docker based deployment of the IVCTool can be found in the https://github.com/IVCTool/IVCT_Operation/blob/develop/docs/src/home.adoc[IVCTool/IVCT_Operation] repository.
 
 ==== Step 3.b: Plain File System Deployment
+
+During the development of the test suites, it is recommended to use a plain file installation of the IVCT system. That makes debugging and configuration a bit easier, as all configuration files are directly accessible.
+
+The test suite distribution is created by the following gradle tasks:
 
 * `gradlew distTar`: This task will create a tar archive with all lib files.
 * `gradlew distZip`: This task will create a zip archive with all lib files.
@@ -94,3 +118,7 @@ TS_HelloWorld-2.0.0.jar
 ----
 
 The extracted archive need to be deployed into IVCTool runtime folder for the test suites. The location of this folder is defined by `IVCT_TS_HOME_ID` setting, either in your IVCT properties file or as environment variable (see https://github.com/IVCTool/IVCT_Framework/blob/development/docs/src/2-8-IVCT_Configuration.adoc[Configuration of the IVCTool] for more information).
+
+In addition to the test case code, you also need to add the test suite definition file, which is referring to interoperability requirements, defined by one or more badge files.
+
+The definition and deployment of the badge file is explained in the <<1-3-hw-interoperability-badge.adoc#,  Interoperbility Badge Section>>, and the test suite definition is explained in the <<1-4-test-suite.adoc#, Test Suite Definition Section>>.
