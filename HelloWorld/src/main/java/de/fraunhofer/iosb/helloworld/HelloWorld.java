@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.file.FileSystems;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +47,6 @@ import hla.rti1516e.encoding.HLAunicodeString;
 import hla.rti1516e.exceptions.FederateInternalError;
 import hla.rti1516e.exceptions.FederatesCurrentlyJoined;
 import hla.rti1516e.exceptions.FederationExecutionAlreadyExists;
-import hla.rti1516e.exceptions.FederationExecutionDoesNotExist;
 import hla.rti1516e.exceptions.IllegalName;
 import hla.rti1516e.exceptions.RTIexception;
 
@@ -74,8 +72,6 @@ public class HelloWorld extends NullFederateAmbassador {
 
 	private static final String FEDERATION_NAME = "HelloWorld";
 	private EncoderFactory _encoderFactory;
-
-	private boolean receivedInteraction = false;
 
 	private final Map<ObjectInstanceHandle, Country> _knownObjects = new HashMap<ObjectInstanceHandle, Country>();
 	private final Map<String, HLAfloat32LE> countryPopulations = new HashMap<String, HLAfloat32LE>();
@@ -275,7 +271,6 @@ public class HelloWorld extends NullFederateAmbassador {
 				attributes.put(this._attributeIdName, nameEncoder.toByteArray());
 
 				this._rtiAmbassador.updateAttributeValues(this._countryId, attributes, null);
-//                if (this.receivedInteraction) {
 				final ParameterHandleValueMap parameters = this._rtiAmbassador.getParameterHandleValueMapFactory()
 						.create(1);
 				final HLAunicodeString messageEncoderString = this._encoderFactory.createHLAunicodeString();
@@ -288,8 +283,6 @@ public class HelloWorld extends NullFederateAmbassador {
 
 				this._rtiAmbassador.sendInteraction(this._messageId, parameters, null);
 
-				this.receivedInteraction = false;
-//                }
 				Thread.sleep(1000);
 				this.printCountryPopulations();
 			}
@@ -365,8 +358,6 @@ public class HelloWorld extends NullFederateAmbassador {
 				System.out.println("Failed to decode incoming interaction");
 			}
 		}
-
-		this.receivedInteraction = true;
 	}
 
 	/** {@inheritDoc} */
