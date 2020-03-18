@@ -17,9 +17,11 @@ limitations under the License.
 package de.fraunhofer.iosb.helloworld;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.FileSystems;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -202,16 +204,10 @@ public class HelloWorld extends NullFederateAmbassador {
 
 			this._rtiAmbassador.connect(this, CallbackModel.HLA_IMMEDIATE, settingsDesignator);
 
-			// try {
-			// 	// Clean up old federation
-			// 	this._rtiAmbassador.destroyFederationExecution(FEDERATION_NAME);
-			// } catch (final FederatesCurrentlyJoined ignored) {
-			// 	// No problem just ignore
-			// } catch (final FederationExecutionDoesNotExist ignored) {
-			// 	// No problem just ignore
-			// }
-			
-			final URL fddFileUrl = this.getClass().getClassLoader().getResource("HelloWorld.xml");
+//			final URL fddFileUrl = this.getClass().getClassLoader().getResource("HelloWorld.xml");   // thats only working for pRTI
+			final URL fddFileUrl = new File("HelloWorld/HelloWorld.xml").toURI().toURL();            // that works works with MÄK as well
+			System.out.println("File " + fddFileUrl.getProtocol());
+			System.out.println("FOM Path: " + fddFileUrl.getPath());
 			try {
 				this._rtiAmbassador.createFederationExecution(FEDERATION_NAME, new URL[] { fddFileUrl },
 						"HLAfloat64Time");
