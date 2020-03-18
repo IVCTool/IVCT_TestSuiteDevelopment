@@ -205,7 +205,7 @@ public class HelloWorld extends NullFederateAmbassador {
 			this._rtiAmbassador.connect(this, CallbackModel.HLA_IMMEDIATE, settingsDesignator);
 
 //			final URL fddFileUrl = this.getClass().getClassLoader().getResource("HelloWorld.xml");   // thats only working for pRTI
-			final URL fddFileUrl = new File("HelloWorld/HelloWorld.xml").toURI().toURL();            // that works works with MÄK as well
+			final URL fddFileUrl = new File("HelloWorld/HelloWorld.xml").toURI().toURL();            // that works works with MaK as well
 			System.out.println("File " + fddFileUrl.getProtocol());
 			System.out.println("FOM Path: " + fddFileUrl.getPath());
 			try {
