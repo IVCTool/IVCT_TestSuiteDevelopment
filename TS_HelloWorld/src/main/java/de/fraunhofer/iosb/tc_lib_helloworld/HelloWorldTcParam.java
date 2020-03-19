@@ -16,11 +16,18 @@ limitations under the License.
 
 package de.fraunhofer.iosb.tc_lib_helloworld;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.LoggerFactory;
 
 import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
 import de.fraunhofer.iosb.tc_lib.TcInconclusive;
@@ -38,13 +45,12 @@ public class HelloWorldTcParam implements IVCT_TcParam {
     private long         sleepTimeCycle     = 1000;
     private long         sleepTimeWait      = 5000;
     private float growthRate = 1.03f;
+    public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HelloWorldTcParam.class);
 
 
     public HelloWorldTcParam(final String paramJson) throws TcInconclusive {
     	// paramJson are not needed for this test suite
 
-    	// get FOM model
-		this.urls[0] = this.getClass().getClassLoader().getResource("HelloWorld.xml");
         try {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject;
@@ -53,12 +59,21 @@ public class HelloWorldTcParam implements IVCT_TcParam {
 			// get a String from the JSON object
 			String growthRateStr =  (String) jsonObject.get("growthRate");
 			if (growthRateStr == null) {
-                throw new TcInconclusive("The key  growthRate  was not found");
+                throw new TcInconclusive("The key <growthRate>  was not found");
 			}
 			growthRate = Float.parseFloat(growthRateStr);
+			
+	    	// get FOM model
+			String somFile =  (String) jsonObject.get("SOMfile");
+			if (somFile == null) {
+                throw new TcInconclusive("The key <SOMfile> was not found");
+			}
+			urls[0] = (new File(somFile)).toURI().toURL();
+
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+            throw new TcInconclusive("Error in parsing FOM file: " + e1.toString());
+		} catch (MalformedURLException e) {
+            throw new TcInconclusive("The key <growthRate> containes malformed URL");
 		}
     }
 
