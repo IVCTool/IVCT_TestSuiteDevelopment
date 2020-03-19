@@ -15,7 +15,7 @@ image:images/BadgesAndTestsuites.jpg[Link between test suites and badges]
 
 === The Test Case Federate
 
-When we talk about a *Test Case (TC)* in the context of the IVCTool, we normal mean an program that can be executed to perform a test against a system to which it is connected. The system to be tested is called the *System under Test (SuT)*, and it is a federate in a federated simulation. The connection between the TC and the SuT is provided by a *HLA*-based *Run-Rime Infrastructure (RTI)*. The TC by itself is also a federate and all the testing will be done on top of HLA application programming interface (API).
+When we talk about a *Test Case (TC)* in the context of the IVCTool, we normal mean an program that can be executed to perform a test against a system to which it is connected. The system to be tested is called the *System under Test (SuT)*, and it is a federate in a federated simulation. The connection between the TC and the SuT is provided by a *HLA*-based *Run-Time Infrastructure (RTI)*. The TC by itself is also a federate and all the testing will be done on top of HLA application programming interface (API).
 
 In a more generic context, a test case would be distinguished into two forms. The specification the test algorithm is called *Abstract Test Case (ATC)* and the implementation of this algorithm is called *Executable Test Case (ETC)*. But because the IVCTool does not deal with any abstract test cases, whenever we talk about a test case, we are refering to the concept of an ETC.
 
