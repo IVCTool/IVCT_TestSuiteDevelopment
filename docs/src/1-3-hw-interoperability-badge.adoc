@@ -1,6 +1,6 @@
 == The HelloWorld Interoperability Badge
 
-The *HelloWorld Interoperability Badge* Badge is mainly a demonstration badge. It has no official relevance, it is just designed for the sake of this tutorial. A badge is a mainly a named collection of *Interoperability Requirements (IR)*. Each IR is defined by its unique identifier and it has a description explaining the requirement. It is important that the requirement description is unambiguous und testable. The two interoperability requirements are referring to the earlier explained behavior pattern (see <<2-1-hw-federation.adoc#,The Behavior Model>>)   
+The *HelloWorld Interoperability Badge* is mainly a demonstration badge. It has no official relevance, it is just designed for the sake of this tutorial. A badge is a mainly a named collection of *Interoperability Requirements (IR)*. Each IR is defined by its unique identifier and it has a description explaining the requirement. It is important that the requirement description is unambiguous und testable. The two interoperability requirements are referring to the earlier explained behavior pattern (see <<2-1-hw-federation.adoc#,The Behavior Model>>)   
 
 
 .The HelloWorld-2019 Interoperability Badge
