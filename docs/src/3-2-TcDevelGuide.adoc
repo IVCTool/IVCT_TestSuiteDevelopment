@@ -48,7 +48,6 @@ A test case is derived from AbstractTestCase which enforces the ISO 9646 concept
 
 The IVCT_TcParam is the base class for SUT specific parameters. For most TCs, SUT specific values are required for certain HLA requests or occur in callbacks. These parameters usually are found in a config file or a properties file. Only general parameters are to be placed in this class, parameters for for specific test suites shall be placed in a derived class.
 
-At the point of writing this document, the mechanism for reading from a config file or a properties file has not been determined. Fixed values were used in the demo TCs.
 
 ==== TS_x_TC_y_Parameter
 
