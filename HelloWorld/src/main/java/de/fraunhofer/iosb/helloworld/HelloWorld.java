@@ -24,6 +24,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.LoggerFactory;
+
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
 import hla.rti1516e.AttributeHandleValueMap;
@@ -51,6 +53,9 @@ import hla.rti1516e.exceptions.IllegalName;
 import hla.rti1516e.exceptions.RTIexception;
 
 public class HelloWorld extends NullFederateAmbassador {
+	
+    public static final org.slf4j.Logger log = LoggerFactory.getLogger(HelloWorld.class);
+
 
 	protected String settingsDesignator;
 	protected String myCountry;
@@ -201,7 +206,21 @@ public class HelloWorld extends NullFederateAmbassador {
 			this._rtiAmbassador.connect(this, CallbackModel.HLA_IMMEDIATE, settingsDesignator);
 
 //			final URL fddFileUrl = this.getClass().getClassLoader().getResource("HelloWorld.xml");   // thats only working for pRTI
-			final URL fddFileUrl = new File("HelloWorld/HelloWorld.xml").toURI().toURL();            // that works works with MaK as well
+			log.info("Searching for HelloWorld SOM File...");
+			File f = new File("HelloWorld.xml");
+			if (!f.exists()) {
+				log.info("not found at application root, searching in HelloWorld/bin/HelloWorld.xml");
+				// file not found, likely because started within docker
+				f = new File("HelloWorld/bin/HelloWorld.xml");
+				if (f.exists()) {
+					log.info("found!");
+				} else {
+					log.error("no FOM file found. Application terminated.");
+					System.exit(1);
+				}
+			}
+			URL fddFileUrl = f.toURI().toURL();            
+			
 			System.out.println("File " + fddFileUrl.getProtocol());
 			System.out.println("FOM Path: " + fddFileUrl.getPath());
 			try {
