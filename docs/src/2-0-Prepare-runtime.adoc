@@ -1,0 +1,22 @@
+== How to Prepare your Development Environment
+
+Before you can start developing test cases, you need to decide what kind of run-time environment you like to have. There are some restrictions given by the IVCT design, such as the gradle build scripts and the run-time structure. But otherwise you are mostly free on what kind environment you are preferring.
+
+=== Operating System
+
+All IVCT components are pure Java and are tested on Linux and Windows 10.
+
+=== IDE - Integrated Development Environment
+
+IVCT is using the 'gradle' build system (see https://gradle.org/). That's an open source and widely used build system, which is supported by most IDE's. Within the IVCT community Eclipse and Netbeans is used, and we are not aware of any issues with other IDEs.
+
+===  Run-time Folder
+
+The IVCTool requires several configuration files and it creates protocol and report files. They all organized within several folders, where is folder is configurable (see https://github.com/IVCTool/IVCT_Framework/blob/development/docs/src/2-8-IVCT_Configuration.adoc for more details). However, a very typical and recommended structure is shown in the figure below.
+
+
+image:images/2-0-runtime.png[Run Time Environment]
+
+=== To docker or not to docker?
+
+The build scripts are supporting both, docker-based containerized as well as script based distributions. Code development can be done in both environments, its more a question of you preferences and coding conventions. Docker container are easier to migrate and preferable in multi-operation system environments. While with script based distributions there is just one level of complexity less.
