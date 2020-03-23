@@ -18,6 +18,7 @@ In the third part of this tutorial there are set of reference documents to give 
 
 == The TS_HelloWorld Example
 
+* <<2-0-Prepare-runtime.adoc#, How to Prepare your Development Environment?>>
 * <<2-1-how-to-organize-test-cases.adoc#, Where to start writing a test cases?>>
 * <<2-3-hw-test-case-0001.adoc#, The HelloWorld Test Cases TC0001 - Growing Rate Test>>
 * <<2-4-hw-test-case-0002.adoc#, The HelloWorld Test Cases TC0002 - Country Interaction Test>>

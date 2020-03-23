@@ -27,6 +27,7 @@ In the third part of this tutorial there are set of reference documents to give 
 
 ## The IVCT_TestSuiteDevelopment Example
 
+* [How to Prepare your Development Environment?](2-0-Prepare-runtime.adoc)
 * [Where to start writing a test cases?](docs/src/2-1-how-to-organize-test-cases.adoc)
 * [How to write a test case](docs/src/2-2-how-to-write-a-test-case.adoc)
 * [The HelloWorld Test Cases TC0001 - Growing Rate Test](docs/src/2-3-hw-test-case-0001.adoc)

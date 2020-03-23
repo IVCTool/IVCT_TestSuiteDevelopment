@@ -1,4 +1,4 @@
-== How to Prepare your Development Environment
+== How to Prepare your Development Environment?
 
 Before you can start developing test cases, you need to decide what kind of run-time environment you like to have. There are some restrictions given by the IVCT design, such as the gradle build scripts and the run-time structure. But otherwise you are mostly free on what kind environment you are preferring.
 
