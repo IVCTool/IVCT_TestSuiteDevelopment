@@ -20,10 +20,49 @@ Each *System under Test (SuT)* is defined by a *Conformance Statements (CS)*. Su
 }
 ----
 
-
 === Country Concept
 
 The idea behind the hello world program is that it represents a country with a population growing at a fixed rate. The country has an initial population which will increase by the fixed rate for each cycle of the program loop. At the end of each cycle, the program will announce the current population. The population value will be sent via an HLA `updateAttributeValue` request. A second functionality is that the hello world program will send a welcome message as a HLA `sendInteraction` with its name upon demand. The program has a user defined country name, starting population and number of cycles to run. The growth rate is on a configurable percentage cycle.
+
+
+=== Start Dialog
+
+The HelloWorld federate is designed to be started either in
+
+. interactive mode to ask for configuration details,
+. with start parameters defining the connection information,
+. or with environment variables for configuration details.
+
+When HelloWorld is started in interactive mode, the program will ask for some parameters from the user. These parameters will either change the address required to find the RTI or the parameters that affect the country name, starting population or number of cycles.
+
+----
+Enter the CRC address, such as
+'localhost', 'localhost:8989', '192.168.1.62'
+or when using Pitch Booster on the form
+<CRC name>@<booster address>:<booster port>
+such as 'MyCRCname@192.168.1.70:8688'
+[localhost]
+----
+
+The user has to provide the address information to locate the RTI. The default value of `localhost` will used when no other value is entered.
+
+`Enter your country:`
+
+The name of the country the HelloWorld application represents will be entered now. There is no default for country name.
+
+`Enter starting population [100]:`
+
+The desired starting population will be entered now. The default value of `100` will used when no other value is entered.
+
+`Enter number of cycles [1000]:`
+
+The desired number of cycles required is entered now. The default value of `1000` will used when no other value is entered.
+
+The program will terminate itself when the number of cycles has been reached.
+
+=== Starting HelloWorld as docker Image
+
+The HelloWorld federate is available as a docker image as well. The configuration and start procedure is explained in https://github.com/IVCTool/IVCT_Operation/blob/develop/docs/src/IVCT-GettingStarted-HelloWorld.adoc[Testing the Hello World application]
 
 === HLA Federation Management Services
 
@@ -125,41 +164,3 @@ The federate also listens for interactions and upon receiving a Communication.Me
 
 The federate name of the SUT is known from the Conformance Statement and thus an exact message content can be expected and may be tested.
 
-=== Start Dialog
-
-The HelloWorld federate is designed to be started either in
-
-. interactive mode to ask for configuration details,
-. with start parameters defining the connection information,
-. or with environment variables for configuration details.
-
-When HelloWorld is started in interactive mode, the program will ask for some parameters from the user. These parameters will either change the address required to find the RTI or the parameters that affect the country name, starting population or number of cycles.
-
-----
-Enter the CRC address, such as
-'localhost', 'localhost:8989', '192.168.1.62'
-or when using Pitch Booster on the form
-<CRC name>@<booster address>:<booster port>
-such as 'MyCRCname@192.168.1.70:8688'
-[localhost]
-----
-
-The user has to provide the address information to locate the RTI. The default value of `localhost` will used when no other value is entered.
-
-`Enter your country:`
-
-The name of the country the HelloWorld application represents will be entered now. There is no default for country name.
-
-`Enter starting population [100]:`
-
-The desired starting population will be entered now. The default value of `100` will used when no other value is entered.
-
-`Enter number of cycles [1000]:`
-
-The desired number of cycles required is entered now. The default value of `1000` will used when no other value is entered.
-
-The program will terminate itself when the number of cycles has been reached.
-
-=== Starting HelloWorld as docker Image
-
-The HelloWorld federate is available as a docker image as well. The configuration and start procedure is explained in https://github.com/IVCTool/IVCT_Operation/blob/develop/docs/src/IVCT-GettingStarted-HelloWorld.adoc[Testing the Hello World application]
