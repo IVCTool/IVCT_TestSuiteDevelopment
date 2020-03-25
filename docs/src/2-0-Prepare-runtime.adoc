@@ -10,6 +10,15 @@ All IVCT components are pure Java and are tested on Linux and Windows 10.
 
 IVCT is using the 'gradle' build system (see https://gradle.org/). That's an open source and widely used build system, which is supported by most IDE's. Within the IVCT community Eclipse and Netbeans is used, and we are not aware of any issues with other IDEs.
 
+=== The HLA Run-Time Infrastructure
+
+It is kind of obvious but should be mentioned nevertheless - for any HLA application you need a RTI. How to get and install an RTI your favorite RTI is out of scope for this documentation. From the software development point of view, you need a library for the HLA API to be linked to your application. This must be done in your IDE. If you are using the gradle build for creating a distribution, the library can be defined via the environment variable `LRC_CLASSPATH`. A typical setting for a windows user would be
+----
+set LRC_CLASSPATH=C:\Program Files (x86)\prti1516e\lib\prti1516.jar
+----
+
+When using docker deployments, the RTI configuration is done by selecting the appropirate images, see https://github.com/hlacontainers/lrc for more information on that. 
+
 ===  Run-time Folder
 
 The IVCTool requires several configuration files and it creates protocol and report files. They all organized within several folders, where is folder is configurable (see https://github.com/IVCTool/IVCT_Framework/blob/development/docs/src/2-8-IVCT_Configuration.adoc for more details). However, a very typical and recommended structure is shown in the figure below.
