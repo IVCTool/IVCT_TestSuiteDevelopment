@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_RTIambassador;
 import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
+import de.fraunhofer.iosb.tc_lib.TcFailed;
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
 import hla.rti1516e.AttributeHandleValueMap;
@@ -276,8 +277,9 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
    * @param delta
    *          the rate at which the population should be increasing
    * @return true means error, false means correct
+   * @throws TcFailed
    */
-  public boolean testCountryPopulation(final String countryName, final float delta) {
+  public boolean testCountryPopulation(final String countryName, final float delta) throws TcFailed {
     for (final Map.Entry<ObjectInstanceHandle, CountryValues> entry : this.knownObjects.entrySet()) {
       if (entry.getValue().toString().equals(countryName)) {
         if (entry.getValue().testPopulation(delta, this.logger)) {
@@ -287,8 +289,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
         return false;
       }
     }
-
-    return true;
+    throw new TcFailed("Population test for unknown object " + countryName);
   }
 
   public void startSavingInteractions() {
@@ -387,11 +388,20 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
    * {@inheritDoc}
    */
   @Override
+  public void discoverObjectInstance(final ObjectInstanceHandle theObject, final ObjectClassHandle theObjectClass, final String objectName, final FederateHandle producingFederate) throws FederateInternalError {
+      this.logger.warn("producingFederate in discoverObjectInstance call not used");
+      discoverObjectInstance(theObject, theObjectClass, objectName);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void removeObjectInstance(final ObjectInstanceHandle theObject, final byte[] userSuppliedTag,
       final OrderType sentOrdering, final FederateAmbassador.SupplementalRemoveInfo removeInfo) {
     final CountryValues member = this.knownObjects.remove(theObject);
     if (member != null) {
-      this.logger.info("[" + member + " has left]");
+      this.logger.info("[{} has left]", member);
     }
   }
 
@@ -412,11 +422,11 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
         final HLAfloat32LE populationDecoder = this._encoderFactory.createHLAfloat32LE();
         populationDecoder.decode(theAttributes.get(this._attributeIdPopulation));
         final float population = populationDecoder.getValue();
-        this.logger.info("Population: " + population);
+        this.logger.info("Population: {}", population);
         if (this.knownObjects.containsKey(theObject)) {
           cv = this.knownObjects.get(theObject);
           if (cv.toString().equals(memberName) == false) {
-            this.logger.error("Country name not equal to country attribute name " + cv.toString() + " " + memberName);
+            this.logger.error("Country name not equal to country attribute name {} neq {}", cv, memberName);
           }
           cv.setPopulation(population);
         }
