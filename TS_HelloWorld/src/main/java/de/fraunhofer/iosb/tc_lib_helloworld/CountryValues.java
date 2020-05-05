@@ -58,17 +58,15 @@ public class CountryValues {
    * @return true when NOT within the test range
    */
   public boolean testPopulation(final float delta, final Logger logger) {
-    final float min = this.prevPopulation * delta * (float) 0.99;
-    final float mid = this.prevPopulation * delta;
-    final float max = this.prevPopulation * delta * (float) 1.01;
+    final float rate = currPopulation / prevPopulation;
 
-    logger.info("testPopulation: test value received: " + this.currPopulation + " growth rate: " + delta);
-    if (this.currPopulation > min && this.currPopulation < max) {
+    logger.info("testPopulation: population counter received: {} (observed growing rate = {}, allowed growth rate: {})", this.currPopulation, rate, delta);
+    if (rate <= delta) {
       return false;
     }
-    logger.info("---------------------------------------------------------------------");
-    logger.info("testPopulation FAILED: prevPopulation: " + this.prevPopulation + " currPopulation: " + currPopulation + " growthRate: " + delta);
-    logger.info("---------------------------------------------------------------------");
+    logger.warn("---------------------------------------------------------------------");
+    logger.warn("testPopulation FAILED");
+    logger.warn("---------------------------------------------------------------------");
 
     return true;
   }
