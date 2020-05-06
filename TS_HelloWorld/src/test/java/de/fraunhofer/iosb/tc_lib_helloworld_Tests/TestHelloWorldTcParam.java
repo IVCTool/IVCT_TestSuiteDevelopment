@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Scanner;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,17 +128,17 @@ public class TestHelloWorldTcParam {
 		LOGGER_HWTP.info("");
 		LOGGER_HWTP.info("-------------------------------");
 		LOGGER_HWTP.info("Test creating TcParam object");
-		
-		String tcParamString = "{\r\n" + 
-				"  \"growthRate\" : \"1.0003\",\r\n" + 
-				"  \"SOMfile\":\"$(IVCT_SUT_HOME_ID)/$(IVCT_SUT_ID)/$(IVCT_TESTSUITE_ID)/HelloWorld.xml\"\r\n" + 
+
+		String tcParamString = "{\r\n" +
+				"  \"growthRate\" : \"1.0003\",\r\n" +
+				"  \"SOMfile\":\"$(IVCT_SUT_HOME_ID)/$(IVCT_SUT_ID)/$(IVCT_TESTSUITE_ID)/HelloWorld.xml\"\r\n" +
 				"}";
-		
+
 		HelloWorldTcParam tcParam = new HelloWorldTcParam(tcParamString);
 		LOGGER_HWTP.info("number of FOM files found: {}", tcParam.getUrls().length);
 		assertTrue(tcParam.getUrls().length > 0);
 		for (int i=0; i<tcParam.getUrls().length; i++) {
-			LOGGER_HWTP.info("FOM File: {}", tcParam.getUrls()[i]);			
+			LOGGER_HWTP.info("FOM File: {}", tcParam.getUrls()[i]);
 		}
 
 	}

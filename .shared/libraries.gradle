@@ -1,45 +1,42 @@
 // Provides a map of the dependency artifacts to use.
 // Allows centralized definition of the version of artifacts to use.
 ext {
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~ Gradle Build Environment
+	//artifactCache = "${artifactory_contextUrl}/gradle"
+    gradleVersion = '5.5.1'
+    gradleWrapperVersion = "${gradleVersion}"
 
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~ IVCT settings
+    ivctVersion = '2.2.2-SNAPSHOT'
 
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~ Gradle Build Environment
-		//artifactCache = "${artifactory_contextUrl}/gradle"
-        gradleVersion = '5.5.1'
-        gradleWrapperVersion = "${gradleVersion}"
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~ HelloWorld settings
+	helloWorldVersion = '2.1.1'
 
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ IVCT settings
-        ivctVersion = '2.2.2-SNAPSHOT'
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
+    jupiterVersion = '5.6.2'
 
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ HelloWorld settings
-		helloWorldVersion = '2.1.1'
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~ thirdparty
+	logbackVersion = '1.1.3'
+	slf4jVersion = '1.7.10'
+    jsonSimpleVersion = '1.1.1'
+    gradleDockerPluginVersion = '4.9.0'
 
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
-        junitVersion = '4.+'
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~  now create libraries with the versions from above
+	libraries = [
+		tc_lib:							"io.github.msg134:TC.lib:${ivctVersion}",
+        ieee_lib:                       "io.github.msg134:IEEE1516e:${ivctVersion}",
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~ thirdparty
-		logbackVersion = '1.1.3'
-		slf4jVersion = '1.7.10'
-        jsonSimpleVersion = '1.1.1'
-        gradleDockerPluginVersion = '4.9.0'
-
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~~  now create libraries with the versions from above
-		libraries = [
-				tc_lib:							"io.github.msg134:TC.lib:${ivctVersion}",
-                ieee_lib:                       "io.github.msg134:IEEE1516e:${ivctVersion}",
-
-                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ thirdparty
-                logback_classic:                "ch.qos.logback:logback-classic:${logbackVersion}",
-                logback_core:                   "ch.qos.logback:logback-core:${logbackVersion}",
-
-                slf4j_api:                      "org.slf4j:slf4j-api:${slf4jVersion}",
-                slf4j_jcl_over_slf4j:           "org.slf4j:jcl-over-slf4j:${slf4jVersion}",
-                slf4j_jul_to_slf4j:             "org.slf4j:jul-to-slf4j:${slf4jVersion}",
-                slf4j_log4j_over_slf4j:         "org.slf4j:log4j-over-slf4j:${slf4jVersion}",
-                jsonSimple:						"com.googlecode.json-simple:json-simple:${jsonSimpleVersion}",
-
-                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
-                junit:                          "junit:junit:${junitVersion}",
-                docker:	                        "com.bmuschko:gradle-docker-plugin:${gradleDockerPluginVersion}"
-        ]
+        logback_classic:                "ch.qos.logback:logback-classic:${logbackVersion}",
+        logback_core:                   "ch.qos.logback:logback-core:${logbackVersion}",
+        slf4j_api:                      "org.slf4j:slf4j-api:${slf4jVersion}",
+        slf4j_jcl_over_slf4j:           "org.slf4j:jcl-over-slf4j:${slf4jVersion}",
+        slf4j_jul_to_slf4j:             "org.slf4j:jul-to-slf4j:${slf4jVersion}",
+        slf4j_log4j_over_slf4j:         "org.slf4j:log4j-over-slf4j:${slf4jVersion}",
+        jsonSimple:						"com.googlecode.json-simple:json-simple:${jsonSimpleVersion}",
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
+        junit_jupiter_engine:           "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}",
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~ Docker
+        docker:	                        "com.bmuschko:gradle-docker-plugin:${gradleDockerPluginVersion}"
+    ]
 }

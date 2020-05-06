@@ -18,7 +18,7 @@ package de.fraunhofer.iosb.tc_lib_helloworld_Tests;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import de.fraunhofer.iosb.tc_lib_helloworld.*;
@@ -36,22 +36,22 @@ public class TestHelloWorldBaseModel {
 
     CountryValues ctval1 = new CountryValues("Country_1");
     LOGGER_TestHelloBaseModel.info("Country Name: " + ctval1);
-    
+
     // set the basic population value
     ctval1.setPopulation(2000.0F);
-        
+
     populationReport(1, ctval1);               // show us curent and previous Population
 
-    
+
     // Population increases 1/1000
     ctval1.setPopulation(2002.0F);
-    
+
     //ctval1.setPopulation(2032.0F);          // with this Number the test will fail
-    
+
 
     populationReport(2, ctval1);               // show us curent and previous Population
 
-    // Test with delta 1/1000    
+    // Test with delta 1/1000
     if (!ctval1.testPopulation(1.001F, LOGGER_TestHelloBaseModel)) {
       LOGGER_TestHelloBaseModel.info("Increase of population in expected range \n");
     }
@@ -72,17 +72,17 @@ public class TestHelloWorldBaseModel {
 
     ctval1.setPopulation(5000.0F);
     populationReport(1, ctval1);
- 
+
     // Population increases 1/1000
     //ctval1.setPopulation(5005.0F);            // with this the test should fail
-    
+
     // Population increases 20%
     ctval1.setPopulation(6000.0F);
-    
+
 
     populationReport(2, ctval1);
 
-    // Test with delta 1/1000    
+    // Test with delta 1/1000
     if (ctval1.testPopulation(1.001F, LOGGER_TestHelloBaseModel)) {
       LOGGER_TestHelloBaseModel.info("As planned increase of population not in range\n");
     }

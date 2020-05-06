@@ -22,6 +22,7 @@ task dockerBuildImage(type: DockerBuildImage) {
     tags.add ("ivct/ts-helloworld:${helloWorldVersion}")
 }
 
+// use java application packaging feature
 apply plugin: 'application'
 
 mainClassName = 'de.fraunhofer.iosb.tc_helloworld.TC0001'
@@ -38,25 +39,12 @@ dependencies {
 	compileOnly     libraries.slf4j_jul_to_slf4j
 	compileOnly     libraries.slf4j_log4j_over_slf4j
 	compileOnly		libraries.jsonSimple
-    compileOnly(
-            'junit:junit:4.12'
-    )
 
-    testCompileOnly     libraries.tc_lib
-    testImplementation(
-            'org.junit.jupiter:junit-jupiter-api:5.1.0',
-            "io.github.ivctool:Command:${ivctVersion}"
-    )
-    testRuntimeOnly(
-            'org.junit.jupiter:junit-jupiter-engine:5.1.0',
-            'org.junit.vintage:junit-vintage-engine:5.1.0'
-    )
+    testImplementation  libraries.tc_lib
+    testImplementation  "io.github.ivctool:Command:${ivctVersion}"
+
+    testImplementation	libraries.junit_jupiter_engine
 }
-
-// test {
-//     useJUnitPlatform()
-// }
-
 
 // Write the  IVCT-Version as set to variable in libraries.gradle
 // in a  property-file
@@ -77,9 +65,8 @@ task writeVersion {
 }
 processResources.dependsOn writeVersion
 
-
 // write IVCT-Version informations to manifest - file
-jar{ 
+jar{
   manifest{
      attributes(
      'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date()),
