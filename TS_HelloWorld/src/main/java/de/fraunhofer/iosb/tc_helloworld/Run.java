@@ -21,6 +21,7 @@ public class Run {
 		String tcParamJson = "{ \"growthRate\" : \"1.0003\", \"SOMfile\":  \"HelloWorld.xml\" }";
 		String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
 
+		// run all test cases in test suite
 		int i = 0;
 		while (i < testSchedule.length) {
 			testSchedule[i].setSettingsDesignator(settingsDesignator);
@@ -29,11 +30,15 @@ public class Run {
 			testSchedule[i].setTcName(testSchedule[i].getClass().getName());
 			testSchedule[i].setTsName(tsName);
 
+			runLogger.info("************************************************");
+			runLogger.info("**************** Run Test Case {} **************", testSchedule[i].getTcName());
 			testSchedule[i].setSkipOperatorMsg(true);
 			IVCT_Verdict verdict = testSchedule[i].execute(tcParamJson, runLogger);
 			runLogger.info(verdict.toString());
 			i++;
+			runLogger.info("************************************************");
 		}
+		runLogger.info("**************** Test Schedule Finished ****************");
 
 	}
 
