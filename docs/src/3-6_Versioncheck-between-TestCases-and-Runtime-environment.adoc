@@ -1,26 +1,88 @@
-== 3-6_Versioncheck-between-TestCases-and-Runtime-environment
+== Version Check for Test Suite Compatibility
+Test cases and framework are developed and maintained independently from each other. While a test case developer may have used a specific version of a test case library when producing a test suite release, the framework may have been progressed and deployed into a runtime environment with an updated version later on. That may create a situation, where the runtime is using a different test case library version, as the test case developer at production time. That may or may not be a problem at runtime, depending on possible breaking changes introduced into updated libraries. That's the reason for the following version control logic.
 
-=== Compile-time-version - Information in the TestCases /TestSuites
-While  compiling the TestCase,  a specific IVCT-version (and TC.lib) is used. +
-This version  should be documented  'in'  the TestCases. +
-The information is entered manually, before releasing a new version, in the gradle file libraries.gradle . (e.g. ivctVersion = '2.1.1' ) +
-Because at runtime this libraries.gradle is not present, it will be written by the gradle build process 
-in a  property file  "testCaseBuild.properties",   which is found  in the  TestSuite-jar file. +
-We put the task to write the version-information  from libraries.gradle  to  testCaseBuild.properties
-in the  TestsuiteName.gradle file in the TestSuite specific folder. +
-If  someone use another build System for TestCases, it would be essential  to pass the version information in another way to  the  testCaseBuild.properties
 
-=== Informations about  compatible Versions   in  TestEngine   (available  at runtime)
-In the same manner as we documented the IVCT-version in TestCases, 
-the information which versions of the TC.lib should be compatible to 'this'  version of TestEngine is processed. +
-A list of compatible versions (array/hasmap) ist written manually in the libraries.gradle  of the IVCT_Framework: +
-compatibleVersions = ['3.0.0':'compatible','2.2.2-SNAPSHOT':'compatible', '2.1.1':'compatible', '2.1.0':'incompatible'] +
-In TC.exec/TC.exec.gradle a task is defined which writes the informations from the libraries.gradle  to the property-File  compatibleVersions.properties.
+=== Include Compile-time Version Information in the TestSuites
+When compiling a test case, the version of the used test case library is configured in the *libraries.gradle* file.
+----
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~ IVCT settings
+ivctVersion = '3.0.0'
+----
+
+This configuration is only used during build time and will not be available at runtime. To enable the test case engine to check the version compatibility, this version information must be included into the distribution of the test suite.
+
+This is done by extending the build configuration with the *writeVersion* task shown below.
+----
+// Write the  IVCT-Version as defined in libraries.gradle
+// in a  property-file
+task writeVersion {
+    group = "Build"
+    description = "Creates a properties file with version information"
+
+    doLast {
+        def prop = new Properties()
+        prop.version = ivctVersion
+        prop.ivctVersion = ivctVersion
+        prop.helloWorldVersion = helloWorldVersion
+        prop.build = "git describe --tags".execute().text.trim()
+        mkdir "src/main/resources"
+        File propFile = file('src/main/resources/testCaseBuild.properties')
+        prop.store(propFile.newWriter(), null)
+    }
+}
+processResources.dependsOn writeVersion
+----
+
+This task will create a *testCaseBuild.properties* file in the resource folder of the test suite. The standard gradle build rule will include this resource folder into the test suite jar file in the produced distribution. The resulting properties file is shown below.
+----
+#Tue Jun 30 11:23:17 CEST 2020
+version=3.0.0
+helloWorldVersion=2.1.1
+ivctVersion=2.2.2-SNAPSHOT
+build=V0.3.0-213-gda3062a
+----
+
+This properties file is expected by the test case engine to be found inside the resource section of the test suite jar file, and it must named *testCaseBuild.properties*. When using other build systems than gradle, this file must be created accordingly.
+
+
+=== Information about compatible Versions in the TestEngine   (available  at runtime)
+In the same way the IVCT-version is configured for the test cases, it is also configured for the test engine. Ideally both version should be the same, however it is possible to have different version as long as they are upwards compatible. The compatible versions are configured within the *libraries.gradle* configuration file inside the IVCT_Framework.
+
+----
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~ IVCT settings
+ivctVersion = '3.0.0'
+compatibleVersions = ['3.0.0':'compatible','2.2.2-SNAPSHOT':'compatible', '2.1.1':'compatible', '2.1.0':'incompatible']
+----
+
+A task *writeCompatibleVersions* in the test case gradle build configuration (TC.exec/TC.exec.gradle) is used to create a properties file inside the resources folder.
+
+----
+// write Information about compatible Versions from libraries.gradle to a file
+task writeCompatibleVersions {
+  group = "Build"
+  description = "Creates a file with information of compability"
+
+  doLast {
+    def prop = new Properties()
+    compatibleVersions.each { key, value -> prop."$key" = "$value".toString() }
+    mkdir "src/main/resources"
+    File compFile = file('src/main/resources/compatibleVersions.properties')
+    prop.store(compFile.newWriter(), null)
+  }
+}
+processResources.dependsOn  writeCompatibleVersions
+----
+
+The resulting properties file is called *compatibleVersions.properties* and it contains all test case library version identifiers, which are compatible with actual test case engine.
+----
+#Thu Jun 18 16:14:58 CEST 2020
+2.2.2-SNAPSHOT=compatible
+2.1.1=compatible
+3.0.0=compatible
+2.1.0=incompatible
+----
 
 === Compare Versions while running a TestCase
-As all TestCases are subclasses of  AbstractTestCase (part of  TC.lib),  the method to read  the IVCT-Version-information  at runtime  ist situated  here. + 
-Thus every TestCase has a method  getIVCTVersion()  which reads the value for  "ivctVersion"   from  testCaseBuild.properties. +
-It is the TestEngine which calls for each testcase this method  and uses the gotten String  to create a new  instance of  the class  IVCTVersionCheck. +
-IVCTVersionCheck  checks  this value against  the list it reads from the compatibleVersions.properties
-to  evaluate if the Versions are compatible. +
-In case of  no  positive match,  it  throw a special exception.
+As all TestCases are subclasses of the AbstractTestCase class (part of  TC.lib),  the method to read the IVCT-Version-information is implemented in this class. Thus every TestCase has a method  getIVCTVersion()  which reads the value for  "ivctVersion"   from the  testCaseBuild.properties file.
+
+Before starting a test case, the TestEngine will use this method to get the version used by the test suite. The test case will only be executed, if its version in included in the list of compatible version. Otherwise the test case execution request is canceled with an _INCONCLUSIVE_ verdict.
