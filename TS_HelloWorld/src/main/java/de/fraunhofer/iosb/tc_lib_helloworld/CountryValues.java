@@ -31,7 +31,7 @@ public class CountryValues {
 
   @Override
   public String toString() {
-    return this.countryName;
+    return "(" + this.countryName + ", " + this.currPopulation + ")";
   }
 
   /**

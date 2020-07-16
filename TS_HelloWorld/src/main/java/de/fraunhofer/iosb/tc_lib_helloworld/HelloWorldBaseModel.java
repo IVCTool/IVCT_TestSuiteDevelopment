@@ -281,7 +281,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
    */
   public boolean testCountryPopulation(final String countryName, final float delta) throws TcFailed {
     for (final Map.Entry<ObjectInstanceHandle, CountryValues> entry : this.knownObjects.entrySet()) {
-      if (entry.getValue().toString().equals(countryName)) {
+      if (entry.getValue().getCountryName().equals(countryName)) {
         if (entry.getValue().testPopulation(delta, this.logger)) {
           this.logger.error("testCountryPopulation test failed");
           return true;
@@ -389,7 +389,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
    */
   @Override
   public void discoverObjectInstance(final ObjectInstanceHandle theObject, final ObjectClassHandle theObjectClass, final String objectName, final FederateHandle producingFederate) throws FederateInternalError {
-      this.logger.warn("producingFederate in discoverObjectInstance call not used");
+      this.logger.warn("<producingFederate> parameter in <discoverObjectInstance> HLA API call not used");
       discoverObjectInstance(theObject, theObjectClass, objectName);
   }
 
@@ -425,7 +425,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
         this.logger.info("Population: {}", population);
         if (this.knownObjects.containsKey(theObject)) {
           cv = this.knownObjects.get(theObject);
-          if (cv.toString().equals(memberName) == false) {
+          if (cv.getCountryName().equals(memberName) == false) {
             this.logger.error("Country name not equal to country attribute name {} neq {}", cv, memberName);
           }
           cv.setPopulation(population);
