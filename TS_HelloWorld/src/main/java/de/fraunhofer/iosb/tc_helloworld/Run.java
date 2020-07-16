@@ -26,7 +26,8 @@ public class Run {
 		while (i < testSchedule.length) {
 			testSchedule[i].setSettingsDesignator(settingsDesignator);
 			testSchedule[i].setFederationName(federationName);
-			testSchedule[i].setSutName(sutName);
+			testSchedule[i].setSutName("hw_iosb");
+			testSchedule[i].setSutFederateName(sutName);			
 			testSchedule[i].setTcName(testSchedule[i].getClass().getName());
 			testSchedule[i].setTsName(tsName);
 
