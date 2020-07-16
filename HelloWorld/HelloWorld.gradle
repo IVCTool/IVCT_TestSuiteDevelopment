@@ -66,14 +66,6 @@ dependencies {
     compile     libraries.slf4j_api
     runtime     libraries.logback_classic
 	runtime     libraries.logback_core
+    runtime     files("$System.env.LRC_CLASSPATH")
 }
 
-tasks.withType(CreateStartScripts) {
-    classpath += files('lib')
-doLast {
-        def windowsScriptFile = file getWindowsScript()
-        def unixScriptFile = file getUnixScript()
-        windowsScriptFile.text = windowsScriptFile.text.replace('%APP_HOME%\\lib\\lib', '%APP_HOME%\\lib;%LRC_CLASSPATH%')
-        unixScriptFile.text = unixScriptFile.text.replace('$APP_HOME/lib/lib', '$APP_HOME/lib:$LRC_CLASSPATH')
-    }
-}
