@@ -3,6 +3,10 @@
 Up to this point, you should know about the basic concepts of a test cases. Now it is about time to actually run a test case.
 As a test case implements the _AbstractTestCase_ interface, it inherits a _execute_ method. The _Caller_ of this method needs to fulfill some requirements as described below. This Caller can be anything, like a JUnit test used by the test case developer, or the test case engine after the test suite is deployed in a IVCT installation.
 
+.Test Case Execution Environments
+image:images/ts-test.png[Test Case Execution, 600]
+
+
 === Preconditions to start a Test Case
 
 Test cases are designed to be created on demand within a test case engine. They need to be configured to test a certain system under test, within a given federation, connected with specific run-time infrastructure.
@@ -42,6 +46,16 @@ org.slf4j.Logger tcLogger = org.slf4j.LoggerFactory.getLogger(TC0001.class);
 
 === Using JUnit tests to execute a Test Case
 
+explain about testing the test cases
+internal quality gate - continuous integration with gradle test
+build distribution restricted to test case code
+test environment with runtime sandbox
+
 
 === Deploying the Test Case into a IVCT Installation
+ 
+explain about gradle dockerBuildImage
+integrate test suite distribution into IVCT composition or into runtime filesystem
+configure parameter with GUI or CLI
+
  
