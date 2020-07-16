@@ -1,11 +1,11 @@
 buildscript {
-    repositories {
+	repositories {
 		mavenLocal()
 		mavenCentral()
 	}
-  dependencies {
-	classpath libraries.docker
-  }
+	dependencies {
+		classpath libraries.docker
+	}
 }
 
 // apply plugin: "com.bmuschko.docker-remote-api"
@@ -16,10 +16,10 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 // Use task types
 task dockerBuildImage(type: DockerBuildImage) {
-    dependsOn 'install'
-    inputDir = file('.')
-    buildArgs.put('version', "${helloWorldVersion}")
-    tags.add ("ivct/ts-helloworld:${helloWorldVersion}")
+	dependsOn 'install'
+	inputDir = file('.')
+	buildArgs.put('version', "${helloWorldVersion}")
+	tags.add ("ivct/ts-helloworld:${helloWorldVersion}")
 }
 
 // use java application packaging feature
@@ -29,49 +29,61 @@ mainClassName = 'de.fraunhofer.iosb.tc_helloworld.Run'
 
 dependencies {
 
-    compileOnly     libraries.ieee_lib
-	compileOnly     libraries.tc_lib
+	compile     libraries.ieee_lib
+	compile     libraries.tc_lib
+	compile     "io.github.ivctool:Command:${ivctVersion}"
+	compile     files("$System.env.LRC_CLASSPATH")
 
-	compileOnly     libraries.slf4j_api
-	compileOnly		libraries.logback_classic
-	compileOnly		libraries.logback_core
-	compileOnly     libraries.slf4j_jcl_over_slf4j
-	compileOnly     libraries.slf4j_jul_to_slf4j
-	compileOnly     libraries.slf4j_log4j_over_slf4j
-	compileOnly		libraries.jsonSimple
+	compile     libraries.slf4j_api
+	compile		libraries.logback_classic
+	compile		libraries.logback_core
+	compile     libraries.slf4j_jcl_over_slf4j
+	compile     libraries.slf4j_jul_to_slf4j
+	compile     libraries.slf4j_log4j_over_slf4j
+	compile		libraries.jsonSimple
 
-    testImplementation  libraries.tc_lib
-    testImplementation  "io.github.ivctool:Command:${ivctVersion}"
+	testImplementation  libraries.tc_lib
+	testImplementation  "io.github.ivctool:Command:${ivctVersion}"
+	testImplementation  files("$System.env.LRC_CLASSPATH")
 
-    testImplementation	libraries.junit_jupiter_engine
+	testImplementation	libraries.junit_jupiter_engine
+//	testImplementation	libraries.activemqEmbedded
 }
+
+test {
+	useJUnitPlatform()
+
+	//	exclude '**/CountryValuesTest**'
+
+}
+
 
 // Write the  IVCT-Version as set to variable in libraries.gradle
 // in a  property-file
 task writeVersion {
-    group = "Build"
-    description = "Creates a properties file with version information"
+	group = "Build"
+	description = "Creates a properties file with version information"
 
-    doLast {
-        def prop = new Properties()
-        prop.version = ivctVersion
-        prop.ivctVersion = ivctVersion
-        prop.helloWorldVersion = helloWorldVersion
-        prop.build = "git describe --tags".execute().text.trim()
-        mkdir "src/main/resources"
-        File propFile = file('src/main/resources/testCaseBuild.properties')
-        prop.store(propFile.newWriter(), null)
-    }
+	doLast {
+		def prop = new Properties()
+		prop.version = ivctVersion
+		prop.ivctVersion = ivctVersion
+		prop.helloWorldVersion = helloWorldVersion
+		prop.build = "git describe --tags".execute().text.trim()
+		mkdir "src/main/resources"
+		File propFile = file('src/main/resources/testCaseBuild.properties')
+		prop.store(propFile.newWriter(), null)
+	}
 }
 processResources.dependsOn writeVersion
 
 // write IVCT-Version informations to manifest - file
 jar{
-  manifest{
-     attributes(
-     'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date()),
-        'ivctVersion' : ivctVersion,
-        'build' :       "git describe --tags".execute().text.trim()
-     )
-  }
+	manifest{
+		attributes(
+				'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date()),
+				'ivctVersion' : ivctVersion,
+				'build' :       "git describe --tags".execute().text.trim()
+				)
+	}
 }

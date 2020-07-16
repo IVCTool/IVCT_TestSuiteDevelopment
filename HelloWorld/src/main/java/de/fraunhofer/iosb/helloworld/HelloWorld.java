@@ -125,7 +125,7 @@ public class HelloWorld extends NullFederateAmbassador {
 		if (args.length > 0) {
 			log.info("using arguments (syntax: settingsDesignator [fedName [populationsize [numberOfCycles]]])");
 			log.info("args: {}", args.toString());
-			String rtiHost = args[0];
+			hw.settingsDesignator = args[0];
 			if (args.length > 1) {
 				hw.myCountry = args[1];
 			}
@@ -135,7 +135,6 @@ public class HelloWorld extends NullFederateAmbassador {
 			if (args.length > 3) {
 				hw.numberOfCycles = Integer.parseInt(args[3]);
 			}
-			hw.settingsDesignator = "crcAddress=" + rtiHost;
 		}
 		// 2. else if environment settings are given, use them
 		else if (getEnvironmentSettings(hw)) {
@@ -144,19 +143,19 @@ public class HelloWorld extends NullFederateAmbassador {
 		}
 		// 3. else request user input
 		else {
-			log.info("Enter the CRC address, such as");
-			log.info("'localhost', 'localhost:8989', '192.168.1.62'");
-			log.info("or when using Pitch Booster on the form");
-			log.info("<CRC name>@<booster address>:<booster port>");
-			log.info("such as 'MyCRCname@192.168.1.70:8688'");
+			log.info("Enter the CRC address");
+			log.info("when using Pitch RTI: crcAddress=localhost, crcAddress=localhost:8989");
+			log.info("when using Pitch Booster on the form: <CRC name>@<booster address>:<booster port>");
+			log.info("when using MAK RTI: (setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"localhost\")");
+			
 			log.info("");
 			try {
 				final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 				String rtiHost;
-                System.out.print("[localhost]: ");
+                System.out.print("[crcAddress=localhost]: ");
 				rtiHost = in.readLine();
 				if (rtiHost.length() == 0) {
-					rtiHost = "localhost";
+					rtiHost = "crcAddress=localhost";
 				}
 				System.out.print("Enter your country [A]: ");
 				hw.myCountry = in.readLine();
@@ -175,7 +174,7 @@ public class HelloWorld extends NullFederateAmbassador {
 				if (bString.isEmpty() == false) {
 					hw.numberOfCycles = Integer.parseInt(bString);
 				}
-				hw.settingsDesignator = "crcAddress=" + rtiHost;
+				hw.settingsDesignator = rtiHost;
 			} catch (IOException e) {
 				log.error("Error while reading from console: {}", e);
 			}

@@ -16,6 +16,8 @@ limitations under the License.
 
 package de.fraunhofer.iosb.tc_helloworld;
 
+import org.slf4j.Logger;
+
 import de.fraunhofer.iosb.tc_lib.AbstractTestCase;
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_LoggingFederateAmbassador;
@@ -26,11 +28,6 @@ import de.fraunhofer.iosb.tc_lib.TcInconclusive;
 import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldBaseModel;
 import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldTcParam;
 import hla.rti1516e.FederateHandle;
-
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**

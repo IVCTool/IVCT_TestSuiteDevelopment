@@ -16,8 +16,9 @@ limitations under the License.
 
 package de.fraunhofer.iosb.tc_helloworld;
 
+import java.util.LinkedList;
+
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.fraunhofer.iosb.tc_lib.AbstractTestCase;
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
@@ -39,9 +40,6 @@ import hla.rti1516e.exceptions.NotConnected;
 import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
-
-import java.util.LinkedList;
-import java.util.Properties;
 
 /**
  * @author mul (Fraunhofer IOSB)
