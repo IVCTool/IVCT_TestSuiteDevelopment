@@ -29,18 +29,27 @@ mainClassName = 'de.fraunhofer.iosb.tc_helloworld.Run'
 
 dependencies {
 
-	compile     libraries.ieee_lib
-	compile     libraries.tc_lib
-	compile     "io.github.ivctool:Command:${ivctVersion}"
-	compile     files("$System.env.LRC_CLASSPATH")
+	compileOnly     libraries.ieee_lib
+	compileOnly     libraries.tc_lib
+	compileOnly     libraries.slf4j_api
+	compileOnly		libraries.logback_classic
+	compileOnly		libraries.logback_core
+	compileOnly     libraries.slf4j_jcl_over_slf4j
+	compileOnly     libraries.slf4j_jul_to_slf4j
+	compileOnly     libraries.slf4j_log4j_over_slf4j
+	compileOnly		libraries.jsonSimple
 
-	compile     libraries.slf4j_api
-	compile		libraries.logback_classic
-	compile		libraries.logback_core
-	compile     libraries.slf4j_jcl_over_slf4j
-	compile     libraries.slf4j_jul_to_slf4j
-	compile     libraries.slf4j_log4j_over_slf4j
-	compile		libraries.jsonSimple
+
+	
+	testImplementation     libraries.ieee_lib
+	testImplementation     libraries.tc_lib
+	testImplementation     libraries.slf4j_api
+	testImplementation		libraries.logback_classic
+	testImplementation		libraries.logback_core
+	testImplementation     libraries.slf4j_jcl_over_slf4j
+	testImplementation     libraries.slf4j_jul_to_slf4j
+	testImplementation     libraries.slf4j_log4j_over_slf4j
+	testImplementation		libraries.jsonSimple
 
 	testImplementation  libraries.tc_lib
 	testImplementation  "io.github.ivctool:Command:${ivctVersion}"
