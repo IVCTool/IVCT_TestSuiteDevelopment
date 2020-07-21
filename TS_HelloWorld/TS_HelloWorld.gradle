@@ -41,22 +41,22 @@ dependencies {
 
 
 	
-	testImplementation     libraries.ieee_lib
-	testImplementation     libraries.tc_lib
-	testImplementation     libraries.slf4j_api
-	testImplementation		libraries.logback_classic
-	testImplementation		libraries.logback_core
-	testImplementation     libraries.slf4j_jcl_over_slf4j
-	testImplementation     libraries.slf4j_jul_to_slf4j
-	testImplementation     libraries.slf4j_log4j_over_slf4j
-	testImplementation		libraries.jsonSimple
+	testImplementation libraries.ieee_lib
+	testImplementation libraries.tc_lib
+	testImplementation libraries.slf4j_api
+	testImplementation libraries.logback_classic
+	testImplementation libraries.logback_core
+	testImplementation libraries.slf4j_jcl_over_slf4j
+	testImplementation libraries.slf4j_jul_to_slf4j
+	testImplementation libraries.slf4j_log4j_over_slf4j
+	testImplementation libraries.jsonSimple
 
-	testImplementation  libraries.tc_lib
-	testImplementation  "io.github.ivctool:Command:${ivctVersion}"
-	testImplementation  files("$System.env.LRC_CLASSPATH")
+	testImplementation libraries.tc_lib
+	testImplementation "io.github.ivctool:Command:${ivctVersion}"
+	testImplementation files("$System.env.LRC_CLASSPATH")
 
-	testImplementation	libraries.junit_jupiter_engine
-//	testImplementation	libraries.activemqEmbedded
+	testImplementation libraries.junit_jupiter_engine
+	testImplementation libraries.activemqEmbedded
 }
 
 test {

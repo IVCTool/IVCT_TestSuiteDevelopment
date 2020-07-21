@@ -51,6 +51,19 @@ internal quality gate - continuous integration with gradle test
 build distribution restricted to test case code
 test environment with runtime sandbox
 
+running all tests 
+
+----
+gradle test
+----
+
+
+running single test, e.g. TC0002Test by using the regular expression
+
+----
+gradle test --tests *TC0002*
+----
+
 
 === Deploying the Test Case into a IVCT Installation
  
