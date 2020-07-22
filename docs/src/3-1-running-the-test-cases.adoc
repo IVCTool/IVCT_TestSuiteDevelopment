@@ -1,7 +1,16 @@
-== Running the Test Cases
 
-Up to this point, you should know about the basic concepts of a test cases. Now it is about time to actually run a test case.
-As a test case implements the _AbstractTestCase_ interface, it inherits a _execute_ method. The _Caller_ of this method needs to fulfill some requirements as described below. This Caller can be anything, like a JUnit test used by the test case developer, or the test case engine after the test suite is deployed in a IVCT installation.
+== Running and Testing the Test Cases
+
+During the development of test cases, you will have to run and test your code. This will start with your first method and it will end with the execution of the test cases within the IVCT tool during a certification test. We recommend a test-driven development approach for all parts of you test case code, and also to include them into your normal build cycle. This helps to discovery any unexpected side effects during your coding, at the earliest possible point in time. 
+
+[quote, Wikipedia, https://en.wikipedia.org/wiki/Test-driven_development]
+Test-driven development (TDD) is a software development process that relies on the repetition of a very short development cycle: requirements are turned into very specific test cases, then the code is improved so that the tests pass. 
+
+A second recommendation is to use https://junit.org/junit5/[JUnit tests]. Most development environments are providing support for JUnit tests as they are de facto standard for testing. When sharing test case code, the community will then be able to easily understand and use them.
+
+When including test cases into your build process, the JUnit tests will serve as a _quality gate_ before deploying the test cases. A build system like gradle will included the Junit tests in the build loops and only of all tests are passed, the software will be deployed.
+
+The figure below shows the most typical environments to run a test case. During the development of a test case, internal tests will be used test individual methods of the complete test cases. After finishing the development of the test cases, the test suite will be deployed into a IVCT installation. The recommended way is to create docker images and use them within composition files.
 
 .Test Case Execution Environments
 image:images/ts-test.png[Test Case Execution, 600]
@@ -10,6 +19,8 @@ image:images/ts-test.png[Test Case Execution, 600]
 === Preconditions to start a Test Case
 
 Test cases are designed to be created on demand within a test case engine. They need to be configured to test a certain system under test, within a given federation, connected with specific run-time infrastructure.
+
+As a test case implements the _AbstractTestCase_ interface, it inherits a _execute_ method, to actually run the test case. The _Caller_ of this method needs to fulfill some requirements as described below. This Caller can be any program, like a JUnit test used by the test case developer, or the test case engine after the test suite is deployed in a IVCT installation.
 
 In Detail, before executing a test case, the following preconditions need to be fulfilled.
 
@@ -45,6 +56,8 @@ org.slf4j.Logger tcLogger = org.slf4j.LoggerFactory.getLogger(TC0001.class);
 
 
 === Using JUnit tests to execute a Test Case
+
+When running a test, the execution environment for the unit to be tested need to be same as in the production environment. This can as simple as just calling a stateless method, or it may be a bit more complex, like connecting to a HLA run-time infrastructure and joining a given federation. As an IVCT test case is supposed to be executed within a test engine, this environment need to be emulated by a JUnit test. 
 
 explain about testing the test cases
 internal quality gate - continuous integration with gradle test
