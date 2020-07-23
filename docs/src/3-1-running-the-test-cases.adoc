@@ -59,29 +59,67 @@ org.slf4j.Logger tcLogger = org.slf4j.LoggerFactory.getLogger(TC0001.class);
 
 When running a test, the execution environment for the unit to be tested need to be same as in the production environment. This can as simple as just calling a stateless method, or it may be a bit more complex, like connecting to a HLA run-time infrastructure and joining a given federation. As an IVCT test case is supposed to be executed within a test engine, this environment need to be emulated by a JUnit test. 
 
-explain about testing the test cases
-internal quality gate - continuous integration with gradle test
-build distribution restricted to test case code
-test environment with runtime sandbox
-
-running all tests 
+A Simple test for the test case TC0001 could look like the example below:
 
 ----
-gradle test
+// test case settings
+Logger runLogger = LoggerFactory.getLogger(TSTest.class);
+String tcParamJson = "{ \"growthRate\" : \"1.0003\", \"SOMfile\":  \"HelloWorld.xml\" }";
+String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
+
+@Test
+void test() {
+    TC0001 testCase = new TC0001();
+    testCase.setSettingsDesignator(settingsDesignator);
+    testCase.setFederationName("HelloWorld");
+    testCase.setSutName("hw_iosb");
+    testCase.setSutFederateName("A");           
+    testCase.setTcName(TSTest.class.getName());
+    testCase.setTsName("TS_HelloWord");
+    testCase.setSkipOperatorMsg(true);
+    IVCT_Verdict verdict = testCase.execute(tcParamJson, runLogger);
+    runLogger.info("Test Case Verdict: {}", verdict);
+    assertTrue(verdict.verdict == IVCT_Verdict.Verdict.PASSED);     
+}
 ----
 
-
-running single test, e.g. TC0002Test by using the regular expression
+In order to execute the test below, it need to be build with an Local RTI Component (LRC) library. For the test suite example TS_HelloWorld, the gradle build script has added a dependency to the system environment variable _LRC_CLASSPATH_ which contains the file path to the LRC library to be used. 
 
 ----
-gradle test --tests *TC0002*
+testImplementation files("$System.env.LRC_CLASSPATH")
 ----
+
+In the test example shown above, the operator message dialog has been disabled with the _setSkipOperatorMsg(true)_ call. This assumes that the conditions requested by the test instructions given by the test cases are fulfilled. In the case of the TC0001 this assumes that a federation with the joined SuT is running before the test cases is being started. 
+
+The JUnit tests may be called within the IDE or directly with the gradle build system. It is possible to just run all tests defined within the _test_ source set, or individual tests by using regular expression.
+
+----
+gradlew test                    # running all test
+gradlew test --tests *TC0001*   # running tests matching regular expression
+----
+
+This will create a test report, which can be found inside at _TS_HelloWorld\build\reports\tests\test_ and will like the example below:
+
+.Test Case Execution Environments
+image:images/junit-test-report.png[Junit Test Report, 600]
+
+The JUnit tests will also be executed within the gradle _build_ task. This is intended as a quality gate before deploying the test case code into IVCT installation. However, as explained earlier, this requires a installed RTI with a running federation and a joined SuT. This will be problematic within a Continuous Integration build loop. To allow the test suite to be tested on a build server, the following rule can be included in the JUnit test declaration:
+
+----
+@Test
+@EnabledIfEnvironmentVariable(named = "LRC_CLASSPATH", matches = ".*")
+void test() {
+----
+
+With the _EnabledIfEnvironmentVariable_ rule, the test will only be executed when the _LRC_CLASSPATH_ variable is defined. Which will not be the case on the build server.
 
 
 === Deploying the Test Case into a IVCT Installation
  
-explain about gradle dockerBuildImage
-integrate test suite distribution into IVCT composition or into runtime filesystem
-configure parameter with GUI or CLI
+The ultimate purpose of a test case is to be deploy and used inside an IVCT installation. This will be done by adding the test suite with all including test cases into a IVCT runtime file system. The overall concept of the IVCT runtime is explained in section link:(2-0-Prepare-runtime.adoc)[How to Prepare your Development Environment?].
+
+Deploying a test suite boils down to copy the distribution (inside folder _TS_HelloWorld/build/distributions_) created by the _gradle build_ task into the test suite distribution folder (_$IVCT_TS_HOME_ID_) inside your IVCT runtime. 
+
+The configuration of the test case will then be done by using the GUI or the CLI, and the test case will be executed within the TC.exec.
 
  
