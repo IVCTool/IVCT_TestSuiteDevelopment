@@ -29,7 +29,7 @@ task dockerBuildPitchImage(type: DockerBuildImage) {
     dockerFile = project.file('Dockerfile-pi')
     buildArgs.put('version', "${helloWorldVersion}")
 	inputDir = file('.')
-    tags.add ("ivct/helloworld:pi-skeleton-${helloWorldVersion}")
+    images.add ("ivct/helloworld:pi-skeleton-${helloWorldVersion}")
 }
 
 task dockerBuildPorticoImage(type: DockerBuildImage) {
@@ -39,7 +39,7 @@ task dockerBuildPorticoImage(type: DockerBuildImage) {
     dockerFile = project.file('Dockerfile-po')
     buildArgs.put('version', "${helloWorldVersion}")
 	inputDir = file('.')
-    tags.add ("ivct/helloworld:po-${helloWorldVersion}")
+    images.add ("ivct/helloworld:po-${helloWorldVersion}")
 }
 
 task dockerBuildMakImage(type: DockerBuildImage) {
@@ -49,7 +49,7 @@ task dockerBuildMakImage(type: DockerBuildImage) {
     dockerFile = project.file('Dockerfile-ma')
     buildArgs.put('version', "${helloWorldVersion}")
 	inputDir = file('.')
-    tags.add ("ivct/helloworld:ma-${helloWorldVersion}")
+    images.add ("ivct/helloworld:ma-${helloWorldVersion}")
 }
 
 tasks.register ("dockerBuildImage") {

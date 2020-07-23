@@ -19,7 +19,7 @@ task dockerBuildImage(type: DockerBuildImage) {
 	dependsOn 'install'
 	inputDir = file('.')
 	buildArgs.put('version', "${helloWorldVersion}")
-	tags.add ("ivct/ts-helloworld:${helloWorldVersion}")
+	images.add ("ivct/ts-helloworld:${helloWorldVersion}")
 }
 
 // use java application packaging feature
@@ -32,11 +32,6 @@ dependencies {
 	compileOnly     libraries.ieee_lib
 	compileOnly     libraries.tc_lib
 	compileOnly     libraries.slf4j_api
-	compileOnly		libraries.logback_classic
-	compileOnly		libraries.logback_core
-	compileOnly     libraries.slf4j_jcl_over_slf4j
-	compileOnly     libraries.slf4j_jul_to_slf4j
-	compileOnly     libraries.slf4j_log4j_over_slf4j
 	compileOnly		libraries.jsonSimple
 
 
