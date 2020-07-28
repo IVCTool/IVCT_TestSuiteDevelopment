@@ -42,7 +42,7 @@ In Detail, before executing a test case, the following preconditions need to be 
 
 ** `IVCT_Verdict verdict = testCase.execute(tcParamJsonString, tcLogger);`
 
-The _tcParamJsonString_ is JSON formatted string with a list of key/value pairs. A simple example would look like the following:
+The _tcParamJsonString_ is JSON formatted string with a list of name/value pairs. A simple example would look like the following:
 
 ----
 String tcParamJsonString = "{\"growthRate\":\"1.0003\", \"SOMfile\": \"HelloWorld.xml\"}";
@@ -111,7 +111,11 @@ The JUnit tests will also be executed within the gradle _build_ task. This is in
 void test() {
 ----
 
-With the _EnabledIfEnvironmentVariable_ rule, the test will only be executed when the _LRC_CLASSPATH_ variable is defined. Which will not be the case on the build server.
+With the _EnabledIfEnvironmentVariable_ rule, the test will only be executed when the _LRC_CLASSPATH_ variable is defined. Which will not be the case on the build server. In the development environment the LRC library name must be defined, e.g.
+
+----
+$ set LRC_CLASSPATH=C:\MAK\makRti4.5\lib\hla.jar
+----
 
 
 === Deploying the Test Case into a IVCT Installation
