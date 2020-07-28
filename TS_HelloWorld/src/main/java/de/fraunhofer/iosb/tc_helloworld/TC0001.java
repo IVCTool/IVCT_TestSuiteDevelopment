@@ -27,10 +27,7 @@ import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldBaseModel;
 import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldTcParam;
 import hla.rti1516e.FederateHandle;
 
-import java.util.Properties;
-
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -76,22 +73,17 @@ public class TC0001 extends AbstractTestCase {
     }
 
     public void displayOperatorInstructions(final Logger logger) throws TcInconclusive {
-        String s = new String();
-        s = "\n"
+        String s = "\n"
         +   "---------------------------------------------------------------------\n"
         +   "OPERATOR INSTRUCTIONS: \n"
-		+   "1. Start the test federate "
-		+	getSutFederateName()
+        +   "1. Start the test federate "
+        +   getSutFederateName()
         +   " and then hit confirm button\n"
         +   "2. The federate should run for the full duration of the tests\n"
         +   "---------------------------------------------------------------------\n";
 
         logger.info(s);
-        try {
-			sendOperatorRequest(s);
-		} catch (InterruptedException e) {
-            logger.info("Exception: sendOperatorRequest: " + e);
-		}
+        sendOperatorRequest(s);
     }
 
 
