@@ -17,9 +17,7 @@ limitations under the License.
 package de.fraunhofer.iosb.tc_helloworld;
 
 import java.util.LinkedList;
-
 import org.slf4j.Logger;
-
 import de.fraunhofer.iosb.tc_lib.AbstractTestCase;
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_LoggingFederateAmbassador;
@@ -40,6 +38,7 @@ import hla.rti1516e.exceptions.NotConnected;
 import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
+
 
 /**
  * @author mul (Fraunhofer IOSB)
@@ -83,8 +82,7 @@ public class TC0002 extends AbstractTestCase {
     }
 
     public void displayOperatorInstructions(final Logger logger) throws TcInconclusive {
-        String s = new String();
-        s = "\n"
+        String s = "\n"
         +   "---------------------------------------------------------------------\n"
         +   "OPERATOR INSTRUCTIONS: \n"
         +   "1. Start the test federate "
@@ -94,11 +92,7 @@ public class TC0002 extends AbstractTestCase {
         +   "---------------------------------------------------------------------\n";
 
         logger.info(s);
-        try {
-			sendOperatorRequest(s);
-		} catch (InterruptedException e) {
-            logger.info("Exception: sendOperatorRequest: " + e);
-		}
+        sendOperatorRequest(s);
     }
 
 
