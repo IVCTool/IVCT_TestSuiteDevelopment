@@ -125,7 +125,7 @@ public class HelloWorld extends NullFederateAmbassador {
 		if (args.length > 0) {
 			log.info("using arguments (syntax: settingsDesignator [fedName [populationsize [numberOfCycles]]])");
 			log.info("args: {}", args.toString());
-			String rtiHost = args[0];
+			hw.settingsDesignator = args[0];
 			if (args.length > 1) {
 				hw.myCountry = args[1];
 			}
@@ -135,7 +135,6 @@ public class HelloWorld extends NullFederateAmbassador {
 			if (args.length > 3) {
 				hw.numberOfCycles = Integer.parseInt(args[3]);
 			}
-			hw.settingsDesignator = "crcAddress=" + rtiHost;
 		}
 		// 2. else if environment settings are given, use them
 		else if (getEnvironmentSettings(hw)) {
@@ -144,38 +143,38 @@ public class HelloWorld extends NullFederateAmbassador {
 		}
 		// 3. else request user input
 		else {
-			log.info("Enter the CRC address, such as");
-			log.info("'localhost', 'localhost:8989', '192.168.1.62'");
-			log.info("or when using Pitch Booster on the form");
-			log.info("<CRC name>@<booster address>:<booster port>");
-			log.info("such as 'MyCRCname@192.168.1.70:8688'");
+			log.info("Enter the CRC address");
+			log.info("when using Pitch RTI: crcAddress=localhost, crcAddress=localhost:8989");
+			log.info("when using Pitch Booster on the form: <CRC name>@<booster address>:<booster port>");
+			log.info("when using MAK RTI: (setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"localhost\")");
+			
 			log.info("");
 			try {
 				final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 				String rtiHost;
-                System.out.print("[localhost]: ");
+				log.info("[crcAddress=localhost]: ");
 				rtiHost = in.readLine();
 				if (rtiHost.length() == 0) {
-					rtiHost = "localhost";
+					rtiHost = "crcAddress=localhost";
 				}
-				System.out.print("Enter your country [A]: ");
+				log.info("Enter your country [A]: ");
 				hw.myCountry = in.readLine();
 				if (hw.myCountry.isEmpty()) {
 					hw.myCountry = "A";
 				}
 
-				System.out.print("Enter starting population [100]: ");
+				log.info("Enter starting population [100]: ");
 				String aString = in.readLine();
 				if (aString.isEmpty() == false) {
 					hw.myPopulation = Float.parseFloat(aString);
 				}
 
-				System.out.print("Enter number of cycles [1000]: ");
+				log.info("Enter number of cycles [1000]: ");
 				String bString = in.readLine();
 				if (bString.isEmpty() == false) {
 					hw.numberOfCycles = Integer.parseInt(bString);
 				}
-				hw.settingsDesignator = "crcAddress=" + rtiHost;
+				hw.settingsDesignator = rtiHost;
 			} catch (IOException e) {
 				log.error("Error while reading from console: {}", e);
 			}
@@ -224,6 +223,7 @@ public class HelloWorld extends NullFederateAmbassador {
 				this._rtiAmbassador.createFederationExecution(FEDERATION_NAME, new URL[] { fddFileUrl },
 						"HLAfloat64Time");
 			} catch (final FederationExecutionAlreadyExists ignored) {
+				log.info("Federation <{}> already existing", FEDERATION_NAME);
 			}
 
 			this._rtiAmbassador.joinFederationExecution(this.myCountry, FEDERATION_NAME, new URL[] { fddFileUrl });
@@ -312,21 +312,15 @@ public class HelloWorld extends NullFederateAmbassador {
 			this._rtiAmbassador.disconnect();
 			this._rtiAmbassador = null;
 		} catch (final Exception e) {
-			e.printStackTrace();
-			try {
-				log.info("Press <ENTER> to shutdown");
-				final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-				in.readLine();
-			} catch (final IOException ioe) {
-			}
+			log.error("unexpected exception", e);
 		}
 	}
 
 	private void printCountryPopulations() {
-		log.info("Country " + this.myCountry + " has a population of " + this.myPopulation);
+		log.info("Country {} has a population of  {}", this.myCountry, this.myPopulation);
 
 		for (final Map.Entry<String, HLAfloat32LE> entry : this.countryPopulations.entrySet()) {
-			log.info("Country " + entry.getKey() + " has a population of " + entry.getValue());
+			log.info("Country {} has a population of {}", entry.getKey(), entry.getValue());
 		}
 	}
 
@@ -336,7 +330,7 @@ public class HelloWorld extends NullFederateAmbassador {
 			final String objectName) throws FederateInternalError {
 		if (!this._knownObjects.containsKey(theObject)) {
 			final Country member = new Country(objectName);
-			log.info("[" + objectName + " has joined]");
+			log.info("[{} has joined]", objectName);
 			log.info("> ");
 			this._knownObjects.put(theObject, member);
 		}
@@ -365,7 +359,7 @@ public class HelloWorld extends NullFederateAmbassador {
 				final String message = messageDecoder.getValue();
 				final String sender = senderDecoder.getValue();
 
-				log.info(sender + ": " + message);
+				log.info("{}: {}", sender, message);
 				String Str2 = "Hello World from";
 				if (message.regionMatches(0, Str2, 0, 16)) {
 					return;
@@ -402,8 +396,8 @@ public class HelloWorld extends NullFederateAmbassador {
 			final OrderType sentOrdering, final SupplementalRemoveInfo removeInfo) {
 		final Country member = this._knownObjects.remove(theObject);
 		if (member != null) {
-			final HLAfloat32LE f = this.countryPopulations.remove(member.toString());
-			log.info("[" + member + " has left]");
+			this.countryPopulations.remove(member.toString());
+			log.info("[{} has left]", member);
 		}
 	}
 
@@ -418,10 +412,8 @@ public class HelloWorld extends NullFederateAmbassador {
 				final HLAunicodeString usernameDecoder = this._encoderFactory.createHLAunicodeString();
 				usernameDecoder.decode(theAttributes.get(this._attributeIdName));
 				final String memberName = usernameDecoder.getValue();
-				final Country member = new Country(memberName);
 				final HLAfloat32LE populationDecoder = this._encoderFactory.createHLAfloat32LE();
 				populationDecoder.decode(theAttributes.get(this._attributeIdPopulation));
-				final float population = populationDecoder.getValue();
 
 				this.countryPopulations.put(memberName, populationDecoder);
 			} catch (final DecoderException e) {

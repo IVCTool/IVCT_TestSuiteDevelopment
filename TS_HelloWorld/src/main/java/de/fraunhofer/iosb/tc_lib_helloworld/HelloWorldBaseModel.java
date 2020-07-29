@@ -277,15 +277,16 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
    * @param delta
    *          the rate at which the population should be increasing
    * @return true means error, false means correct
-   * @throws TcFailed test case failes if country object is not found
+   * @throws TcFailed test case fails if country object is not found
    */
   public boolean testCountryPopulation(final String countryName, final float delta) throws TcFailed {
     for (final Map.Entry<ObjectInstanceHandle, CountryValues> entry : this.knownObjects.entrySet()) {
       if (entry.getValue().getCountryName().equals(countryName)) {
         if (entry.getValue().testPopulation(delta, this.logger)) {
-          this.logger.error("testCountryPopulation test failed");
+          this.logger.error("testCountryPopulation {} test failed", entry);
           return true;
         }
+        this.logger.info("Country Value test passed for {} with delta {}", entry, delta);
         return false;
       }
     }
