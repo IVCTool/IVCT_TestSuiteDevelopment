@@ -16,7 +16,26 @@ import de.fraunhofer.iosb.tc_lib.IVCT_Verdict;
 class TSTest {
 
 	private static BrokerService broker = null;
+	protected static String tcParamJson = "{ \"growthRate\" : \"1.0003\", \"SOMfile\":  \"HelloWorld.xml\" }";
+	protected Logger runLogger = LoggerFactory.getLogger(TSTest.class);
 
+	public void setUp(AbstractTestCase testCase) {
+		// test case settings
+		String tsName = "TS_HelloWord";
+		String federationName = "HelloWorld";
+		String sutName = "hw_iosb";
+		String sutFederateName = "A";
+		String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
+
+		testCase.setSettingsDesignator(settingsDesignator);
+		testCase.setFederationName(federationName);
+		testCase.setSutName(sutName);
+		testCase.setSutFederateName(sutFederateName);			
+		testCase.setTcName(TSTest.class.getName());
+		testCase.setTsName(tsName);
+		testCase.setSkipOperatorMsg(true);
+	}
+	
 	@BeforeAll
 	public static void startBroker() throws Exception {
 		// configure the broker
@@ -35,27 +54,6 @@ class TSTest {
 		broker.stop();
 	}
 
-
-	// test case settings
-	Logger runLogger = LoggerFactory.getLogger(TSTest.class);
-	String tsName = "TS_HelloWord";
-	String federationName = "HelloWorld";
-	String sutName = "hw_iosb";
-	String sutFederateName = "A";
-	String tcParamJson = "{ \"growthRate\" : \"1.0003\", \"SOMfile\":  \"HelloWorld.xml\" }";
-	String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
-
-	void setUp(AbstractTestCase testCase) {
-		testCase.setSettingsDesignator(settingsDesignator);
-		testCase.setFederationName(federationName);
-		testCase.setSutName(sutName);
-		testCase.setSutFederateName(sutFederateName);			
-		testCase.setTcName(TSTest.class.getName());
-		testCase.setTsName(tsName);
-		testCase.setSkipOperatorMsg(true);
-	}
-	
-	
 	@Test
 	@EnabledIfEnvironmentVariable(named = "LRC_CLASSPATH", matches = ".*")
 	void test() {
