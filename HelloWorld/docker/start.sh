@@ -17,7 +17,7 @@ term_handler() {
 trap 'term_handler' SIGTERM
 
 # run application in the background and set the PID
-echo "Starting the Dockerized IVCT Test Case Engine"
+echo "Starting the Dockerized IVCT HelloWorld System under Test"
 
 # call the TC exec
 chmod a+x /root/application/HelloWorld/bin/HelloWorld

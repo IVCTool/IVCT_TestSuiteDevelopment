@@ -139,7 +139,10 @@ public class HelloWorld extends NullFederateAmbassador {
 		// 2. else if environment settings are given, use them
 		else if (getEnvironmentSettings(hw)) {
 			log.info("using environment settings");
-			log.info("env: settingsDesignator = {}", hw.settingsDesignator);
+			log.info("settingsDesignator = {}", hw.settingsDesignator);
+			log.info("myCountry          = {}", hw.myCountry);
+			log.info("numberOfCycles     = {}", hw.numberOfCycles);
+			log.info("myPopulation       = {}", hw.myPopulation);
 		}
 		// 3. else request user input
 		else {
@@ -195,7 +198,7 @@ public class HelloWorld extends NullFederateAmbassador {
 				this._encoderFactory = rtiFactory.getEncoderFactory();
 			} catch (final Exception e) {
 				log.info(e.getMessage());
-				log.info("Unable to create RTI ambassador.");
+				log.error("Unable to create RTI ambassador: ", e);
 				return;
 			}
 
