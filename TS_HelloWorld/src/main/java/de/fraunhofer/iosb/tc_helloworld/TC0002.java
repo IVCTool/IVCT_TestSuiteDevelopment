@@ -16,8 +16,9 @@ limitations under the License.
 
 package de.fraunhofer.iosb.tc_helloworld;
 
-import java.util.LinkedList;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.fraunhofer.iosb.tc_lib.AbstractTestCase;
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_LoggingFederateAmbassador;
@@ -39,6 +40,8 @@ import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
 
+import java.util.LinkedList;
+import java.util.Properties;
 
 /**
  * @author mul (Fraunhofer IOSB)
@@ -46,7 +49,7 @@ import hla.rti1516e.exceptions.SaveInProgress;
 public class TC0002 extends AbstractTestCase {
     FederateHandle                              federateHandle;
     private String                              federateName                   = "IVCT";
-
+    
     // Build test case parameters to use
     static HelloWorldTcParam              helloWorldTcParam;
 
@@ -71,7 +74,7 @@ public class TC0002 extends AbstractTestCase {
         stringBuilder.append("\n");
         stringBuilder.append("---------------------------------------------------------------------\n");
         stringBuilder.append("TEST PURPOSE\n");
-        stringBuilder.append("Test if a HelloWorld federate answers with: \"HelloWorld <country name>\"\n");
+        stringBuilder.append("Test if a HelloWorld federate answers with: \"Greetings from <country name> to IVCT\"\n");
         stringBuilder.append("upon receiving a \"HelloWorld\" interaction\n");
         stringBuilder.append("Repeat sending the \"HelloWorld\" interaction for several cycles and evaluate\n");
         stringBuilder.append("the interactions received\n");
@@ -82,7 +85,8 @@ public class TC0002 extends AbstractTestCase {
     }
 
     public void displayOperatorInstructions(final Logger logger) throws TcInconclusive {
-        String s = "\n"
+        String s = new String();
+        s = "\n"
         +   "---------------------------------------------------------------------\n"
         +   "OPERATOR INSTRUCTIONS: \n"
         +   "1. Start the test federate "
@@ -92,7 +96,9 @@ public class TC0002 extends AbstractTestCase {
         +   "---------------------------------------------------------------------\n";
 
         logger.info(s);
-        sendOperatorRequest(s);
+        
+		sendOperatorRequest(s);
+		
     }
 
 
@@ -120,9 +126,10 @@ public class TC0002 extends AbstractTestCase {
             throw new TcInconclusive("sleepFor problem");
         }
 
-        final String message = "Hello World " + this.federateName;
-        final String testMessage = "Hello World from " + getSutFederateName();
-
+        final String message = "Hello World from " + this.federateName;
+       // final String testMessage = "Greetings from " + getSutFederateName() + " to B";
+        final String testMessage = "Greetings from " + getSutFederateName() + " to IVCT";
+        
         // Create fields to hold values to send
         ParameterHandleValueMap parameters;
         try {
@@ -142,10 +149,11 @@ public class TC0002 extends AbstractTestCase {
         parameters.put(helloWorldBaseModel.getParameterIdText(), messageEncoderString.toByteArray());
         parameters.put(helloWorldBaseModel.getParameterIdSender(), senderEncoderString.toByteArray());
 
-        helloWorldBaseModel.startSavingInteractions();
+       
         // Loop a number of cycles and test whether the sut answers the hello world call
         for (int i = 0; i < 10; i++) {
-
+        	
+        	helloWorldBaseModel.startSavingInteractions();
             // Send the interaction
             try {
                 ivct_rti.sendInteraction(helloWorldBaseModel.getMessageId(), parameters, null);
@@ -158,25 +166,13 @@ public class TC0002 extends AbstractTestCase {
             if (helloWorldBaseModel.sleepFor(helloWorldTcParam.getSleepTimeCycle())) {
                 throw new TcInconclusive("sleepFor problem");
             }
+            
+            helloWorldBaseModel.stopSavingInteractions();
+            compareMessage(logger,testMessage);
 
             sendTcStatus ("running", i*10+5);
         }
-        helloWorldBaseModel.stopSavingInteractions();
-
-        // Get the saved text messages
-        LinkedList<String> savedSutTextMessages = helloWorldBaseModel.getSavedSutTextMessages(getSutFederateName());
-        if (savedSutTextMessages.isEmpty()) {
-            throw new TcInconclusive("Did not receive any HelloWorld text messages");
-        }
-
-        // Compare the text messages
-        for (String entry : savedSutTextMessages) {
-            logger.info(entry);
-            // Test the value of the message
-            if (entry.equals(testMessage) == false) {
-                throw new TcFailed("Incorrect message received: got  " + entry + "  expected  " + testMessage);
-            }
-        }
+        
     }
 
 
@@ -185,4 +181,29 @@ public class TC0002 extends AbstractTestCase {
         // Terminate rti
         helloWorldBaseModel.terminateRti();
     }
+    
+    protected void compareMessage(final Logger logger, final String testMessage) throws TcInconclusive, TcFailed
+    {
+    	 // Get the saved text messages
+        LinkedList<String> savedSutTextMessages = helloWorldBaseModel.getSavedSutTextMessages(getSutFederateName());
+        if (savedSutTextMessages.isEmpty()) {
+            throw new TcInconclusive("Did not receive any Greetings text messages");
+        }
+        
+        boolean messageFound = false;
+        
+    	// Compare the text messages
+        for (String entry : savedSutTextMessages) {
+            logger.info(entry);
+            // Test the value of the message
+            if (entry.equals(testMessage) == true) {
+            	messageFound = true;
+            }
+        }
+        if (!messageFound) {
+        	 throw new TcFailed("No message of kind " + testMessage + " received.");
+        }
+        
+    }
+    
 }

@@ -294,6 +294,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
   }
 
   public void startSavingInteractions() {
+	  interactionsReceived.clear();
 	  saveInteractions = true;
   }
 

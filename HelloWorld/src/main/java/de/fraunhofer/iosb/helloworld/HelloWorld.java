@@ -282,6 +282,8 @@ public class HelloWorld extends NullFederateAmbassador {
 			final HLAunicodeString nameEncoder = this._encoderFactory.createHLAunicodeString(this.myCountry);
 
 			for (int i = 0; i < numberOfCycles; i++) {
+				// update Country-Attributes
+				// create: parameter (e.g. 2) is not important because in fact it is a Java map class which does not need reservation of memory
 				final AttributeHandleValueMap attributes = this._rtiAmbassador.getAttributeHandleValueMapFactory()
 						.create(2);
 				final HLAfloat32LE messageEncoder = this._encoderFactory.createHLAfloat32LE();
@@ -291,8 +293,10 @@ public class HelloWorld extends NullFederateAmbassador {
 				attributes.put(this._attributeIdName, nameEncoder.toByteArray());
 
 				this._rtiAmbassador.updateAttributeValues(this._countryId, attributes, null);
+				
+				// Send Communication Interaction
 				final ParameterHandleValueMap parameters = this._rtiAmbassador.getParameterHandleValueMapFactory()
-						.create(1);
+						.create(2);
 				final HLAunicodeString messageEncoderString = this._encoderFactory.createHLAunicodeString();
 				final String message = "Hello World from " + this.myCountry;
 				messageEncoderString.setValue(message);
@@ -301,8 +305,12 @@ public class HelloWorld extends NullFederateAmbassador {
 				senderString.setValue(this.myCountry);
 				parameters.put(this._parameterIdSender, senderString.toByteArray());
 
-				this._rtiAmbassador.sendInteraction(this._messageId, parameters, null);
-
+				if ((i % 10) == 0)
+				{
+					this._rtiAmbassador.sendInteraction(this._messageId, parameters, null);
+					log.info("SendInteraction: " + message);
+				}
+				
 				Thread.sleep(1000);
 				this.printCountryPopulations();
 			}
@@ -315,7 +323,13 @@ public class HelloWorld extends NullFederateAmbassador {
 			this._rtiAmbassador.disconnect();
 			this._rtiAmbassador = null;
 		} catch (final Exception e) {
-			log.error("unexpected exception", e);
+			e.printStackTrace();
+			try {
+				log.info("Press <ENTER> to shutdown");
+				final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+				in.readLine();
+			} catch (final IOException ioe) {
+			}
 		}
 	}
 
@@ -365,11 +379,32 @@ public class HelloWorld extends NullFederateAmbassador {
 				log.info("{}: {}", sender, message);
 				String Str2 = "Hello World from";
 				if (message.regionMatches(0, Str2, 0, 16)) {
+					sendAnswer(sender);
 					return;
 				}
 			} catch (final DecoderException e) {
 				log.info("Failed to decode incoming interaction");
 			}
+		}
+	}
+	
+	private void sendAnswer(String sender)
+	{
+		try {
+			final ParameterHandleValueMap parameters = this._rtiAmbassador.getParameterHandleValueMapFactory().create(2);
+			final HLAunicodeString messageEncoderString = this._encoderFactory.createHLAunicodeString();
+			final String message = "Greetings from " + this.myCountry + " to " + sender;
+			messageEncoderString.setValue(message);
+			parameters.put(this._parameterIdText, messageEncoderString.toByteArray());
+			final HLAunicodeString senderString = this._encoderFactory.createHLAunicodeString();
+			senderString.setValue(this.myCountry);
+			parameters.put(this._parameterIdSender, senderString.toByteArray());
+			
+			this._rtiAmbassador.sendInteraction(this._messageId, parameters, null);
+			log.info("SendInteraction: " + message);
+		}
+		catch (final Exception e) {
+			e.printStackTrace();
 		}
 	}
 
