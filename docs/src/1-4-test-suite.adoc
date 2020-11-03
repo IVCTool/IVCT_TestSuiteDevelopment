@@ -4,16 +4,16 @@
 
 From a programmer's point of view, a test case is piece of code within a framework of supporting code assets. The test case is designed to verify a very specific behavior pattern within a federation agreement. The supporting code assets are used for the more generic tasks, like subscribing to certain interactions or setting up test objects.
 
-In most cases the federation agreement covers many individual patterns. In such cases the test case developer has to implement many test cases and it makes sense to share the generic supporting code assets and also to have all test cases within one project contexts. And here comes the concept of a *Test Suite* into place.
+In most cases the federation agreement covers many individual patterns. In such cases the test case developer has to implement many test cases and it makes sense to share the generic supporting code assets and also to have all test cases within one project context. From this comes the concept of a *Test Suite*.
 
-A *Test Suite* is a collection of test cases within a common code environment and a build script to compile, test and build a software container to be deployed into a IVCTool installation. While not strictly required, but certainly helpful is to have a documentation of the test suite and simple federate that can be used as a placeholder for a System under Test.
+A *Test Suite* is a collection of test cases within a common code environment and a build script to compile, test and build a software container to be deployed into a IVCTool installation. While not strictly required, it is helpful to have documentation of the test suite, and a simple federate that can be used as a placeholder for a System under Test.
 
 
 === Test Suite Definition
 
-For the IVCTool integration, a test suite is defined by a JSON definition file, like the `TS-HelloWorld-2019.json` test suite below. It defines the id, name, version of the test suite and it contains a description filed to explain the purpose of the test suite. It also defines two runtime folder, one for the jar files and one to start the test cases.
+For the IVCTool integration, a test suite is defined by a JSON definition file, like the `TS-HelloWorld-2019.json` test suite below. It defines the id, name, and version of the test suite, and it contains a description field to explain the purpose of the test suite. It also defines two runtime folders; one for the jar files, and one to start the test cases.
 
-The capabilities of the test suites are defined by the attribute `testcases`. It is the list of test cases which are contained in the test suite. Each test cases is defined by its fully qualified class name (`TC`), by a description and finally by a list of interoperability requirements (`IR`), testes by the test case.
+The capabilities of the test suite are defined by the attribute `testcases`. It is the list of test cases which are contained in the test suite. Each test cases is defined by its fully qualified class name (`TC`), a description, and a list of interoperability requirements (`IR`), tested by the test case.
 
 .The TS-HelloWorld-2019 Test Suite Definition
 [source, yaml]
@@ -40,4 +40,4 @@ The capabilities of the test suites are defined by the attribute `testcases`. It
 }
 ----
 
-In the example of the HelloWorld test suite, we have two test cases, `IR-HW-0001` and `IR-HW-0001`. Each test cases will test exactly one interoperability requirement. This is the recommended way, because it simplifies the arrangement of test interoperability requirements into different badges. And it also simplifies the design of the test cases, as their scope is limited to only one requirement.
+In the example of the HelloWorld test suite, we have two test cases, `IR-HW-0001` and `IR-HW-0001`. Each test cases will test exactly one interoperability requirement. This is the recommendedpractice because it simplifies the reuse of tests in multiple badges. It also simplifies the design of the test cases, as their scope is limited to only one requirement.
