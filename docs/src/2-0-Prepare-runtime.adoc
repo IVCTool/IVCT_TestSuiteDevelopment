@@ -52,7 +52,7 @@ image:images/2-0-runtime.png[Run Time Environment]
 
 we provide  a script with which you can create a runable Runtime-Environment on a Linux operation system
 as an example: +
-link:scripts/a_buildung_IVCT-Runtime_from_scratch_2020-04-09.sh[buildung_IVCT-Runtime_from_scratch.sh] +
+link:scripts/a_buildung_IVCT-Runtime_from_scratch_2020-10-07_allNew.sh[buildung_IVCT-Runtime_from_scratch.sh] +
 
 and furthermore start-scripts  to start these new installation. +
 link:scripts/x_RunIVCT_brf_2020-04-09.sh[x_RunIVCT.sh] +
