@@ -14,7 +14,7 @@ For the sake of this tutorial we introduced two interoperability requirements to
 
 * One is that the population of a country shall grow at a specific rate. More specifically the difference between two updates of the countries' population attribute shall be greater than null, but less than a given percentage.
 
-* Two is that each country is expected to respond to a greeting messages along some predefined "diplomatic" rules. Technically that means to respond to *Communication* interactions with a response interaction in a predefined format.
+* Two is that each country is expected to respond to greeting messages along some predefined "diplomatic" rules. Technically that means to respond to *Communication* interactions with a response interaction in a predefined format.
 
 These interoperability requirements are defined in the *HelloWorld* badge, which is explained in the next chapter <<2-2-hw-interoperability-badge.adoc#, HelloWorld Interoperability Badge>>
 
