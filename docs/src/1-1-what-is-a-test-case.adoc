@@ -21,7 +21,7 @@ In a more generic context, a test case would be distinguished into two forms. Th
 
 The TC will be executed in a process called *Test Case Runner*. The runner is a IVCTool component, to load the TC code, to join the federation with the SuT, and finally to execute the tests.
 
-The figure below shows the Test Case and its interfaces. Technically a test cases is just a federate like the SuT. It connects to the HLA Run-Time Infrastucture (RTI) like any other federate. The only difference is, that the TC will use a slightly extended version of the *Local RTI Component (LRC)* Interface. The LRC is extended to provide protocol information for each interface method.
+The figure below shows the Test Case and its interfaces. Technically a test case is just a federate like the SuT. It connects to the HLA Run-Time Infrastucture (RTI) like any other federate. The only difference is, that the TC will use a slightly extended version of the *Local RTI Component (LRC)* Interface. The LRC is extended to provide protocol information for each interface method.
 
 .The Test Case Federation
 image:images/TestCaseInterface.jpg[Test Case Interfaces]
