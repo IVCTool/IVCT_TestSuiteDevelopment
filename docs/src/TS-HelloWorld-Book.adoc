@@ -1,9 +1,11 @@
-= Welcome to the TS_HelloWorld Tutorial!
+:toc: 
+:numbered:
 
+= HelloWorld Test Suite Tutorial!
 
-The general test case design guidance can be found in the IVCT_Framework wiki (https://github.com/IVCTool/IVCT_Framework/wiki/TcDevelGuide).
+toc::[]
 
-
+== Getting Started
 
 include::1-1-what-is-a-test-case.adoc[]
 
@@ -12,6 +14,8 @@ include::1-2-hw-federation.adoc[]
 include::1-3-hw-interoperability-badge.adoc[]
 
 include::1-4-test-suite.adoc[]
+
+== The TS_HelloWorld Example
 
 include::2-1-how-to-organize-test-cases.adoc[]
 
@@ -25,6 +29,7 @@ include::2-5-hw-sut.adoc[]
 
 include::2-6-ts-hw-structure.adoc[]
 
+== Further Reading
 
 include::3-1-testing-interoperability-requirements.adoc[]
 
@@ -32,4 +37,6 @@ include::3-2-TcDevelGuide.adoc[]
 
 include::3-5-testsuite-overview.adoc[]
 
-include::3-9-ModelBasedTesting.adoc[]
+// include::3-9-ModelBasedTesting.adoc[]
+
+include::4-1-tc-logging.adoc[]

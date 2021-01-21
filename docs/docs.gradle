@@ -16,23 +16,7 @@ asciidoctor {
   backends 'html5', 'pdf'
   sourceDir = file('src')
   sources {
-    include 'Home.adoc',
-     '1-1-what-is-a-test-case.adoc',
-     '1-2-how-to-organize-test-cases.adoc',
-     '2-1-hw-federation.adoc',
-     '2-2-hw-interoperability-badge.adoc',
-     '2-3-hw-test-case-0001.adoc',
-     '2-4-hw-test-case-0002.adoc',
-     '2-5-hw-sut.adoc',
-     '2-6-ts-hw-structure.adoc',
-
-     '3-1-testing-interoperability-requirements.adoc',
-     '3-2-TcDevelGuide.adoc',
-     '3-5-testsuite-overview.adoc',
-     '3-9-ModelBasedTesting.adoc',
-     'Testsuite-Development-and-Best-Practices-for-IVCT-Usage.adoc',
-
-     'TS-HelloWorld-Book.adoc'
+    include 'Home.adoc', 'TS-HelloWorld-Book.adoc'
   }
   outputDir = file('build')
 }

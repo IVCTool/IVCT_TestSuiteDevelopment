@@ -31,6 +31,8 @@ In the third part of this tutorial there are set of reference documents to give 
 * <<3-2-TcDevelGuide.adoc#, Test Case Developer Guide>>
 * <<3-9-ModelBasedTesting.adoc#,Model Based Testing>>
 * <<3-5-testsuite-overview.adoc#, Test Suite Overview>>
+* <<4-1-tc-logging.adoc#, Test Case Logging>>
+
 
 
 == Old Documentation Artifacts
