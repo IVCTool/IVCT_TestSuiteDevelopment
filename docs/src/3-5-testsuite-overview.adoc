@@ -16,6 +16,7 @@ The following test suites are available for the IVCTool integration:
 | link:https://github.com/IVCTool/TS_HLA_BASE/tree/master/TS_HLA_Services[TS_HLA_Services] | This test suite verifies that the federate uses only the services specified in its SOM. | FRA
 | link:https://github.com/IVCTool/TS_HLA_BASE/tree/master/TS_HLA_Object[TS_HLA_Object] | This test suite verifies that the federate sends and receives only the objects and interactions specified in its SOM. | FRA
 | link:https://github.com/IVCTool/TS_HLA_BASE/tree/master/TS_HLA_EncodingRulesTester[TS_HLA_EncodingRulesTester] | This test suite will test whether a System Under Test (SUT) correctly encodes the data types used in interaction parameters or object attributes. | DEU
+| TS_Designator | This badge encapsulates all Designator related interoperability requirements | NLD
 |===
 
 === Test Suites under Development
