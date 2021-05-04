@@ -23,7 +23,7 @@ The TC will be executed in a process called *Test Case Runner*. The runner is a 
 
 The figure below shows the Test Case and its interfaces. Technically a test case is just a federate like the SuT. It connects to the HLA Run-Time Infrastucture (RTI) like any other federate. The only difference is, that the TC will use a slightly extended version of the *Local RTI Component (LRC)* Interface. The LRC is extended to provide protocol information for each interface method.
 
-.The Test Case Federation
+.The Test Federation
 image:images/TestCaseInterface.jpg[Test Case Interfaces]
 
 The other interface a TC needs to implement is the *Abstract Test Case*. With that interface the test case runner actually controls the test case execution, like prepare, execute and cleanup.
