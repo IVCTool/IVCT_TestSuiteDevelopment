@@ -25,7 +25,10 @@ class TSTest {
 		String federationName = "HelloWorld";
 		String sutName = "hw_iosb";
 		String sutFederateName = "A";
-		String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
+		// MaK default
+		//String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
+		// Pitch default
+		String settingsDesignator = "localhost";
 
 		testCase.setSettingsDesignator(settingsDesignator);
 		testCase.setFederationName(federationName);

@@ -21,7 +21,6 @@ import static org.junit.Assert.assertFalse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-import de.fraunhofer.iosb.tc_lib_helloworld.*;
 
 public class TestHelloWorldBaseModel {
 
