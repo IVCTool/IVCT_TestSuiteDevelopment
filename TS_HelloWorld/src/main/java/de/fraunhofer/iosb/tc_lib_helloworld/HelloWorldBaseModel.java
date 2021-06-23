@@ -18,7 +18,6 @@ package de.fraunhofer.iosb.tc_lib_helloworld;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -114,7 +113,6 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
       return this.ivct_rti.getFederateName(federateHandle);
     } catch (InvalidFederateHandle | FederateHandleNotKnown | FederateNotExecutionMember | NotConnected
         | RTIinternalError ex) {
-      // TODO Auto-generated catch block
       ex.printStackTrace();
       return null;
     }
@@ -191,7 +189,6 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
       this.ivct_rti.connect(federateReference, callbackModel, localSettingsDesignator);
     } catch (ConnectionFailed | InvalidLocalSettingsDesignator | UnsupportedCallbackModel | AlreadyConnected
         | CallNotAllowedFromWithinCallback | RTIinternalError ex) {
-      // TODO Auto-generated catch block
       ex.printStackTrace();
     }
   }
@@ -205,6 +202,7 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
     try {
       Thread.sleep(sleepTime);
     } catch (final InterruptedException ex) {
+      ex.printStackTrace();
       return true;
     }
 
