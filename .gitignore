@@ -28,3 +28,6 @@ bin
 logs
 build
 /.gradle
+
+# visual studio settings
+.vscode
