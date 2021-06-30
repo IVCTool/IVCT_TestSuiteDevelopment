@@ -1,8 +1,3 @@
-apply plugin: 'application'
-
-// -----------------------------------------------------------------------------
-// Docker
-// -----------------------------------------------------------------------------
 buildscript {
     repositories {
 		mavenLocal()
@@ -13,53 +8,110 @@ buildscript {
     }
 }
 
-// docker plugin
-apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+plugins {
+  id 'com.google.cloud.tools.jib' version '3.1.1'
+}
 
-// import remote API plugin task groups
-import com.bmuschko.gradle.docker.tasks.*
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+apply plugin: 'application'
 
 mainClassName = 'de.fraunhofer.iosb.helloworld.HelloWorld'
 
-task dockerBuildPitchImage(type: DockerBuildImage) {
-    dependsOn 'install'
-	group = 'Docker'
-	description = 'Builds the helloworld docker image for Pitch'
-    dockerFile = project.file('Dockerfile-pi')
-    buildArgs.put('version', "${helloWorldVersion}")
-	inputDir = file('.')
-    tags.add ("ivct/helloworld:pi-skeleton-${helloWorldVersion}")
+task jibPitch {
+    doFirst {
+        jib {
+            from {
+                image = 'hlacontainers/lrc:pitch-skeleton-alpine'
+            }
+            to {
+                image = "ivct/helloworld:pi-skeleton-${helloWorldVersion}"
+                tags = ["pi-latest"]
+            }
+            container {
+                entrypoint = '/usr/local/lrc/launch.sh'
+                creationTime = 'USE_CURRENT_TIMESTAMP'
+                environment = ['LRC_ENTRYPOINT': '/root/application/start.sh']
+            }
+            extraDirectories {
+                paths {
+                    path {
+                        from = file('docker')
+                        into = '/root/application'
+                    }
+                    path {
+                        from = file('src/main/resources')
+                        into = '/usr/local/lrc'
+                    }
+                }
+                permissions = ['/root/application/start.sh': '755']
+            }
+        }
+    }
+    finalizedBy 'jibDockerBuild'
 }
 
-task dockerBuildPorticoImage(type: DockerBuildImage) {
-    dependsOn 'install'
-	group = 'Docker'
-	description = 'Builds the helloworld docker image for Pitch'
-    dockerFile = project.file('Dockerfile-po')
-    buildArgs.put('version', "${helloWorldVersion}")
-	inputDir = file('.')
-    tags.add ("ivct/helloworld:po-${helloWorldVersion}")
+task jibPortico {
+    doFirst {
+        jib {
+            from {
+                image = 'hlacontainers/lrc:portico-nightly-2016.05.28-alpine'
+            }
+            to {
+                image = "ivct/helloworld:po-${helloWorldVersion}"
+                tags = ["po-latest"]
+            }
+            container {
+                entrypoint = '/usr/local/lrc/launch.sh'
+                creationTime = 'USE_CURRENT_TIMESTAMP'
+            }
+            extraDirectories {
+                paths {
+                    path {
+                        from = file('docker')
+                        into = '/root/application'
+                    }
+                }
+                permissions = ['/root/application/start.sh': '755']
+            }
+        }
+    }
+    finalizedBy 'jibDockerBuild'
 }
 
-task dockerBuildMakImage(type: DockerBuildImage) {
-    dependsOn 'install'
-	group = 'Docker'
-	description = 'Builds the helloworld docker image for Pitch'
-    dockerFile = project.file('Dockerfile-ma')
-    buildArgs.put('version', "${helloWorldVersion}")
-	inputDir = file('.')
-    tags.add ("ivct/helloworld:ma-${helloWorldVersion}")
+task jibMak {
+    doFirst {
+        jib {
+            from {
+                image = 'hlacontainers/lrc:vtmak-4.5f-centos7'
+            }
+            to {
+                image = "ivct/helloworld:ma-${helloWorldVersion}"
+                tags = ["ma-latest"]
+            }
+            container {
+                entrypoint = '/usr/local/lrc/launch.sh'
+                creationTime = 'USE_CURRENT_TIMESTAMP'
+            }
+            extraDirectories {
+                paths {
+                    path {
+                        from = file('docker')
+                        into = '/root/application'
+                    }
+                }
+                permissions = ['/root/application/start.sh': '755']
+            }
+        }
+    }
+    finalizedBy 'jibDockerBuild'
 }
 
 tasks.register ("dockerBuildImage") {
     group = 'Docker'
     description = 'Creates docker images for RTIs'
-    dependsOn 'dockerBuildPitchImage'
-    dependsOn 'dockerBuildPorticoImage'
-    dependsOn 'dockerBuildMakImage'
+    dependsOn 'jibPitch'
+    dependsOn 'jibPortico'
+    dependsOn 'jibMak'
 }
-
 
 dependencies {
     compileOnly group: 'io.github.msg134', name: 'IEEE1516e', version: ivctVersion
@@ -67,14 +119,4 @@ dependencies {
     runtime     libraries.logback_classic
 	runtime     libraries.logback_core
     runtime     files("$System.env.LRC_CLASSPATH")
-}
-
-tasks.withType(CreateStartScripts) {
-	classpath += files('lib')
-doLast {
-		def windowsScriptFile = file getWindowsScript()
-		def unixScriptFile = file getUnixScript()
-		windowsScriptFile.text = windowsScriptFile.text.replace('%APP_HOME%\\lib\\lib', '%APP_HOME%\\lib;%LRC_CLASSPATH%')
-		unixScriptFile.text = unixScriptFile.text.replace('$APP_HOME/lib/lib', '$APP_HOME/lib:$LRC_CLASSPATH')
-	}
 }

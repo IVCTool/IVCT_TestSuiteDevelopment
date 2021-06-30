@@ -16,14 +16,17 @@ term_handler() {
 # on signal execute the specified handler
 trap 'term_handler' SIGTERM
 
+# echo "add some delay to enable debugging"
+echo $( pwd )
+
+
 # run application in the background and set the PID
 echo "Starting the Dockerized IVCT HelloWorld System under Test"
-
-# call the TC exec
-chmod a+x /root/application/HelloWorld/bin/HelloWorld
-
-sh /root/application/HelloWorld/bin/HelloWorld
+exec java -cp $( cat /app/jib-classpath-file ):"$LRC_CLASSPATH" $( cat /app/jib-main-class-file )
 
 pid="$!"
+
+echo "add some delay to enable debugging"
+sleep 3600
 
 wait "$pid"
