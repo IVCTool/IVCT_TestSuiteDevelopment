@@ -1,5 +1,5 @@
 apply from: "./.shared/libraries.gradle"
 
-project.group = 'msg134-helloworld'
+project.group = 'ivct-helloworld'
 project.version = "${helloWorldVersion}"
 apply from: "./.shared/commons.gradle"
