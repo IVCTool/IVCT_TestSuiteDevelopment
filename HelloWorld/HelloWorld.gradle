@@ -3,16 +3,12 @@ buildscript {
 		mavenLocal()
 		mavenCentral()
 	}
-    dependencies {
-	   classpath libraries.docker
-    }
 }
 
 plugins {
-  id 'com.google.cloud.tools.jib' version '3.1.1'
+    // JIB Container Support for Java applications
+  id 'com.google.cloud.tools.jib' version '3.1.2'
 }
-
-import com.google.cloud.tools.jib.gradle.*
 
 apply plugin: 'application'
 
@@ -31,7 +27,8 @@ task jibPitch () {
                 tags = ["pi-latest"]
             }
             container {
-                entrypoint = '/usr/local/lrc/launch.sh'
+                entrypoint = 'INHERIT'
+                //entrypoint = '/usr/local/lrc/launch.sh'
                 creationTime = 'USE_CURRENT_TIMESTAMP'
                 environment = ['LRC_ENTRYPOINT': '/root/application/start.sh']
             }
