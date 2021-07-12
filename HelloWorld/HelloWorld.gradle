@@ -112,6 +112,12 @@ task jibMak () {
     finalizedBy 'jibDockerBuild'
 }
 
+jibDockerBuild.configure {
+//    dependsOn 'jibPitch'
+    dependsOn 'jibPortico'
+//    dependsOn 'jibMak'
+}
+
 tasks.register ("dockerBuildImage") {
     group = 'Docker'
     description = 'Creates docker images for RTIs'

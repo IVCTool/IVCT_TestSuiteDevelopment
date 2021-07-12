@@ -3,9 +3,6 @@ buildscript {
 		mavenLocal()
 		mavenCentral()
 	}
-	dependencies {
-		classpath libraries.docker
-	}
 }
 
 plugins {
@@ -26,7 +23,6 @@ jib {
 		image = "ivct/ts-helloworld:${helloWorldVersion}"
 	}
 	container {
-//		entrypoint = ['sh', '-c', 'sleep 10000']
 		entrypoint = ['sh', '-c', 'echo starting TS_HelloWorld test suite container']
 		creationTime = 'USE_CURRENT_TIMESTAMP'
 		volumes ["/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}:TS_HelloWorld-${helloWorldVersion}"]
