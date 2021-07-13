@@ -30,6 +30,7 @@ jib {
 	extraDirectories {
 		paths {
 			path {
+				// TODO: this required dependency on jar build 
 				from = file('build/libs')
 				into = "/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}/lib"
 				includes = ["TS_HelloWorld-${helloWorldVersion}.jar"]
