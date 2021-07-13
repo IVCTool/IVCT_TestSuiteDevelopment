@@ -1,33 +1,34 @@
-*.class
+# ivct version file for test suite compatibility check
+testCaseBuild.properties
 
 # local settings for gradle shall be ignored
 gradle.properties
-
-# verion file for test suite compatibility check
-testCaseBuild.properties
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
 # but not the wrapper jar
 !gradle-wrapper.jar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
 *.classpath
 *.project
-.settings
-.metadata
-.recommenders
-bin
-logs
-build
-/.gradle
 
-# visual studio settings
-.vscode
+### Gradle ###
+.gradle
+build/
+
+### VisualStudioCode ###
+.vscode/*
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
+*.code-workspace
