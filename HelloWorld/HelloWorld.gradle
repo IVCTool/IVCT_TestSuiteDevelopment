@@ -14,9 +14,11 @@ apply plugin: 'application'
 
 mainClassName = 'de.fraunhofer.iosb.helloworld.HelloWorld'
 
-task jibPitch () {    
+//task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildImageTask) {
+task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     group = 'Docker'
     description = 'Creates images for the Portico RTI'
+    jibExtension = project.extensions.getByName('jib')
     doFirst {
         jib {
             from {
@@ -47,12 +49,13 @@ task jibPitch () {
             }
         }
     }
-    finalizedBy 'jibDockerBuild'
 }
 
-task jibPortico {
+//task jibPortico (type: com.google.cloud.tools.jib.gradle.BuildImageTask) {
+task jibPortico (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     group = 'Docker'
     description = 'Creates images for the Portico RTI'
+    jibExtension = project.extensions.getByName('jib')
     doFirst {
         jib {
             from {
@@ -78,12 +81,13 @@ task jibPortico {
             }
         }
     }
-    finalizedBy 'jibDockerBuild'
 }
 
-task jibMak () {
+//task jibMak (type: com.google.cloud.tools.jib.gradle.BuildImageTask) {
+task jibMak (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     group = 'Docker'
     description = 'Creates images for the MaK RTI'
+    jibExtension = project.extensions.getByName('jib')
     doFirst {
         jib {
             from {
@@ -109,21 +113,6 @@ task jibMak () {
             }
         }
     }
-    finalizedBy 'jibDockerBuild'
-}
-
-jibDockerBuild.configure {
-//    dependsOn 'jibPitch'
-    dependsOn 'jibPortico'
-//    dependsOn 'jibMak'
-}
-
-tasks.register ("dockerBuildImage") {
-    group = 'Docker'
-    description = 'Creates docker images for RTIs'
-    dependsOn 'jibPitch'
-    dependsOn 'jibPortico'
-    dependsOn 'jibMak'
 }
 
 dependencies {
