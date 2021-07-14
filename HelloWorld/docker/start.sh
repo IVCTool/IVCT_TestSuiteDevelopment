@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "Start Script for HelloWorld"
+
 # Initialise the PID of the application
 pid=0
 
