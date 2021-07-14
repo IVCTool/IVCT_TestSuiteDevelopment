@@ -14,23 +14,12 @@ apply plugin: 'application'
 
 mainClassName = 'de.fraunhofer.iosb.helloworld.HelloWorld'
 
-//task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildImageTask) {
-task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
-    group = 'Docker'
-    description = 'Creates images for the Portico RTI'
-    jibExtension = project.extensions.getByName('jib')
+// setup the common jib configuration
+task jibApplication () {
     doFirst {
         jib {
-            from {
-                image = 'hlacontainers/lrc:pitch-skeleton-alpine'
-            }
-            to {
-                image = "ivct/helloworld:pi-skeleton-${helloWorldVersion}"
-                tags = ["pi-latest"]
-            }
             container {
                 entrypoint = 'INHERIT'
-                //entrypoint = '/usr/local/lrc/launch.sh'
                 creationTime = 'USE_CURRENT_TIMESTAMP'
                 environment = ['LRC_ENTRYPOINT': '/root/application/start.sh']
             }
@@ -51,11 +40,31 @@ task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     }
 }
 
+//task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildImageTask) {
+task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
+    group = 'Docker'
+    description = 'Creates images for the Portico RTI'
+    jibExtension = project.extensions.getByName('jib')
+    dependsOn jibApplication
+    doFirst {
+        jib {
+            from {
+                image = 'hlacontainers/lrc:pitch-skeleton-alpine'
+            }
+            to {
+                image = "ivct/helloworld:pi-skeleton-${helloWorldVersion}"
+                tags = ["pi-latest"]
+            }
+        }
+    }
+}
+
 //task jibPortico (type: com.google.cloud.tools.jib.gradle.BuildImageTask) {
 task jibPortico (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     group = 'Docker'
     description = 'Creates images for the Portico RTI'
     jibExtension = project.extensions.getByName('jib')
+    dependsOn jibApplication
     doFirst {
         jib {
             from {
@@ -64,20 +73,6 @@ task jibPortico (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
             to {
                 image = "ivct/helloworld:po-${helloWorldVersion}"
                 tags = ["po-latest"]
-            }
-            container {
-                entrypoint = '/usr/local/lrc/launch.sh'
-                creationTime = 'USE_CURRENT_TIMESTAMP'
-                environment = ['LRC_ENTRYPOINT': '/root/application/start.sh']
-            }
-            extraDirectories {
-                paths {
-                    path {
-                        from = file('docker')
-                        into = '/root/application'
-                    }
-                }
-                permissions = ['/root/application/start.sh': '755']
             }
         }
     }
@@ -88,6 +83,7 @@ task jibMak (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     group = 'Docker'
     description = 'Creates images for the MaK RTI'
     jibExtension = project.extensions.getByName('jib')
+    dependsOn jibApplication
     doFirst {
         jib {
             from {
@@ -96,20 +92,6 @@ task jibMak (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
             to {
                 image = "ivct/helloworld:ma-${helloWorldVersion}"
                 tags = ["ma-latest"]
-            }
-            container {
-                entrypoint = '/usr/local/lrc/launch.sh'
-                creationTime = 'USE_CURRENT_TIMESTAMP'
-                environment = ['LRC_ENTRYPOINT': '/root/application/start.sh']
-            }
-            extraDirectories {
-                paths {
-                    path {
-                        from = file('docker')
-                        into = '/root/application'
-                    }
-                }
-                permissions = ['/root/application/start.sh': '755']
             }
         }
     }
