@@ -97,6 +97,10 @@ task jibMak (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     }
 }
 
+jibDockerBuild.configure {
+    dependsOn jibPortico
+}
+
 dependencies {
     compileOnly group: 'io.github.msg134', name: 'IEEE1516e', version: ivctVersion
     compile     libraries.slf4j_api
