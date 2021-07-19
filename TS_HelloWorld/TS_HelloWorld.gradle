@@ -11,7 +11,9 @@ plugins {
 }
 
 // use java application packaging feature
-apply plugin: 'java-library'
+//apply plugin: 'java-library'
+apply plugin: 'application'
+mainClassName = 'de.fraunhofer.iosb.tc_helloworld.Run'
 
 // docker image configuration for googles JIB
 jib {
