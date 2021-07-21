@@ -97,8 +97,12 @@ task jibMak (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     }
 }
 
-jibDockerBuild.configure {
-    dependsOn jibPortico
+tasks.register ("dockerBuildImage") {
+    group = 'Docker'
+    description = 'Creates docker images for RTIs'
+    dependsOn 'jibMak'
+    dependsOn 'jibPortico'
+    dependsOn 'jibPitch'
 }
 
 dependencies {

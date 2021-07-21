@@ -11,30 +11,37 @@ plugins {
 }
 
 // use java application packaging feature
-//apply plugin: 'java-library'
+// apply plugin: 'java-library'
 apply plugin: 'application'
 mainClassName = 'de.fraunhofer.iosb.tc_helloworld.Run'
 
 // docker image configuration for googles JIB
-jib {
-	from {
-		image = 'busybox'
-	}
-	to {
-		image = "ivct/ts-helloworld:${helloWorldVersion}"
-	}
-	container {
-		entrypoint = ['sh', '-c', 'echo starting TS_HelloWorld test suite container']
-		creationTime = 'USE_CURRENT_TIMESTAMP'
-		volumes ["/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}:TS_HelloWorld-${helloWorldVersion}"]
-	}
-	extraDirectories {
-		paths {
-			path {
-				// TODO: this required dependency on jar build 
-				from = file('build/libs')
-				into = "/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}/lib"
-				includes = ["TS_HelloWorld-${helloWorldVersion}.jar"]
+task dockerBuildImage (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
+    group = 'Docker'
+    description = 'Creates images for the MaK RTI'
+    jibExtension = project.extensions.getByName('jib')
+    doFirst {
+		jib {
+			from {
+				image = 'busybox'
+			}
+			to {
+				image = "ivct/ts-helloworld:${helloWorldVersion}"
+			}
+			container {
+				entrypoint = ['sh', '-c', 'echo starting TS_HelloWorld test suite container']
+				creationTime = 'USE_CURRENT_TIMESTAMP'
+				volumes ["/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}:TS_HelloWorld-${helloWorldVersion}"]
+			}
+			extraDirectories {
+				paths {
+					path {
+						// TODO: this required dependency on jar build 
+						from = file('build/libs')
+						into = "/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}/lib"
+						includes = ["TS_HelloWorld-${helloWorldVersion}.jar"]
+					}
+				}
 			}
 		}
 	}
