@@ -7,12 +7,17 @@ buildscript {
 
 plugins {
     // JIB Container Support for Java applications
-  id 'com.google.cloud.tools.jib' version '3.1.2'
+    id 'com.google.cloud.tools.jib' version '3.1.2'
 }
 
 apply plugin: 'application'
-
 mainClassName = 'de.fraunhofer.iosb.helloworld.HelloWorld'
+
+// The following tasks are used to create docker images for each supported HLA-RTI product
+// by using the same java application and using different jib images settings.
+// the task design was influcences by an discussion with the jib developer formus.
+// With the current task definitions only the BuildDockerTask is supported. Other jib
+// tasks are not usable. 
 
 // setup the common jib configuration
 task jibApplication () {
@@ -40,10 +45,9 @@ task jibApplication () {
     }
 }
 
-//task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildImageTask) {
 task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     group = 'Docker'
-    description = 'Creates images for the Portico RTI'
+    description = 'Creates images for the Pitch RTI'
     jibExtension = project.extensions.getByName('jib')
     dependsOn jibApplication
     doFirst {
@@ -59,7 +63,6 @@ task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     }
 }
 
-//task jibPortico (type: com.google.cloud.tools.jib.gradle.BuildImageTask) {
 task jibPortico (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     group = 'Docker'
     description = 'Creates images for the Portico RTI'
@@ -78,7 +81,6 @@ task jibPortico (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     }
 }
 
-//task jibMak (type: com.google.cloud.tools.jib.gradle.BuildImageTask) {
 task jibMak (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     group = 'Docker'
     description = 'Creates images for the MaK RTI'

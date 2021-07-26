@@ -18,7 +18,7 @@ mainClassName = 'de.fraunhofer.iosb.tc_helloworld.Run'
 // docker image configuration for googles JIB
 task dockerBuildImage (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
     group = 'Docker'
-    description = 'Creates images for the MaK RTI'
+    description = 'wrapper for the jib BuildDockerTask'
     jibExtension = project.extensions.getByName('jib')
     doFirst {
 		jib {
