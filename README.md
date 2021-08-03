@@ -1,7 +1,7 @@
 | Branch | Build status |
 | ------ | ------------ |
-| Master | [![Build Status master branch](https://travis-ci.org/IVCTool/IVCT_TestSuiteDevelopment.svg?branch=master)](https://travis-ci.org/IVCTool/IVCT_TestSuiteDevelopment) |
-| Development | [![Build Status development branch](https://travis-ci.org/IVCTool/IVCT_TestSuiteDevelopment.svg?branch=development)](https://travis-ci.org/IVCTool/IVCT_TestSuiteDevelopment) |
+| Master | [![Build Status master branch](https://travis-ci.com/IVCTool/IVCT_TestSuiteDevelopment.svg?branch=master)](https://travis-ci.com/IVCTool/IVCT_TestSuiteDevelopment) |
+| Development | [![Build Status development branch](https://travis-ci.com/IVCTool/IVCT_TestSuiteDevelopment.svg?branch=development)](https://travis-ci.com/IVCTool/IVCT_TestSuiteDevelopment) |
 
 # IVCT_TestSuiteDevelopment
 
