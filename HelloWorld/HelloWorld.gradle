@@ -1,72 +1,118 @@
-apply plugin: 'application'
-
-// -----------------------------------------------------------------------------
-// Docker
-// -----------------------------------------------------------------------------
 buildscript {
     repositories {
 		mavenLocal()
 		mavenCentral()
 	}
-    dependencies {
-	   classpath libraries.docker
+}
+
+plugins {
+    // JIB Container Support for Java applications
+    id 'com.google.cloud.tools.jib' version '3.1.2'
+}
+
+apply plugin: 'application'
+mainClassName = 'de.fraunhofer.iosb.helloworld.HelloWorld'
+
+// The following tasks are used to create docker images for each supported HLA-RTI product
+// by using the same java application and using different jib images settings.
+// the task design was influcences by an discussion with the jib developer formus.
+// With the current task definitions only the BuildDockerTask is supported. Other jib
+// tasks are not usable. 
+
+// setup the common jib configuration
+task jibApplication () {
+    doFirst {
+        jib {
+            container {
+                entrypoint = 'INHERIT'
+                creationTime = 'USE_CURRENT_TIMESTAMP'
+                environment = ['LRC_ENTRYPOINT': '/root/application/start.sh']
+            }
+            extraDirectories {
+                paths {
+                    path {
+                        from = file('docker')
+                        into = '/root/application'
+                    }
+                    path {
+                        from = file('src/main/resources')
+                        into = '/usr/local/lrc'
+                    }
+                }
+                permissions = ['/root/application/start.sh': '755']
+            }
+        }
     }
 }
 
-// docker plugin
-apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
-
-// import remote API plugin task groups
-import com.bmuschko.gradle.docker.tasks.*
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-
-mainClassName = 'de.fraunhofer.iosb.helloworld.HelloWorld'
-
-task dockerBuildPitchImage(type: DockerBuildImage) {
-    dependsOn 'install'
-	group = 'Docker'
-	description = 'Builds the helloworld docker image for Pitch'
-    dockerFile = project.file('Dockerfile-pi')
-    buildArgs.put('version', "${helloWorldVersion}")
-	inputDir = file('.')
-    tags.add ("ivct/helloworld:pi-skeleton-${helloWorldVersion}")
+task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
+    group = 'Docker'
+    description = 'Creates images for the Pitch RTI'
+    jibExtension = project.extensions.getByName('jib')
+    dependsOn jibApplication
+    doFirst {
+        jib {
+            from {
+                image = 'hlacontainers/lrc:pitch-skeleton-alpine'
+            }
+            to {
+                image = "ivct/helloworld:pi-skeleton-${helloWorldVersion}"
+                tags = ["pi-latest"]
+            }
+        }
+    }
 }
 
-task dockerBuildPorticoImage(type: DockerBuildImage) {
-    dependsOn 'install'
-	group = 'Docker'
-	description = 'Builds the helloworld docker image for Pitch'
-    dockerFile = project.file('Dockerfile-po')
-    buildArgs.put('version', "${helloWorldVersion}")
-	inputDir = file('.')
-    tags.add ("ivct/helloworld:po-${helloWorldVersion}")
+task jibPortico (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
+    group = 'Docker'
+    description = 'Creates images for the Portico RTI'
+    jibExtension = project.extensions.getByName('jib')
+    dependsOn jibApplication
+    doFirst {
+        jib {
+            from {
+                image = 'hlacontainers/lrc:portico-nightly-2016.05.28-alpine'
+            }
+            to {
+                image = "ivct/helloworld:po-${helloWorldVersion}"
+                tags = ["po-latest"]
+            }
+        }
+    }
 }
 
-task dockerBuildMakImage(type: DockerBuildImage) {
-    dependsOn 'install'
-	group = 'Docker'
-	description = 'Builds the helloworld docker image for Pitch'
-    dockerFile = project.file('Dockerfile-ma')
-    buildArgs.put('version', "${helloWorldVersion}")
-	inputDir = file('.')
-    tags.add ("ivct/helloworld:ma-${helloWorldVersion}")
+task jibMak (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
+    group = 'Docker'
+    description = 'Creates images for the MaK RTI'
+    jibExtension = project.extensions.getByName('jib')
+    dependsOn jibApplication
+    doFirst {
+        jib {
+            from {
+                image = 'hlacontainers/lrc:vtmak-4.5f-centos7'
+            }
+            to {
+                image = "ivct/helloworld:ma-${helloWorldVersion}"
+                tags = ["ma-latest"]
+            }
+        }
+    }
 }
 
 tasks.register ("dockerBuildImage") {
     group = 'Docker'
     description = 'Creates docker images for RTIs'
-    dependsOn 'dockerBuildPitchImage'
-    dependsOn 'dockerBuildPorticoImage'
-    dependsOn 'dockerBuildMakImage'
+    dependsOn 'jibMak'
+    dependsOn 'jibPortico'
+    dependsOn 'jibPitch'
 }
-
 
 dependencies {
     compileOnly group: 'io.github.msg134', name: 'IEEE1516e', version: ivctVersion
     compile     libraries.slf4j_api
     runtime     libraries.logback_classic
 	runtime     libraries.logback_core
-    runtime     files("$System.env.LRC_CLASSPATH")
+    testImplementation     files("$System.env.LRC_CLASSPATH")
 }
 
 tasks.withType(CreateStartScripts) {

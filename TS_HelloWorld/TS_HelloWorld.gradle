@@ -3,29 +3,49 @@ buildscript {
 		mavenLocal()
 		mavenCentral()
 	}
-	dependencies {
-		classpath libraries.docker
-	}
 }
 
-// apply plugin: "com.bmuschko.docker-remote-api"
-apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
-
-// Import task types
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-
-// Use task types
-task dockerBuildImage(type: DockerBuildImage) {
-	dependsOn 'install'
-	inputDir = file('.')
-	buildArgs.put('version', "${helloWorldVersion}")
-	tags.add ("ivct/ts-helloworld:${helloWorldVersion}")
+plugins {
+    // JIB Container Support for Java applications
+  id 'com.google.cloud.tools.jib' version '3.1.1'
 }
 
 // use java application packaging feature
+// apply plugin: 'java-library'
 apply plugin: 'application'
-
 mainClassName = 'de.fraunhofer.iosb.tc_helloworld.Run'
+
+// docker image configuration for googles JIB
+task dockerBuildImage (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
+    group = 'Docker'
+    description = 'wrapper for the jib BuildDockerTask'
+    jibExtension = project.extensions.getByName('jib')
+    doFirst {
+		jib {
+			from {
+				image = 'busybox'
+			}
+			to {
+				image = "ivct/ts-helloworld:${helloWorldVersion}"
+			}
+			container {
+				entrypoint = ['sh', '-c', 'echo starting TS_HelloWorld test suite container']
+				creationTime = 'USE_CURRENT_TIMESTAMP'
+				volumes ["/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}:TS_HelloWorld-${helloWorldVersion}"]
+			}
+			extraDirectories {
+				paths {
+					path {
+						// TODO: this required dependency on jar build 
+						from = file('build/libs')
+						into = "/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}/lib"
+						includes = ["TS_HelloWorld-${helloWorldVersion}.jar"]
+					}
+				}
+			}
+		}
+	}
+}
 
 dependencies {
 	compileOnly     libraries.ieee_lib
@@ -38,10 +58,12 @@ dependencies {
 	testImplementation files("$System.env.LRC_CLASSPATH")
 	testImplementation libraries.junit_jupiter_engine
 	testImplementation libraries.activemqEmbedded
+	testImplementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+	//testImplementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.0'
 
     // JAX-B dependencies for JDK 9+
-    testImplementation "jakarta.xml.bind:jakarta.xml.bind-api:3.0.0"
-    testImplementation "org.glassfish.jaxb:jaxb-runtime:3.0.0"
+//    testImplementation "jakarta.xml.bind:jakarta.xml.bind-api:3.0.0"
+//    testImplementation "org.glassfish.jaxb:jaxb-runtime:3.0.0"
 }
 
 test {
