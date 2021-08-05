@@ -75,7 +75,7 @@ subprojects { subProject ->
 		}
 
 
-        apply plugin: 'maven' // for install task as well as deploy dependencies
+        apply plugin: 'maven-publish' 
 
 
 
