@@ -42,7 +42,7 @@ jobs:
     - name: Build with Gradle
       run: |
         echo "Building version ${VERSION}"
-        ./gradlew install dockerBuildImage
+        gradle install dockerBuildImage
     
     - name: Tag docker images
       run: |
