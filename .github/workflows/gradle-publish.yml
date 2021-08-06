@@ -35,7 +35,7 @@ jobs:
 
     - name: Read IVCT Version tag
       run: |
-        VERSION=$(grep "ivctVersion" ./.shared/libraries.gradle | awk '{print $3}' | tr -d \')
+        VERSION=$(grep "helloWorldVersion" ./.shared/libraries.gradle | awk '{print $3}' | tr -d \')
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Building version ${VERSION}"
     
