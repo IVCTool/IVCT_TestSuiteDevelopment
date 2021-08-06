@@ -47,19 +47,25 @@ jobs:
     - name: Tag docker images
       run: |
         echo "Building version ${VERSION} for branch ${GITHUB_REF:11}"
-        # tag and push test suite image
+        # tag the test suite image
         docker tag ivct/ts-helloworld:$VERSION ivct/ts-helloworld:${GITHUB_REF:11}-latest
-        docker push ivct/ts-helloworld
-        # tag and push all rti specfic helloworld images (Pitch, Mak, Portico)
+        # tag the rti specfic helloworld images (Pitch, Mak, Portico)
         docker tag ivct/helloworld:pi-skeleton-$VERSION ivct/helloworld:pi-skeleton-${GITHUB_REF:11}-latest
         docker tag ivct/helloworld:po-$VERSION ivct/helloworld:po-${GITHUB_REF:11}-latest
         docker tag ivct/helloworld:ma-$VERSION ivct/helloworld:ma-${GITHUB_REF:11}-latest
-        docker push ivct/helloworld
     
     - name: Log into DockerHub
       run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     
     - name: Push images to DockerHub
       run: |
-        # docker push ivct/ts-helloworld
-        # docker push ivct/helloworld
+        # tag and push test suite image
+        docker push ivct/ts-helloworld:$VERSION 
+        docker push ivct/ts-helloworld:${GITHUB_REF:11}-latest
+        # tag and push all rti specfic helloworld images (Pitch, Mak, Portico)
+        docker push ivct/helloworld:pi-skeleton-$VERSION 
+        docker push ivct/helloworld:pi-skeleton-${GITHUB_REF:11}-latest
+        docker push ivct/helloworld:po-$VERSION 
+        docker push ivct/helloworld:po-${GITHUB_REF:11}-latest
+        docker push ivct/helloworld:ma-$VERSION 
+        docker push ivct/helloworld:ma-${GITHUB_REF:11}-latest
