@@ -1,4 +1,4 @@
-![gradle-publish](https://github.com/IVCTool/IVCT_TestSuiteDevelopment/actions/workflows/gradle-publish.yml/badge.svg)
+[![gradle-publish](https://github.com/IVCTool/IVCT_TestSuiteDevelopment/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/IVCTool/IVCT_TestSuiteDevelopment/actions/workflows/gradle-publish.yml)
 
 # IVCT_TestSuiteDevelopment 
 
