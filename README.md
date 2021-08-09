@@ -1,9 +1,7 @@
-| Branch | Build status |
-| ------ | ------------ |
-| Master | [![Build Status master branch](https://travis-ci.com/IVCTool/IVCT_TestSuiteDevelopment.svg?branch=master)](https://travis-ci.com/IVCTool/IVCT_TestSuiteDevelopment) |
-| Development | [![Build Status development branch](https://travis-ci.com/IVCTool/IVCT_TestSuiteDevelopment.svg?branch=development)](https://travis-ci.com/IVCTool/IVCT_TestSuiteDevelopment) |
+[![gradle-publish](https://github.com/IVCTool/IVCT_TestSuiteDevelopment/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/IVCTool/IVCT_TestSuiteDevelopment/actions/workflows/gradle-publish.yml)
 
-# IVCT_TestSuiteDevelopment
+# IVCT_TestSuiteDevelopment 
+
 
 The TS_HelloWorld is a sample test suite to explain the concepts for writing test cases for the IVCTool. It includes a small two simple test cases, combined into the TS_HelloWorld test suite, and a simple helloworld federate to run against the test cases.
 

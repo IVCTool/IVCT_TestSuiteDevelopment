@@ -1,0 +1,71 @@
+# This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
+
+name: Build and Publish Docker Images
+
+on:
+  push:
+    branches: 
+      - development
+      - master
+
+  workflow_dispatch:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 8
+      uses: actions/setup-java@v2
+      with:
+        java-version: '8'
+        distribution: 'adopt'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+
+    - name: Read IVCT Version tag
+      run: |
+        VERSION=$(grep "helloWorldVersion" ./.shared/libraries.gradle | awk '{print $3}' | tr -d \')
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Building version ${VERSION}"
+    
+    - name: Build with Gradle
+      run: |
+        echo "Building version ${VERSION}"
+        gradle install dockerBuildImage
+    
+    - name: Tag docker images
+      run: |
+        echo "Building version ${VERSION} for branch ${GITHUB_REF:11}"
+        # tag the test suite image
+        docker tag ivct/ts-helloworld:$VERSION ivct/ts-helloworld:${GITHUB_REF:11}-latest
+        # tag the rti specfic helloworld images (Pitch, Mak, Portico)
+        docker tag ivct/helloworld:pi-skeleton-$VERSION ivct/helloworld:pi-skeleton-${GITHUB_REF:11}-latest
+        docker tag ivct/helloworld:po-$VERSION ivct/helloworld:po-${GITHUB_REF:11}-latest
+        docker tag ivct/helloworld:ma-$VERSION ivct/helloworld:ma-${GITHUB_REF:11}-latest
+    
+    - name: Log into DockerHub
+      run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    
+    - name: Push images to DockerHub
+      run: |
+        # tag and push test suite image
+        docker push ivct/ts-helloworld:$VERSION 
+        docker push ivct/ts-helloworld:${GITHUB_REF:11}-latest
+        # tag and push all rti specfic helloworld images (Pitch, Mak, Portico)
+        docker push ivct/helloworld:pi-skeleton-$VERSION 
+        docker push ivct/helloworld:pi-skeleton-${GITHUB_REF:11}-latest
+        docker push ivct/helloworld:po-$VERSION 
+        docker push ivct/helloworld:po-${GITHUB_REF:11}-latest
+        docker push ivct/helloworld:ma-$VERSION 
+        docker push ivct/helloworld:ma-${GITHUB_REF:11}-latest
