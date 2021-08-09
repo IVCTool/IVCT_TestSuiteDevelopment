@@ -43,6 +43,7 @@ task jibApplication () {
             }
         }
     }
+    dependsOn 'distTar'
 }
 
 task jibPitch (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {

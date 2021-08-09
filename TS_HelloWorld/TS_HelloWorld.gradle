@@ -45,6 +45,7 @@ task dockerBuildImage (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) 
 			}
 		}
 	}
+	dependsOn('distTar')
 }
 
 dependencies {
