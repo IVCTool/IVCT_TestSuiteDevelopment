@@ -1,4 +1,5 @@
 [![gradle-publish](https://github.com/IVCTool/IVCT_TestSuiteDevelopment/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/IVCTool/IVCT_TestSuiteDevelopment/actions/workflows/gradle-publish.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e4e5431c35ea43b5abbce13b279cc704)](https://www.codacy.com/gh/IVCTool/IVCT_TestSuiteDevelopment/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=IVCTool/IVCT_TestSuiteDevelopment&amp;utm_campaign=Badge_Grade)
 
 # IVCT_TestSuiteDevelopment 
 
