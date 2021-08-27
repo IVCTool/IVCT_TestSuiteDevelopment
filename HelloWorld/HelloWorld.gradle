@@ -7,7 +7,7 @@ buildscript {
 
 plugins {
     // JIB Container Support for Java applications
-    id 'com.google.cloud.tools.jib' version '3.1.2'
+    id 'com.google.cloud.tools.jib' version "${jibPluginVersion}"
 }
 
 apply plugin: 'application'
