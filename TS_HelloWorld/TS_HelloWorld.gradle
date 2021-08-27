@@ -6,13 +6,12 @@ buildscript {
 }
 
 plugins {
-    // JIB Container Support for Java applications
-  id 'com.google.cloud.tools.jib' version '3.1.1'
+	// use java application packaging feature
+	id 'application'
+	// JIB Container Support for Java applications
+	id 'com.google.cloud.tools.jib' version "${jibPluginVersion}"
 }
 
-// use java application packaging feature
-// apply plugin: 'java-library'
-apply plugin: 'application'
 mainClassName = 'de.fraunhofer.iosb.tc_helloworld.Run'
 
 // docker image configuration for googles JIB
@@ -54,17 +53,20 @@ dependencies {
 	compileOnly     libraries.slf4j_api
 	compileOnly		libraries.jsonSimple
 
+	testImplementation libraries.ieee_lib
 	testImplementation libraries.tc_lib
+	testImplementation libraries.slf4j_api
+	testImplementation libraries.jsonSimple
 	testImplementation "io.github.ivctool:Command:${ivctVersion}"
 	testImplementation files("$System.env.LRC_CLASSPATH")
 	testImplementation libraries.junit_jupiter_engine
 	testImplementation libraries.activemqEmbedded
-	testImplementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
-	//testImplementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.0'
+	// testImplementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+	// testImplementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.0'
 
     // JAX-B dependencies for JDK 9+
-//    testImplementation "jakarta.xml.bind:jakarta.xml.bind-api:3.0.0"
-//    testImplementation "org.glassfish.jaxb:jaxb-runtime:3.0.0"
+	// testImplementation "jakarta.xml.bind:jakarta.xml.bind-api:3.0.0"
+	// testImplementation "org.glassfish.jaxb:jaxb-runtime:3.0.0"
 }
 
 test {
