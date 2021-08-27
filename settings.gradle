@@ -10,3 +10,11 @@ rootProject.children.each { project ->
 
 // By default the name of our Gradle project is the name of the directory the project is created in.
 // Note that the name field is only mutable in the settings.gradle file.
+
+// if the IVCT_Framework was not build on you local development machine, you my load it from github
+// this is required for testing the test cases, which requires the Command module
+/* sourceControl {
+    gitRepository("https://github.com/IVCTool/IVCT_Framework.git") {
+        producesModule("io.github.ivctool:Command")
+    }
+} */
