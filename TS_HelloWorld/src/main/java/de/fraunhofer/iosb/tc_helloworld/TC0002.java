@@ -40,7 +40,6 @@ import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
 
 import java.util.LinkedList;
-import java.util.Properties;
 
 /**
  * @author mul (Fraunhofer IOSB)
