@@ -113,7 +113,7 @@ dependencies {
     implementation     libraries.slf4j_api
     implementation     libraries.logback_classic
 	implementation     libraries.logback_core
-    testImplementation     files("$System.env.LRC_CLASSPATH")
+    implementation     files("$System.env.LRC_CLASSPATH")
 }
 
 tasks.withType(CreateStartScripts) {
