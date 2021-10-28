@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldTcParam;
+import de.fraunhofer.iosb.tc_lib.TcInconclusive;
 import nato.ivct.commander.Factory;
 
 public class TestHelloWorldTcParam {
@@ -55,6 +55,20 @@ public class TestHelloWorldTcParam {
 	 * for the 'Properties props' we have to read in the properties File
 	 * IVCT.properties which is normally read from Factory.java.initialize();
 	 */
+
+
+
+	@Test
+	public void testTcParam () throws TcInconclusive
+	{
+		String jsonString = Factory.readWholeFile(System.getProperty("user.dir") + "/src/main/resources/TcParam.json");
+		HelloWorldTcParam tcParam = new HelloWorldTcParam(jsonString);
+		assertTrue(tcParam.getSleepTimeWait() > 0);
+		assertTrue(tcParam.getPopulationGrowthValue() > 0);
+		assertTrue(tcParam.getSleepTimeCycle() > 0);
+		assertTrue(tcParam.getUrls().toString().length() > 0);
+	}
+
 
 	// Find the JsonFile and read it
 	@Test
