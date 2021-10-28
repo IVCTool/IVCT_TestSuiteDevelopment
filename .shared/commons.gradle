@@ -19,17 +19,6 @@ allprojects {
 			url 'https://oss.sonatype.org/content/repositories/snapshots'
 		}
 	}
-
-    ext {
-        // may be feed from bamboo, see also https://confluence.atlassian.com/display/BAMBOO/Using+global,+plan+or+build-specific+variables
-        // -Dbuild=${bamboo.build} -DbuildTimestamp=${bamboo.buildTimeStamp} -DbuildKey=${bamboo.buildKey} -DbuildNumber=${bamboo.buildNumber} -DrepositoryBranchName=${bamboo.repository.branch.name} -DrevisionNumber=${bamboo.custom.svn.revision.number}
-        buildTimestmap = System.getProperty("buildTimestamp", java.util.Calendar.getInstance().getTime().toString())
-        // build = System.getProperty("build", "SNAPSHOT")
-        buildKey = System.getProperty("buildKey", "UNKNOWN")
-        buildNumber = System.getProperty("buildNumber", "SNAPSHOT")
-        repositoryBranchName = System.getProperty("repositoryBranchName", "UNKNOWN")
-        revisionNumber = System.getProperty("revisionNumber", "SNAPSHOT")
-    }
 }
 
 
