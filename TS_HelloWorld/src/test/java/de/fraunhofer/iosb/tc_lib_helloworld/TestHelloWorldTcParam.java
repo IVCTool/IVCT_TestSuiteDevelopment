@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fraunhofer.iosb.tc_lib.TcInconclusive;
+import de.fraunhofer.iosb.tc_lib_if.TcInconclusive;
 import nato.ivct.commander.Factory;
 
 public class TestHelloWorldTcParam {

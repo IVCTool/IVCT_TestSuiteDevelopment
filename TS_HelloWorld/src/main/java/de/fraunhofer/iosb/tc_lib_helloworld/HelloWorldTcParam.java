@@ -25,8 +25,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.LoggerFactory;
 
-import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
-import de.fraunhofer.iosb.tc_lib.TcInconclusive;
+import de.fraunhofer.iosb.tc_lib_if.IVCT_TcParam;
+import de.fraunhofer.iosb.tc_lib_if.TcInconclusive;
 
 /**
  * Store test case parameters

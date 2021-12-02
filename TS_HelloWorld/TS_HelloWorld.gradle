@@ -49,9 +49,10 @@ task dockerBuildImage (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) 
 
 dependencies {
 	compileOnly     libraries.ieee_lib
-	compileOnly     libraries.tc_lib
 	compileOnly     libraries.slf4j_api
-	compileOnly		libraries.jsonSimple
+	compileOnly     libraries.jsonSimple
+	implementation  libraries.tc_lib
+	implementation  libraries.tc_lib_if
 
 	testImplementation libraries.ieee_lib
 	testImplementation libraries.tc_lib

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
-import de.fraunhofer.iosb.tc_lib.IVCT_Verdict;
+import de.fraunhofer.iosb.tc_lib_if.IVCT_Verdict;
 
 class TC0002Test extends TSTest {
 	
