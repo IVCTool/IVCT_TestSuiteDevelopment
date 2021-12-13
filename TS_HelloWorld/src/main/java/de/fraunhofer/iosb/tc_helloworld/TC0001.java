@@ -65,7 +65,7 @@ public class TC0001 extends AbstractTestCase {
         stringBuilder.append("correctly\n");
         stringBuilder.append("Observe the federate for a fixed number of cycles and compare the\n");
         stringBuilder.append("last received value with the previously received value plus the fixed\n");
-        stringBuilder.append("percentage and a small tolerence for each cycle\n");
+        stringBuilder.append("percentage and a small tolerance for each cycle\n");
         stringBuilder.append("---------------------------------------------------------------------\n");
         final String testPurpose = stringBuilder.toString();
 
