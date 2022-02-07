@@ -29,7 +29,7 @@ class TSTest {
 		//String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
 		// Pitch default
 		// String settingsDesignator = "localhost";
-		String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
+		String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"localhost\")";
 
 		testCase.setSettingsDesignator(settingsDesignator);
 		testCase.setFederationName(federationName);

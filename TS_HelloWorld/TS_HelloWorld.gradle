@@ -52,7 +52,6 @@ dependencies {
 	compileOnly     libraries.slf4j_api
 	compileOnly     libraries.jsonSimple
 	implementation  libraries.tc_lib
-	implementation  libraries.tc_lib_if
 
 	testImplementation libraries.ieee_lib
 	testImplementation libraries.tc_lib

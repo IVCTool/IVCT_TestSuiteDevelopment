@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fraunhofer.iosb.tc_lib_if.TcInconclusive;
+import de.fraunhofer.iosb.tc_lib.TcInconclusive;
 import nato.ivct.commander.Factory;
 
 public class TestHelloWorldTcParam {
@@ -126,7 +126,7 @@ public class TestHelloWorldTcParam {
 			LOGGER_HWTP.info("We get  IVCT_CONF from the OS-Environment : " + System.getenv(IVCT_CONF)); // debug
 		}
 
-		FileReader readIt = new FileReader(home + "/IVCT.properties");
+		FileReader readIt = new FileReader(home);
 
 		props1.load(readIt);
 

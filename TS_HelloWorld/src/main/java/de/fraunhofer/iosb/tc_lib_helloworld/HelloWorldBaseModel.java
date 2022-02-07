@@ -24,8 +24,8 @@ import org.slf4j.Logger;
 
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_RTIambassador;
-import de.fraunhofer.iosb.tc_lib_if.IVCT_TcParam;
-import de.fraunhofer.iosb.tc_lib_if.TcFailed;
+import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
+import de.fraunhofer.iosb.tc_lib.TcFailed;
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
 import hla.rti1516e.AttributeHandleValueMap;
