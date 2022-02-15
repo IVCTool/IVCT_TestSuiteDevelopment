@@ -23,7 +23,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
-import de.fraunhofer.iosb.tc_lib.IVCT_RTIambassador;
 import de.fraunhofer.iosb.tc_lib.IVCT_TcParam;
 import de.fraunhofer.iosb.tc_lib.TcFailed;
 import hla.rti1516e.AttributeHandle;
@@ -42,7 +41,6 @@ import hla.rti1516e.ParameterHandle;
 import hla.rti1516e.ParameterHandleValueMap;
 import hla.rti1516e.TransportationTypeHandle;
 import hla.rti1516e.encoding.DecoderException;
-import hla.rti1516e.encoding.EncoderFactory;
 import hla.rti1516e.encoding.HLAfloat32LE;
 import hla.rti1516e.encoding.HLAunicodeString;
 import hla.rti1516e.exceptions.AlreadyConnected;
@@ -54,6 +52,8 @@ import hla.rti1516e.exceptions.FederateInternalError;
 import hla.rti1516e.exceptions.FederateNotExecutionMember;
 import hla.rti1516e.exceptions.FederateServiceInvocationsAreBeingReportedViaMOM;
 import hla.rti1516e.exceptions.InteractionClassNotDefined;
+import hla.rti1516e.exceptions.InteractionClassNotPublished;
+import hla.rti1516e.exceptions.InteractionParameterNotDefined;
 import hla.rti1516e.exceptions.InvalidFederateHandle;
 import hla.rti1516e.exceptions.InvalidInteractionClassHandle;
 import hla.rti1516e.exceptions.InvalidLocalSettingsDesignator;
@@ -75,9 +75,9 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
   private AttributeHandle _attributeIdPopulation;
   private boolean receivedReflect = false;
   private boolean saveInteractions = false;
-  private EncoderFactory _encoderFactory;
+//  private EncoderFactory _encoderFactory;
   private InteractionClassHandle messageId;
-  private IVCT_RTIambassador ivct_rti;
+//  private IVCT_RTIambassador ivct_rti;
   private Logger logger;
   private ParameterHandle parameterIdSender;
   private ParameterHandle parameterIdText;
@@ -96,11 +96,9 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
    * @param ivct_TcParam
    *          ivct_TcParam
    */
-  public HelloWorldBaseModel(final Logger logger, final IVCT_RTIambassador ivct_rti, final IVCT_TcParam ivct_TcParam) {
-    super(ivct_rti, logger, ivct_TcParam);
+  public HelloWorldBaseModel(final Logger logger, final IVCT_TcParam ivct_TcParam) {
+    super(logger, ivct_TcParam);
     this.logger = logger;
-    this.ivct_rti = ivct_rti;
-    this._encoderFactory = ivct_rti.getEncoderFactory();
   }
 
   /**
@@ -335,6 +333,28 @@ public class HelloWorldBaseModel extends IVCT_BaseModel {
 			  }
 		  }
 	  }
+  }
+
+
+  public ParameterHandleValueMap createMessageParameter (String federateName, String message) throws FederateNotExecutionMember, NotConnected {
+    ParameterHandleValueMap parameters;
+    parameters = ivct_rti.getParameterHandleValueMapFactory().create(2);
+    parameters = ivct_rti.getParameterHandleValueMapFactory().create(2);
+
+    // Encode the values
+    final HLAunicodeString messageEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
+    final HLAunicodeString senderEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
+    messageEncoderString.setValue(message);
+    senderEncoderString.setValue(federateName);
+
+    // Put the values into parameters
+    parameters.put(getParameterIdText(), messageEncoderString.toByteArray());
+    parameters.put(getParameterIdSender(), senderEncoderString.toByteArray());
+  return parameters;
+  }
+
+  public void sendMessage (ParameterHandleValueMap parameters) throws InteractionClassNotPublished, InteractionParameterNotDefined, InteractionClassNotDefined, SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
+    ivct_rti.sendInteraction(getMessageId(), parameters, null);
   }
 
   /**

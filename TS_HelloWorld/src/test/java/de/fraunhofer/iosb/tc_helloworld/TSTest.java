@@ -37,6 +37,7 @@ class TSTest {
 		testCase.setSutFederateName(sutFederateName);			
 		testCase.setTcName(TSTest.class.getName());
 		testCase.setTsName(tsName);
+		testCase.setTcParam(tcParamJson);
 		testCase.setSkipOperatorMsg(true);
 	}
 	
@@ -64,13 +65,13 @@ class TSTest {
 		IVCT_Verdict verdict;
 		TC0001 tc0001 = new TC0001();
 		setUp(tc0001);
-		verdict = tc0001.execute(tcParamJson, runLogger);
+		verdict = tc0001.execute(runLogger);
 		runLogger.info("Test Case Verdict: {}", verdict);
 		assertTrue(verdict.verdict == IVCT_Verdict.Verdict.PASSED);	
 		
 		TC0002 tc0002 = new TC0002();
 		setUp(tc0002);
-		verdict = tc0002.execute(tcParamJson, runLogger);
+		verdict = tc0002.execute(runLogger);
 		runLogger.info("Test Case Verdict: {}", verdict);
 		assertTrue(verdict.verdict == IVCT_Verdict.Verdict.PASSED);
 	}
