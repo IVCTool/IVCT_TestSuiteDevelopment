@@ -8,42 +8,15 @@ buildscript {
 plugins {
 	// use java application packaging feature
 	id 'application'
-	// JIB Container Support for Java applications
-	id 'com.google.cloud.tools.jib' version "${jibPluginVersion}"
 }
 
 mainClassName = 'de.fraunhofer.iosb.tc_helloworld.Run'
 
-// docker image configuration for googles JIB
-task dockerBuildImage (type: com.google.cloud.tools.jib.gradle.BuildDockerTask) {
-    group = 'Docker'
-    description = 'wrapper for the jib BuildDockerTask'
-    jibExtension = project.extensions.getByName('jib')
-    doFirst {
-		jib {
-			from {
-				image = 'busybox'
-			}
-			to {
-				image = "ivct/ts-helloworld:${helloWorldVersion}"
-			}
-			container {
-				entrypoint = ['sh', '-c', 'echo starting TS_HelloWorld test suite container']
-				creationTime = 'USE_CURRENT_TIMESTAMP'
-				volumes ["/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}:TS_HelloWorld-${helloWorldVersion}"]
-			}
-			extraDirectories {
-				paths {
-					path {
-						// TODO: this required dependency on jar build 
-						from = file('build/libs')
-						into = "/root/conf/TestSuites/TS_HelloWorld-${helloWorldVersion}/lib"
-						includes = ["TS_HelloWorld-${helloWorldVersion}.jar"]
-					}
-				}
-			}
-		}
-	}
+task dockerBuildImage (type: Exec) {
+	group = 'Docker'
+	description = 'command line task to create docker image'
+	executable 'docker'
+	args 'build', '-t', "ivct/ts-helloworld:${helloWorldVersion}", '--build-arg', "version=${helloWorldVersion}", '.'
 	dependsOn('distTar')
 }
 
