@@ -26,10 +26,11 @@ class TSTest {
 		String sutName = "hw_iosb";
 		String sutFederateName = "A";
 		// MaK default
-		//String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
+		// String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
 		// Pitch default
 		// String settingsDesignator = "localhost";
-		String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"localhost\")";
+		// String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"localhost\")";
+		String settingsDesignator = "crcAddress=localhost:8989";
 
 		testCase.setSettingsDesignator(settingsDesignator);
 		testCase.setFederationName(federationName);
