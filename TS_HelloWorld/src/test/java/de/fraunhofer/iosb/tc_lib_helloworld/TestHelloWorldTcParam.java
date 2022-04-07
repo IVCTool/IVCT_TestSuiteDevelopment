@@ -126,7 +126,7 @@ public class TestHelloWorldTcParam {
 			LOGGER_HWTP.info("We get  IVCT_CONF from the OS-Environment : " + System.getenv(IVCT_CONF)); // debug
 		}
 
-		FileReader readIt = new FileReader(home + "/IVCT.properties");
+		FileReader readIt = new FileReader(home);
 
 		props1.load(readIt);
 

@@ -21,15 +21,12 @@ import org.slf4j.Logger;
 import de.fraunhofer.iosb.tc_lib.AbstractTestCase;
 import de.fraunhofer.iosb.tc_lib.IVCT_BaseModel;
 import de.fraunhofer.iosb.tc_lib.IVCT_LoggingFederateAmbassador;
-import de.fraunhofer.iosb.tc_lib.IVCT_RTI_Factory;
-import de.fraunhofer.iosb.tc_lib.IVCT_RTIambassador;
 import de.fraunhofer.iosb.tc_lib.TcFailed;
 import de.fraunhofer.iosb.tc_lib.TcInconclusive;
 import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldBaseModel;
 import de.fraunhofer.iosb.tc_lib_helloworld.HelloWorldTcParam;
 import hla.rti1516e.FederateHandle;
 import hla.rti1516e.ParameterHandleValueMap;
-import hla.rti1516e.encoding.HLAunicodeString;
 import hla.rti1516e.exceptions.FederateNotExecutionMember;
 import hla.rti1516e.exceptions.InteractionClassNotDefined;
 import hla.rti1516e.exceptions.InteractionClassNotPublished;
@@ -52,7 +49,6 @@ public class TC0002 extends AbstractTestCase {
     static HelloWorldTcParam              helloWorldTcParam;
 
     // Get logging-IVCT-RTI using tc_param federation name, host
-    private static IVCT_RTIambassador           ivct_rti;
     static HelloWorldBaseModel            helloWorldBaseModel;
 
     static IVCT_LoggingFederateAmbassador ivct_LoggingFederateAmbassador;
@@ -60,8 +56,7 @@ public class TC0002 extends AbstractTestCase {
     @Override
     public IVCT_BaseModel getIVCT_BaseModel(final String tcParamJson, final Logger logger) throws TcInconclusive {
         helloWorldTcParam              = new HelloWorldTcParam(tcParamJson);
-    	ivct_rti             = IVCT_RTI_Factory.getIVCT_RTI(logger);
-    	helloWorldBaseModel          = new HelloWorldBaseModel(logger, ivct_rti, helloWorldTcParam);
+    	helloWorldBaseModel          = new HelloWorldBaseModel(logger, helloWorldTcParam);
     	ivct_LoggingFederateAmbassador = new IVCT_LoggingFederateAmbassador(helloWorldBaseModel, logger);
     	return helloWorldBaseModel;
     }
@@ -125,36 +120,24 @@ public class TC0002 extends AbstractTestCase {
         }
 
         final String message = "Hello World from " + this.federateName;
-       // final String testMessage = "Greetings from " + getSutFederateName() + " to B";
         final String testMessage = "Greetings from " + getSutFederateName() + " to IVCT";
         
         // Create fields to hold values to send
         ParameterHandleValueMap parameters;
         try {
-            parameters = ivct_rti.getParameterHandleValueMapFactory().create(2);
+            parameters = helloWorldBaseModel.createMessageParameter(federateName, message);
         }
         catch (FederateNotExecutionMember | NotConnected ex1) {
             throw new TcInconclusive(ex1.getMessage());
         }
 
-        // Encode the values
-        final HLAunicodeString messageEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
-        final HLAunicodeString senderEncoderString = ivct_rti.getEncoderFactory().createHLAunicodeString();
-        messageEncoderString.setValue(message);
-        senderEncoderString.setValue(federateName);
-
-        // Put the values into parameters
-        parameters.put(helloWorldBaseModel.getParameterIdText(), messageEncoderString.toByteArray());
-        parameters.put(helloWorldBaseModel.getParameterIdSender(), senderEncoderString.toByteArray());
-
-       
         // Loop a number of cycles and test whether the sut answers the hello world call
         for (int i = 0; i < 10; i++) {
         	
         	helloWorldBaseModel.startSavingInteractions();
             // Send the interaction
             try {
-                ivct_rti.sendInteraction(helloWorldBaseModel.getMessageId(), parameters, null);
+                helloWorldBaseModel.sendMessage(parameters);
             }
             catch (InteractionClassNotPublished | InteractionParameterNotDefined | InteractionClassNotDefined | SaveInProgress | RestoreInProgress | FederateNotExecutionMember | NotConnected | RTIinternalError ex1) {
                 throw new TcInconclusive(ex1.getMessage());

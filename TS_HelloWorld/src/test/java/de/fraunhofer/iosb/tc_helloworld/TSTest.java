@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fraunhofer.iosb.tc_lib.AbstractTestCase;
-import de.fraunhofer.iosb.tc_lib.IVCT_Verdict;
+import de.fraunhofer.iosb.tc_lib_if.IVCT_Verdict;
 
 class TSTest {
 
@@ -26,10 +26,11 @@ class TSTest {
 		String sutName = "hw_iosb";
 		String sutFederateName = "A";
 		// MaK default
-		//String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
+		// String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
 		// Pitch default
 		// String settingsDesignator = "localhost";
-		String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"rtiexec\")";
+		// String settingsDesignator = "(setqb RTI_tcpPort 4000) (setqb RTI_tcpForwarderAddr \"localhost\")";
+		String settingsDesignator = "crcAddress=localhost:8989";
 
 		testCase.setSettingsDesignator(settingsDesignator);
 		testCase.setFederationName(federationName);
@@ -37,6 +38,7 @@ class TSTest {
 		testCase.setSutFederateName(sutFederateName);			
 		testCase.setTcName(TSTest.class.getName());
 		testCase.setTsName(tsName);
+		testCase.setTcParam(tcParamJson);
 		testCase.setSkipOperatorMsg(true);
 	}
 	
@@ -64,13 +66,13 @@ class TSTest {
 		IVCT_Verdict verdict;
 		TC0001 tc0001 = new TC0001();
 		setUp(tc0001);
-		verdict = tc0001.execute(tcParamJson, runLogger);
+		verdict = tc0001.execute(runLogger);
 		runLogger.info("Test Case Verdict: {}", verdict);
 		assertTrue(verdict.verdict == IVCT_Verdict.Verdict.PASSED);	
 		
 		TC0002 tc0002 = new TC0002();
 		setUp(tc0002);
-		verdict = tc0002.execute(tcParamJson, runLogger);
+		verdict = tc0002.execute(runLogger);
 		runLogger.info("Test Case Verdict: {}", verdict);
 		assertTrue(verdict.verdict == IVCT_Verdict.Verdict.PASSED);
 	}

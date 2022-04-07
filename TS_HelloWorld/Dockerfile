@@ -1,4 +1,4 @@
-FROM busybox
+FROM busybox:latest
 ENTRYPOINT [ "sh", "-c", " \
    if [ -n \"$VOLUME\" -a -n \"$1\" ]; then \
       if [ -n \"$OPTS\" ]; then \
