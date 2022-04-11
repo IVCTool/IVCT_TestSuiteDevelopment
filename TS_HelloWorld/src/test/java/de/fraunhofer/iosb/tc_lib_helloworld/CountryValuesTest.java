@@ -1,9 +1,7 @@
 package de.fraunhofer.iosb.tc_lib_helloworld;
 
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
