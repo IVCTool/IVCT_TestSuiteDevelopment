@@ -19,23 +19,20 @@ package de.fraunhofer.iosb.tc_lib_helloworld;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertFalse;
-//import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.Scanner;
-
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fraunhofer.iosb.tc_lib.TcInconclusive;
-import nato.ivct.commander.Factory;
 
 public class TestHelloWorldTcParam {
 
@@ -43,25 +40,12 @@ public class TestHelloWorldTcParam {
 
 	public static final String IVCT_CONF = "IVCT_CONF";
 
-	public Properties props = Factory.props;
-
-	/*
-	 * to Test HelloWorldTcParam we have to initialize a object. For this we need *
-	 * 'String paramJson' and 'Properties props'
-	 *
-	 * String paramJson is read out of the Json-Parameter file this can be done by
-	 * Factory.readWholefile which is normally startet by CmdStartTc.execute
-	 *
-	 * for the 'Properties props' we have to read in the properties File
-	 * IVCT.properties which is normally read from Factory.java.initialize();
-	 */
-
-
-
 	@Test
-	public void testTcParam () throws TcInconclusive
+	public void testTcParam () throws TcInconclusive, IOException
 	{
-		String jsonString = Factory.readWholeFile(System.getProperty("user.dir") + "/src/main/resources/TcParam.json");
+//		String jsonString = Factory.readWholeFile(System.getProperty("user.dir") + "/src/main/resources/TcParam.json");
+
+		String jsonString = new String(Files.readAllBytes(Paths.get(System.getProperty("user.dir") + "/src/main/resources/TcParam.json")),StandardCharsets.UTF_8);
 		HelloWorldTcParam tcParam = new HelloWorldTcParam(jsonString);
 		assertTrue(tcParam.getSleepTimeWait() > 0);
 		assertTrue(tcParam.getPopulationGrowthValue() > 0);
@@ -105,17 +89,17 @@ public class TestHelloWorldTcParam {
 	 * OS-environment or by a startscript. fi. :
 	 * " export IVCT_CONF=/opt/MSG134/IVCT_Runtime "
 	 */
-
-	@Test
-	public void findAndReadPropertyFile() throws IOException, FileNotFoundException {
+	 
+	 @Test
+	 public void findAndReadPropertyFile() throws IOException, FileNotFoundException {
 		LOGGER_HWTP.info("");
 		LOGGER_HWTP.info("-------------------------------");
 		LOGGER_HWTP.info("Test  findAndReadPropertyFile() : ");
 
 		String home = "";
 		String confPath = System.getProperty("user.dir") + "/src/main/resources";
-		Properties props1 = new Properties(props);
-
+		Properties props = new Properties();
+		
 		// if IVCT_CONF is not set in OS-environment, we do this in our environment
 		if (System.getenv(IVCT_CONF) == null) {
 			System.setProperty(IVCT_CONF, confPath);
@@ -125,18 +109,18 @@ public class TestHelloWorldTcParam {
 			home = System.getenv(IVCT_CONF);
 			LOGGER_HWTP.info("We get  IVCT_CONF from the OS-Environment : " + System.getenv(IVCT_CONF)); // debug
 		}
-
+		
 		FileReader readIt = new FileReader(home);
-
-		props1.load(readIt);
-
-		LOGGER_HWTP.info("props1.getProperty IVCT_SUT_HOME_ID  : " + props1.getProperty("IVCT_SUT_HOME_ID"));
-
+		
+		props.load(readIt);
+		
+		LOGGER_HWTP.info("props1.getProperty IVCT_SUT_HOME_ID  : " + props.getProperty("IVCT_SUT_HOME_ID"));
+		
 		// assertTrue("getProperty(\"IVCT_SUT_HOME_ID\") is empty ",
 		// props1.getProperty("IVCT_SUT_HOME_ID") != null );
-		assertFalse("getProperty(\"IVCT_SUT_HOME_ID\") is empty ", props1.getProperty("IVCT_SUT_HOME_ID").isEmpty());
+		assertFalse("getProperty(\"IVCT_SUT_HOME_ID\") is empty ", props.getProperty("IVCT_SUT_HOME_ID").isEmpty());
 	}
-
+	
 	@Test
 	public void testHelloWorldTcParam() throws Exception {
 		LOGGER_HWTP.info("");

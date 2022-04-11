@@ -49,10 +49,6 @@ class TSTest {
 		broker.addConnector("tcp://localhost:61616"); 
 		broker.setPersistent(false);
 		broker.start();
-		
-		// force Factory to re-initialize itself
-		nato.ivct.commander.Factory.props = null;
-		nato.ivct.commander.Factory.initialize();
 	}
 
 	@AfterAll
