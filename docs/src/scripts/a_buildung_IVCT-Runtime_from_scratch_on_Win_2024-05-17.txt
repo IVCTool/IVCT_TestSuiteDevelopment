@@ -1,0 +1,524 @@
+#! /bin/bash
+
+# a_buildung_IVCT-Runtime_from_scratch_on_Win_202Y-MM-DD.txt
+
+# Info and Script to build a IVCT_Runtime environment with all necessary
+# Parts
+# and/or to renew the different elements when they are new compiled
+#
+# 10.03.2020 S.Barfuss, Fraunhofer IOSB
+# Fraunhofer Institut für Optronik,Systemtechnik und Bildauswertung
+#
+#
+# Windows-Version
+# this is a script executable from  git-bash on Windows
+# (not to execute on windows-shell)
+# for starting use a Path in  linux-manner
+#    $ H:/your/path/to/a_buildung_IVCT-Runtime_from_scratch_on_Win_2024-02-22.txt
+#
+# otherwise its a step by step  guide  to organize a Runtime Environment
+# 
+#
+################################################################
+#
+# versionen      brf
+# 20240517  brf  changed some  descriptions, only text
+# 20240216  brf  a Version running with git bash
+# 20240207  brf  not self installing, juist a descripton 
+# 20200331  brf  prepare the script for use with 'Windows Services for Linux'
+# 20200330  brf  Informations about necessity to install and configurate git
+# 20200320  brf  provide a IVCT.properties with suitable values
+# 20200319  brf  change text and varibles 
+# 20200318  brf  a first approach to test 
+# 20200310  brf  Beginning a new Version of this Script for whole Runtime-environment
+#
+################################################################
+
+#-----------------------------------------------------------------------------
+# prerequisites
+#
+# java , jdk or jre  somewhere on the system
+#
+# downloaded apache-tomcat-8.5.XX.tar.gz and apache-activemq-5.15.XX-bin.tar.gz
+# (you need to download Windows Versions)
+# as described in Section 2
+# 
+# install git (apt-get install git)  and configure it to use a proxy
+# 'git config --global http.proxy http://proxy-Yours.inst.firma.de:3128'
+#
+# RTI  a installation of rti prti  which can be reached and used
+# a free version is available at http://pitchtechnologies.com/products/prti/
+# install prti1516efree_5_3_2_1_linux64_b140.deb  as root 
+#
+# you may need these variables in your IVCT-Startscript
+# export PRTI1516E_HOME=/opt/prti1516e
+# export LRC_HOME=$RTI_HOME
+# export LRC_CLASSPATH=${PRTI1516E_HOME}/lib/prti1516e.jar
+
+
+
+# ----------------------------------------------------------------------------
+# 1 Variables and Pathes
+# ----------------------------------------------------------------------------
+
+## the folowing is a description for Linux,  we need  some Dirs and  Variables for installing
+
+# eg.   E:\IVCTTool         E:\IVCTTool\IVCT_Runtime      
+
+# for compilation we need java  JDK somewhere on our system
+#set JAVA_HOME=C:\ablage_ba\temp_install\jdk-11.0.1
+#set path=%JAVA_HOME%\bin;%path%
+export JAVA_HOME=C:/ablage_ba/temp_install/jdk-11.0.1   # for git-bash in this manner
+
+#### in this Dir  we install all 
+
+export IVCTTOOL_Dir_Name=IVCTTool_c
+
+export IVCTTOOL_Dir=E:/${IVCTTOOL_Dir_Name}           ### change this to your path
+
+# our 'Runtime-environment'
+export RUNTIME_Dir=${IVCTTOOL_Dir}/IVCT_Runtime
+
+export RUNTIME_Win="E:\\${IVCTTOOL_Dir_Name}\\IVCT_Runtime" ## may be different
+
+# Create the Directory
+[ -d $RUNTIME_Dir ] ||  mkdir -p $RUNTIME_Dir      # in git-bash useable
+
+
+### the different Source- and compile - Dirs
+# Framework
+# set Framework_Dir=  %IVCTTOOL_Dir%\IVCT_Framework
+export Framework_Dir=${IVCTTOOL_Dir}/IVCT_Framework   # for git-bash
+
+
+# Testsuite HLA_BASE 
+# set TS_HLA_BASE_Dir =  %IVCTTOOL_Dir%\TS_HLA_BASE
+export TS_HLA_BASE_Dir=${IVCTTOOL_Dir}/TS_HLA_BASE      # for git-bash
+
+# HalloWorld and  sample test suite
+#set TestSuiteDevelopment_Dir=  %IVCTTOOL_Dir%\IVCT_TestSuiteDevelopment
+export TestSuiteDevelopment_Dir=${IVCTTOOL_Dir}/IVCT_TestSuiteDevelopment    # for git-bash
+
+export datum=`date +%Y-%m-%d`
+export zeit=`date +%H-%M`
+
+# -----------------------------------------------------------------------------
+# 2 Fetching and preparing some required software
+# -----------------------------------------------------------------------------
+
+# pushd  %RUNTIME_Dir%                # change to Runtime-Dir
+pushd  $RUNTIME_Dir                  # for git-bash
+
+### Apache-Tomcat    we need a tomcat - Installation
+# fetch apache-tomcat from https://tomcat.apache.org/download-80.cgi
+# e.g. apache-tomcat-8.5.98-windows-x64.zip for use in Windows
+                                               
+                                                             ### change this to your path
+cp  E:/temp_ivct_src/apache-tomcat-8.5.98-windows-x64.zip . ### deactivate after the first run
+unzip  apache-tomcat-8.5.98-windows-x64.zip                 # for git-bash we use unzip
+# tar -xzf apache-tomcat-8.5.98-windows-x64.zip
+rm apache-tomcat-8.5.98-windows-x64.zip
+
+export tomcat_Dir=${RUNTIME_Dir}/apache-tomcat-8.5.98
+
+# Later You may have to edit the file ${RUNTIME_Dir}/apache-tomcat-8.5.51/conf/server.xml 
+
+
+### apache-activemq 
+# get from https://activemq.apache.org/components/classic/download/
+# e.g. apache-activemq-5.18.3-bin.zip   for use in Window   for use in Windows
+                                                       ## change this to your path
+cp E:/temp_ivct_src/apache-activemq-5.18.3-bin.zip .  ##deactivate after the first run
+unzip apache-activemq-5.18.3-bin.zip                  #  for git-bash we use unzip
+# tar -xzf apache-activemq-5.18.3-bin.zip              # for windows shell use tar
+rm apache-activemq-5.18.3-bin.zip
+
+
+popd                  ############## popd
+pwd
+read -p "-finished 2 ----- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+# -----------------------------------------------------------------------------
+# 3 Fetching and Building the sources 
+# -----------------------------------------------------------------------------
+#  IVCT_Framework 
+#  IVCT_TestSuiteDevelopment 
+#  TS_HLA_Base
+
+pushd ${IVCTTOOL_Dir}         ############ pushd
+
+echo -e "\n We now clone the demanded repositories and compile them"
+
+echo -e "## to use git for cloning you may have to set:"
+echo    "git config --global http.proxy http://proxy.aaa.firma.de:3128"
+echo    "git config --global https.proxy https://proxy.aaa.firma.de:3128"
+
+echo -e "\n##for compiling you may need a gradle.properties with:"
+echo    "  ossrhUsername=user ossrhPassword=password"
+echo -e "  and possibly systemProp.http.proxyHost= systemProp.http.proxyPort= \n"
+
+read -p "please copy one to ${IVCTTOOL_Dir} - [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+### IVCT_Framework --------------------- ### dectivate following after the first run 
+git clone  https://github.com/IVCTool/IVCT_Framework.git
+cd IVCT_Framework
+git fetch --all
+git checkout main                          ### activate here the right Branch !!!
+
+cp ${IVCTTOOL_Dir}/gradle.properties .
+sleep 1
+
+./gradlew clean DistTar war       #./gradlew install is not enough for creating *.war
+#./gradlew  publishToMavenLocal   # may be needed  
+cd ..
+pwd
+read -p "-finished IVCT_Framework --- Break ---, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+### TS_HLA_BASE ---------------------------### dectivate following after the first run
+git clone   https://github.com/IVCTool/TS_HLA_BASE.git
+cd TS_HLA_BASE
+git fetch --all
+git checkout main                                 ### activate here the right Branch !!!
+cp ${IVCTTOOL_Dir}/gradle.properties .
+./gradlew clean assembleDist                      #./gradlew install is not enenough
+cd ..
+
+
+### IVCT_TestSuiteDevelopment -------------- ### dectivate following after the first run
+git clone https://github.com/IVCTool/IVCT_TestSuiteDevelopment.git
+cd IVCT_TestSuiteDevelopment
+git fetch --all
+git checkout main                                ### activate here the right Branch !!!
+cp ${IVCTTOOL_Dir}/gradle.properties .
+./gradlew clean assembleDist                      #./gradlew install is not enenough
+cd ..
+
+read -p "-finished 3 ----- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+# -----------------------------------------------------------------------------
+# 4 Copying/extracting the Components to their position in the Runtime-Envir.
+# -----------------------------------------------------------------------------
+
+## this is all Linux Style   #####  it is  ok with git-bash
+
+
+echo -e "\n -------------------------- IVCT.properties --------------------------"
+echo -e "## IVCT.properties, copying $Framework_Dir/RuntimeConfig/IVCT.properties to $RUNTIME_Dir \n"
+
+[ -d $RUNTIME_Dir/IVCT.properties ] || cp $Framework_Dir/RuntimeConfig/IVCT.properties $RUNTIME_Dir
+echo -e "\n!!!! You have to  edit the  ${RUNTIME_Dir}/IVCT.properties File !!!!!"
+
+
+echo -e "\n ------ ------------------- Badges ------------------------------------"
+echo -e "## Badges, copying Badges Directory from $Framework_Dir/RuntimeConfig/Badges "
+
+[ -d ${RUNTIME_Dir}/Badges ] && mv -f $RUNTIME_Dir/Badges $RUNTIME_Dir/Badges_${datum}_${zeit}
+echo -e "- copying Directory $Framework_Dir/RuntimeConfig/Badges to $RUNTIME_Dir \n"
+
+cp -r $Framework_Dir/RuntimeConfig/Badges $RUNTIME_Dir  # in this Way ok on Win with git-bash
+
+read -p "------- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+echo -e "\n --------------------------- IVCTsut -----------------------------------"
+echo -e "## IVCTsut-Directory, get it  from IVCT_Framework/RuntimeConfig/IVCTsut"
+
+[ -d $RUNTIME_Dir/IVCTsut ] && mv $RUNTIME_Dir/IVCTsut $RUNTIME_Dir/IVCTsut_${datum}_${zeit}
+
+echo -e "- copying $Framework_Dir/RuntimeConfig/IVCTsut nach $RUNTIME_Dir \n"
+
+cp -r $Framework_Dir/RuntimeConfig/IVCTsut $RUNTIME_Dir
+
+read -p "------- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+echo -e "\n --------------------------- TestSuiteDefs   -------------------------------"
+echo -e "## TestSuites DescriptionFiles, get it from $Framework_Dir/RuntimeConfig/TestSuites "
+
+[ -d $RUNTIME_Dir/TestSuiteDefs ] && mv $RUNTIME_Dir/TestSuiteDefs $RUNTIME_Dir/TestSuiteDefs_${datum}_${zeit}
+
+echo -e "-copy  $Framework_Dir/RuntimeConfig/TestSuites to  ${RUNTIME_Dir}/TestSuiteDefs \n"
+
+cp -r $Framework_Dir/RuntimeConfig/TestSuites $RUNTIME_Dir/TestSuiteDefs
+
+read -p "------- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+echo -e "\n ----------------------------- HelloWorld -------------------------------"
+echo -e "## HelloWorld Simulator - Application from IVCT_TestSuiteDevelopment " 
+
+
+HelloWorldTar=$(ls ${TestSuiteDevelopment_Dir}/HelloWorld/build/distributions |grep tar)
+HelloWorld_active=(basename $HelloWorldTar .tar)
+
+# it's possible that we have different Versions, so we decide here which to use 
+#HelloWorld_active=HelloWorld-2.1.3-SNAPSHOT
+#HelloWorldTar=${HelloWorld_active}.tar
+
+## save the old Version
+[ -d $RUNTIME_Dir/$HelloWorld_active ] && mv $RUNTIME_Dir/$HelloWorld_active/ $RUNTIME_Dir/${HelloWorld_active}_${datum}_${zeit}
+
+echo -e "- extract $TestSuiteDevelopment_Dir/HelloWorld/build/distributions/$HelloWorldTar to $RUNTIME_Dir \n"
+
+#tar -xf $TestSuiteDevelopment_Dir/HelloWorld/build/distributions/$HelloWorldTar -C $RUNTIME_Dir  # in win nicht moegl.
+pushd $RUNTIME_Dir
+cp $TestSuiteDevelopment_Dir/HelloWorld/build/distributions/$HelloWorldTar .
+tar -xf $HelloWorldTar
+rm $HelloWorldTar
+
+popd               ############### popd
+
+
+read -p "------- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+echo -e "\n ------------------------------- LogSink  -----------------------------------"
+echo -e "## LogSink , fetch this application from Framework/LogSink/build/distribution "
+
+LogSinkTar=$(ls $Framework_Dir/LogSink/build/distributions  | grep tar)
+LogSinkActive=(basename $LogSinkTar .tar)
+
+# it's possible that we have different Versions, so we decide which to use 
+#LogSinkActive=LogSink-4.1.0-SNAPSHOT
+#LogSinkTar=${LogSinkActive}.tar
+
+[ -d $RUNTIME_Dir/$LogSinkActive ] && mv $RUNTIME_Dir/$LogSinkActive $RUNTIME_Dir/${LogSinkActive}_${datum}_${zeit}
+
+echo -e "- extract $Framework_Dir/LogSink/build/distributions/$LogSinkTar to $RUNTIME_Dir \n"
+
+#tar -xf $Framework_Dir/LogSink/build/distributions/$LogSinkTar -C $RUNTIME_Dir # in win nicht moegl.
+pushd $RUNTIME_Dir
+cp $Framework_Dir/LogSink/build/distributions/$LogSinkTar  .
+tar -xf $LogSinkTar
+rm $LogSinkTar
+popd
+
+read -p "------- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+echo -e "\n -------------------------------- TC.exec -------------------------------------"
+echo -e "## TC.exec , fetch the application from IVCT_Framework/TC.exec/build/distribution"
+
+TCexecTar=$(ls $Framework_Dir/TC.exec/build/distributions/  | grep tar)
+TCexecActive=(basename $TCexecTar .tar)
+
+# it's possible that we have different Versions, so we decide which to use 
+#TCexecActive=TC.exec-4.1.0-SNAPSHOT
+#TCexecTar=${TCexecActive}.tar
+
+[ -d $RUNTIME_Dir/$TCexecActive ] && mv $RUNTIME_Dir/$TCexecActive $RUNTIME_Dir/${TCexecActive}_${datum}_${zeit}
+
+echo -e "- extract $Framework_Dir/TC.exec/build/distributions/$TCexecTar to $RUNTIME_Dir \n"
+
+# tar -xf $Framework_Dir/TC.exec/build/distributions/$TCexecTar -C $RUNTIME_Dir # in win nicht moegl.
+pushd $RUNTIME_Dir
+cp $Framework_Dir/TC.exec/build/distributions/$TCexecTar .
+tar -xf $TCexecTar
+rm $TCexecTar
+popd
+
+read -p "------- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+echo -e "\n --------------------------------- UI ---------------------------------------"
+echo -e "## UI, get the application from IVCT_Framework/UI/build/distributions" 
+
+uiTar=$(ls ${Framework_Dir}/UI/build/distributions |grep tar)
+UIActive=(basename $uiTar .tar)
+
+# it's possible that we have different Versions, so we decide which to use 
+#UIActive=UI-4.1.0-SNAPSHOT
+#uiTar=${UIActive}.tar
+
+[ -d $RUNTIME_Dir/$UIActive ] && mv $RUNTIME_Dir/$UIActive $RUNTIME_Dir/${UIActive}_${datum}_${zeit}
+
+echo -e "- extract $Framework_Dir/UI/build/distributions/$uiTar to $RUNTIME_Dir \n"
+
+# tar -xf ${Framework_Dir}/UI/build/distributions/$uiTar -C $RUNTIME_Dir  # in win nicht moegl.
+pushd $RUNTIME_Dir
+cp ${Framework_Dir}/UI/build/distributions/$uiTar .
+tar -xf $uiTar
+rm $uiTar
+popd
+
+
+read -p "------- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+# -----------------------------------------------------------------------------
+# 5 Extracting prepared  Testsuites to  the Runtime environment
+# -----------------------------------------------------------------------------
+
+echo -e "\n --------------------------------  TS_HelloWorld  ------------------------------"
+echo -e "## TestSuite TS_HelloWorld, get it from the IVCT_TestSuiteDevelopment Repository"
+
+TSHelloWorldTar=$(ls ${TestSuiteDevelopment_Dir}/TS_HelloWorld/build/distributions | grep tar)
+TSHelloWorldActive=(basename $TSHelloWorldTar .tar)
+
+# it's possible that we have different Versions, so we decide which to use 
+#TSHelloWorldActive=TS_HelloWorld-2.1.3-SNAPSHOT
+#TSHelloWorldTar=${TSHelloWorldActive}.tar
+
+[ -d $RUNTIME_Dir/TestSuites ] && mv $RUNTIME_Dir/TestSuites $RUNTIME_Dir/TestSuites_${datum}_${zeit}
+mkdir   $RUNTIME_Dir/TestSuites
+
+echo -e "-extract $TestSuiteDevelopment_Dir/TS_HelloWorld/build/distributions/$TSHelloWorldTar nach $RUNTIME_Dir/TestSuites \n"
+
+# tar -xf $TestSuiteDevelopment_Dir/TS_HelloWorld/build/distributions/$TSHelloWorldTar -C $RUNTIME_Dir/TestSuites # in win nicht moegl.
+pushd $RUNTIME_Dir/TestSuites
+cp $TestSuiteDevelopment_Dir/TS_HelloWorld/build/distributions/$TSHelloWorldTar .
+tar -xf $TSHelloWorldTar
+rm $TSHelloWorldTar
+popd
+
+read -p "------- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+echo -e "\n -------------------------------- TS_CS_Verification etc -------------------------"
+echo -e "## TestSuite different Testsuites from TS_HLA_BASE Repository "
+
+echo -e "\n## $TS_HLA_BASE_Dir /TS_CS_Verification etc. examine the versions \n"
+
+ls $TS_HLA_BASE_Dir/TS_CS_Verification/build/distributions |grep tar
+ls $TS_HLA_BASE_Dir/TS_HLA_Declaration/build/distributions |grep tar
+ls $TS_HLA_BASE_Dir/TS_HLA_EncodingRulesTester/build/distributions |grep tar
+ls $TS_HLA_BASE_Dir/TS_HLA_Object/build/distributions |grep tar
+ls $TS_HLA_BASE_Dir/TS_HLA_Services/build/distributions |grep tar
+
+read -p " please check if this versions are correct and used here in the script, ok:  [Enter] "
+
+
+TSVerificationTar=TS_CS_Verification-2.1.2-SNAPSHOT.tar
+TSDeclarationTar=TS_HLA_Declaration-2.1.2-SNAPSHOT.tar
+TSEncodingRulesTesterTar=TS_HLA_EncodingRulesTester-2.1.2-SNAPSHOT.tar
+TSObjectTar=TS_HLA_Object-2.1.2-SNAPSHOT.tar  
+TSServicesTar=TS_HLA_Services-2.1.2-SNAPSHOT.tar
+
+
+echo -e "-extract $TS_HLA_BASE_Dir/TS_CS_Verification/build/distributions/$TSVerificationTar to $RUNTIME_Dir/TestSuites \n"
+echo -e "-extract $TS_HLA_BASE_Dir/TS_HLA_Declaration/build/distributions/$TSDeclarationTar to $RUNTIME_Dir/TestSuites \n"
+echo -e "-extract $TS_HLA_BASE_Dir/TS_HLA_EncodingRulesTester/build/distributions/$TSEncodingRulesTesterTar to $RUNTIME_Dir/TestSuites \n"
+echo -e "-extract $TS_HLA_BASE_Dir/TS_HLA_Object/build/distributions/$TSObjectTar nach $RUNTIME_Dir/TestSuites \n"
+echo -e "-extract $TS_HLA_BASE_Dir/TS_HLA_Services/build/distributions/$TSServicesTar to $RUNTIME_Dir/TestSuites \n"
+
+
+pushd $RUNTIME_Dir/TestSuites
+
+cp   $TS_HLA_BASE_Dir/TS_CS_Verification/build/distributions/$TSVerificationTar .
+cp   $TS_HLA_BASE_Dir/TS_HLA_Declaration/build/distributions/$TSDeclarationTar .
+cp   $TS_HLA_BASE_Dir/TS_HLA_EncodingRulesTester/build/distributions/$TSEncodingRulesTesterTar .
+cp   $TS_HLA_BASE_Dir/TS_HLA_Object/build/distributions/$TSObjectTar .
+cp   $TS_HLA_BASE_Dir/TS_HLA_Services/build/distributions/$TSServicesTar .
+
+tar -xf $TSVerificationTar
+tar -xf $TSDeclarationTar
+tar -xf $TSEncodingRulesTesterTar
+tar -xf $TSObjectTar
+tar -xf $TSServicesTar
+
+rm $TSVerificationTar
+rm $TSDeclarationTar
+rm $TSEncodingRulesTesterTar
+rm $TSObjectTar
+rm $TSServicesTar
+
+popd
+
+
+
+# -----------------------------------------------------------------------------
+# 6 prepare apache-tomcat with our application, which we fetched in the 1. part 
+# -----------------------------------------------------------------------------
+
+echo -e "\n --------------------------------- IVCTGUI War Files to Tomcat  --------------"
+echo -e " prepare apache-tomcat with the *.war files from IVCT_Framework/nato.ivct.gui* \n"
+
+read -p "## apache-tomcat webapps  if you continue the tomcat-deployment will be overwritten, [Enter] to continue  'strg-c'  to stop here "
+
+# move  the former  webapps
+[ -d $tomcat_Dir/webapps ] && cp -a $tomcat_Dir/webapps $tomcat_Dir/webapps_${datum}_${zeit} && rm -r $tomcat_Dir/webapps/*
+
+ivctGuiServerWar=$(ls ${Framework_Dir}/GUI/nato.ivct.gui.server.app.war/build/libs | grep war) 
+# it's possible that we have different Versions, so we decide which to use
+# ivctGuiServerWar="ivct.gui.server##4.1.0-SNAPSHOT.war"
+echo -e "\n- kopiere nun ${Framework_Dir}/GUI/nato.ivct.gui.server.app.war/build/libs/$ivctGuiServerWar nach $tomcat_Dir/webapps"
+cp ${Framework_Dir}/GUI/nato.ivct.gui.server.app.war/build/libs/$ivctGuiServerWar $tomcat_Dir/webapps
+
+
+ivctGuiUiHtmlWar=$(ls ${Framework_Dir}/GUI/nato.ivct.gui.ui.html.app.war/build/libs | grep war) 
+# it's possible that we have different Versions, so we decide which to use 
+#ivctGuiUiHtmlWar=ivct.gui.ui.html##4.1.0-SNAPSHOT.war
+echo -e "\n- kopiere ${Framework_Dir}/GUI/nato.ivct.gui.ui.html.app.war/build/libs/$ivctGuiUiHtmlWar nach $tomcat_Dir/webapps"
+cp ${Framework_Dir}/GUI/nato.ivct.gui.ui.html.app.war/build/libs/$ivctGuiUiHtmlWar $tomcat_Dir/webapps
+
+
+echo -e "\n ------------------------------------------------------------------------"
+echo "tomcat-configuration:"
+echo -e "If you do not edit server.xml you can reach the server with: \n"
+echo "http://localhost:8080/ivct.gui.ui.html (http://192.168.4.2:8080/ivct.gui.ui.html)"
+
+echo -e "\nIf you want to reach the Server with:  http://localhost:8080 "
+echo    "You have to edit conf/server.xml or replace it with a simple one"
+
+echo -e"\nan examle is shown at:  https://github.com/IVCTool/IVCT_Runtime/tree/master/apache-tomcat-8.5.40/conf"
+echo "important is this: <Context path=  docBase= ivct.gui.ui.html##4.1.0-SNAPSHOT reloadable= true  >  </Context> "
+
+#read -p " finished prepare tomcat -Break-, [Enter]  to continue, 'ctrl-c' to stop here"
+
+
+
+# -----------------------------------------------------------------------------
+# preparing the start-configuration, adding and changing values in IVCT.properties
+# -----------------------------------------------------------------------------
+
+cp ${RUNTIME_Dir}/IVCT.properties ${RUNTIME_Dir}/IVCT.properties.org
+
+### activate the right Versions for Linux or Windows
+
+# for git-bash we try the linux way
+
+echo "IVCT_SUT_HOME_ID=${RUNTIME_Dir}/IVCTsut" >>  ${RUNTIME_Dir}/IVCT.properties   # trying this for git-bash
+echo "IVCT_TS_HOME_ID=${RUNTIME_Dir}/TestSuites" >>  ${RUNTIME_Dir}/IVCT.properties
+echo "IVCT_TS_DEF_HOME_ID=${RUNTIME_Dir}/TestSuiteDefs" >>  ${RUNTIME_Dir}/IVCT.properties
+echo "IVCT_BADGE_HOME_ID=${RUNTIME_Dir}/Badges" >>  ${RUNTIME_Dir}/IVCT.properties
+echo "IVCT_BADGE_ICONS=${RUNTIME_Dir}/Badges" >>  ${RUNTIME_Dir}/IVCT.properties
+
+
+# RUNTIME_Win  is defined at the beginning of the script
+#echo "IVCT_SUT_HOME_ID=${RUNTIME_Win}\\IVCTsut" >>  ${RUNTIME_Dir}/IVCT.properties
+#echo "IVCT_TS_HOME_ID=${RUNTIME_Win}\\TestSuites" >>  ${RUNTIME_Dir}/IVCT.properties
+#echo "IVCT_TS_DEF_HOME_ID=${RUNTIME_Win}\\TestSuiteDefs" >>  ${RUNTIME_Dir}/IVCT.properties
+#echo "IVCT_BADGE_HOME_ID=${RUNTIME_Win}\\Badges" >>  ${RUNTIME_Dir}/IVCT.properties
+#echo "IVCT_BADGE_ICONS=${RUNTIME_Win}\\Badges" >>  ${RUNTIME_Dir}/IVCT.properties
+
+echo -e "\n ------------------------------------------------------------------------"
+echo    "How to start"
+echo -e " ------------------------------------------------------------------------"
+
+echo " What to do to start the system:"
+
+echo -e "\nEdit the ${RUNTIME_Dir}/IVCT.properties file:"
+echo -e "\nWe tried to change it with the upper values, but check it."
+
+echo -e "\nfor using the Runtime-Directory in Linux:"
+echo "IVCT_SUT_HOME_ID=${RUNTIME_Dir}/IVCTsut"
+echo "IVCT_TS_HOME_ID=${RUNTIME_Dir}/TestSuites"
+echo "IVCT_TS_DEF_HOME_ID=${RUNTIME_Dir}/TestSuites"
+echo "IVCT_BADGE_HOME_ID=${RUNTIME_Dir}/Badges"
+echo "IVCT_BADGE_ICONS=${RUNTIME_Dir}/Badges"
+
+echo -e "\nfor using the Runtime-Directory in Windows:"
+echo "IVCT_SUT_HOME_ID=${RUNTIME_Win}\IVCTsut"
+echo "IVCT_TS_HOME_ID=${RUNTIME_Win}\TestSuites"
+echo "IVCT_TS_DEF_HOME_ID=${RUNTIME_Win}\TestSuites"
+echo "IVCT_BADGE_HOME_ID=${RUNTIME_Win}\Badges"
+echo "IVCT_BADGE_ICONS=${RUNTIME_Win}\Badges"
+
+echo -e "\nCreate 2 Startscripts, one for IVCT and one for apache-tomcat"
+
+
+#read -p "------- Break ------, [Enter]  to continue, 'ctrl-c' to stop here"
+#echo "only to this point " && exit 0
