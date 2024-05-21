@@ -48,13 +48,16 @@ image:images/2-0-runtime.png[Run Time Environment]
 - IVCT.properties: Additional configurations are possible in a properties file. The location and also the name of that file is provides by the environment variable `IVCT_CONF`.
 
 
-====  Building an example Runtime - Folder from scratch  by a  script
+===  Building an example Runtime - Folder from scratch  by a  script
 
 we provide  a script with which you can create a runable Runtime-Environment on a Linux operation system
 as an example: +
 link:scripts/a_buildung_IVCT-Runtime_from_scratch_2020-10-07_allNew.sh[buildung_IVCT-Runtime_from_scratch.sh] +
 
-and furthermore start-scripts  to start these new installation. +
+another script can help you to create a runable Runtime-Environment on Windows in a git-bash Console: +
+link:scripts/a_buildung_IVCT-Runtime_from_scratch_on_Win_2024-05-17.txt[buildung_IVCT-Runtime_from_scratch on windows] +
+
+and as example furthermore start-scripts  to start these new installation. +
 link:scripts/x_RunIVCT_brf_2020-04-09.sh[x_RunIVCT.sh] +
 link:scripts/x_tomcat-startscript_IVCTRuntime_ApacheTomcat8551_brf-20200409.sh[tomcat-startscript_IVCTRuntime.sh]
 
